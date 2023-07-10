@@ -25,9 +25,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private  CustomerUserDetailsService customerUserDetailsService;
 
-    private String identity=null;
-    Claims claims=null;
-    private  String username=null;
+    private String identity = null;
+    Claims claims = null;
+    private  String username = null;
 
 
 

@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     ->Create a new UserNamePasswordAuthentication token with "new" as keyword and email and password of request as parameter
     ->Authenticate that token using AuthenticationManger and value which is returned is of type "Authentication"
     ->check for .isAuthenticated() method on above Authentication object.
-    ->after above step,if status is true than generate token(token is generated using details from database and not from request) and return it, if not than return message "Need Approval"
+    ->after above step, if status is true then generate token(token is generated using details from database and not from request) and return it, if not than return message "Need Approval"
     *
     * */
     @Autowired
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<List<UserWrapper>> getAllUser() {
         try{
             if(jwtFilter.isAdmin()){
-                return new ResponseEntity<>(userRepo.getAllUser(),HttpStatus.OK);
+                return new ResponseEntity<>(userRepo.getAll(),HttpStatus.OK);
             }else
                 return new ResponseEntity<>(userRepo.getByUsername(jwtFilter.getCurrentUser()),HttpStatus.OK);
         }catch(Exception ex){

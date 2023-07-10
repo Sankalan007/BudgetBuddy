@@ -25,7 +25,7 @@ public class JwtUtil {
     }
 
     public <T> T extractClaims(String token , Function<Claims,T>claimsResolver){
-        final  Claims claims = this. extractAllClaims(token);
+        final Claims claims = this. extractAllClaims(token);
         log.info(String.valueOf(claims));
         return claimsResolver.apply(claims);
     }
