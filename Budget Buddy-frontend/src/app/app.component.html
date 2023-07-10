@@ -1,0 +1,14 @@
+<ng-container *ngIf="!isAuthRoute()">
+  <div class="flex w-full" [class.dark]="!lightTheme">
+    <app-sidebar (sidebarToggled)="toggleSidebar($event)" (lightThemeToggled)="toggleLightTheme($event)"></app-sidebar>
+    <div [style.width]="sidebarOpen ? 'calc(100vw - 250px)' : 'calc(100vw - 75px)'" class="fixed top-0">
+      <app-navbar [sidebarOpen]="sidebarOpen" [lightTheme]="lightTheme"></app-navbar>
+      <div [ngClass]="sidebarOpen ? 'pl-[250px]' : 'pl-[75px]'" class="transition-all duration-500 absolute w-[100vw] top-[4rem] min-h-[calc(100vh-4rem)] bg-secondary dark:bg-dark-secondary text-primary">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="isAuthRoute()">
+  <router-outlet></router-outlet>
+</ng-container>

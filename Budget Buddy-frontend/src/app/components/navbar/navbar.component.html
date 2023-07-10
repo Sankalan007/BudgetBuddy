@@ -1,0 +1,57 @@
+<div class="absolute w-[100vw] h-[4rem] items-center bg-primary dark:bg-dark-primary transition-all duration-500" [ngClass]="{ 'pl-[255px]': sidebarOpen, 'pl-[80px]': !sidebarOpen, dark: !lightTheme }">
+    <div class="items-center p-4 w-full h-full flex justify-between">
+      <div class="font-roboto text-text dark:text-dark-text font-bold text-md flex items-center">
+        <ul class="flex space-x-2">
+          <li routerLink="/" *ngIf="!sidebarOpen" class="flex justify-center items-center cursor-pointer hover:bg-primary-active-tab py-3 px-4 rounded-2xl">
+            Home
+          </li>
+          <li routerLink="/new-transaction" class="rounded-2xl bg-safe p-3 py-2 cursor-pointer flex justify-center items-center ">
+            Create new transaction +
+          </li>
+          <!-- <li [ngClass]="{
+            'hover:bg-primary-active-tab': lightTheme,
+            'hover:bg-dark-active-tab': !lightTheme
+          }"
+          [class.bg-logo-green-500]="baseHover"
+           class="cursor-pointer py-3 px-4 rounded-md" (click)="toggleBaseHover()">
+          Base
+              <div class="absolute top-[62px] px-5 py-3 z-50 rounded-lg bg-dark-active-tab dark:bg-primary-active-tab transition-all duration-300" *ngIf="baseHover===true">
+                <ul class="flex flex-col space-y-4">
+                  <li routerLink="/dashboard" class=" text-dark-text text-lg">Dashboard</li>
+                  <li routerLink="/transactions" class=" text-dark-text text-lg">Transactions</li>
+                </ul>
+              </div>
+            </li>
+          <li [ngClass]="{
+            'hover:bg-primary-active-tab': lightTheme,
+            'hover:bg-dark-active-tab': !lightTheme
+          }"
+          [class.bg-logo-green-500]="aimsHover"
+           class="cursor-pointer py-3 px-4 rounded-md" (click)="toggleAimsHover()">
+          Aims
+              <div class="absolute top-[62px] px-5 py-3 z-50 rounded-lg bg-dark-active-tab dark:bg-primary-active-tab transition-all duration-300" *ngIf="baseHover===true">
+                <ul class="flex flex-col space-y-4">
+                  <li routerLink="/budget" class=" text-dark-text text-lg">Budget</li>
+                  <li routerLink="/goals" class=" text-dark-text text-lg">Goals</li>
+                </ul>
+              </div>
+            </li> -->
+        </ul>
+      </div>
+      <!-- <div class="flex space-x-4 justify-center items-center">
+        <div class="rounded-full border border-avatar-border overflow-hidden flex items-center">
+          <img
+            class="w-10 h-10 object-cover object-center"
+            src="https://source.unsplash.com/random?avatar,men"
+            alt="Avatar"
+          />
+        </div>
+        <span class="ml-2 cursor-pointer text-danger">Logout <i class="fas fa-power-off"></i></span>
+      </div> -->
+      <div class="flex space-x-6 justify-center items-center mr-4">
+        <button class="text-safe" routerLink="/login">Login <i class="fas fa-sign-in-alt"></i> </button>
+        <button class="text-info" routerLink="/register">Register <i class="fas fa-user-plus"></i> </button>
+      </div>
+    </div>
+  </div>
+  
