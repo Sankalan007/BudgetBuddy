@@ -1,4 +1,4 @@
-<div class="fixed top-0 absolute w-[100vw] h-[4rem] items-center bg-primary dark:bg-dark-primary transition-all duration-500" [ngClass]="{ 'pl-[255px]': sidebarOpen, 'pl-[80px]': !sidebarOpen, dark: !lightTheme }">
+<div class="fixed top-0 absolute w-[100vw] h-[4rem] items-center bg-primary dark:bg-dark-primary transition-all duration-500" *ngIf="isAuthenticated()" [ngClass]="{ 'pl-[255px]': sidebarOpen, 'pl-[80px]': !sidebarOpen, dark: !lightTheme }">
     <div class="items-center p-4 w-full h-full flex justify-between">
       <div class="font-roboto text-text dark:text-dark-text font-bold text-md flex items-center">
         <p *ngIf="!sidebarOpen" routerLink="/" class="text-xl flex justify-center items-center space-x-2 cursor-pointer mr-8">
@@ -55,12 +55,12 @@
             
           </div>
           <ng-container *ngIf="getRole()">
-            <span class="ml-4 text-lg text-info font-roboto font-bold">
+            <span class="pt-1 ml-4 text-lg text-info font-roboto font-bold items-center">
               ADMIN
             </span>
           </ng-container>
           <ng-container *ngIf="!getRole()">
-            <span class="ml-4 text-md text-info font-mono font-bold">
+            <span class="pt-1 ml-4 text-md text-info font-roboto font-bold items-center">
               {{userDetails[0].userName}}
             </span>
           </ng-container>
@@ -76,4 +76,23 @@
       </ng-container>
     </div>
   </div>
+
+  <div class="fixed top-0 absolute w-[100vw] h-[4rem] items-center bg-primary dark:bg-dark-primary transition-all duration-500" *ngIf="!isAuthenticated()">
+    <div class="items-center p-4 w-full h-full flex justify-between">
+      <div class="font-roboto text-text dark:text-dark-text font-bold text-md flex items-center">
+        <p routerLink="/" class="ml-4 text-xl flex justify-center items-center space-x-2 cursor-pointer mr-8">
+          <!-- <i class="fa fa-user text-green-500 mr-4"></i> -->
+          <span class="px-3 py-1 text-text dark:text-dark-text text-xl font-maven font-bold bg-logo-green-500 rounded-lg">
+            B
+          </span>
+          <span class="pt-1 text-lg">Budget Buddy</span>
+        </p>
+      </div>
+        <div class="flex space-x-6 justify-center items-center mr-4">
+          <button class="text-safe" routerLink="/login">Login <i class="fas fa-sign-in-alt"></i> </button>
+          <button class="text-info" routerLink="/register">Register <i class="fas fa-user-plus"></i> </button>
+        </div>
+    </div>
+  </div>
+  
   
