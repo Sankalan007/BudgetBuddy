@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth/auth.service';
 // import { ToastrService } from 'ngx-toastr';
 // import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -20,9 +22,9 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    // private authService: AuthService,
+    private authService: AuthService,
     private router: Router,
-    // private toastr: ToastrService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -45,29 +47,29 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    // if (this.registerForm.valid) {
-    //   this.authService.register(this.registerForm.value).subscribe(
-    //     (response) => {
-    //       console.log('Registration successful!');
-    //       console.log(response);
-    //       this.router.navigate(['/login']);
-    //       this.toastr.success('Please log In', 'Registration successful', {
-    //         positionClass: 'toast-bottom-right',
-    //       });
-    //     },
-    //     (error) => {
-    //       this.errorMessage = 'Username or Email already exists!';
-    //       console.log('Registration failed!');
-    //       console.log(error);
-    //       this.toastr.error('WARNING: Username or Email already exists!');
-    //     }
-    //   );
-    // } else {
-    //   this.toastr.warning(
-    //     'Please fill all the fields accordingly',
-    //     'Invalid form'
-    //   );
-    // }
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value).subscribe(
+        (response) => {
+          console.log('Registration successful!');
+          console.log(response);
+          this.router.navigate(['/login']);
+          this.toastr.success('Please log In', 'Registration successful', {
+            positionClass: 'toast-bottom-right',
+          });
+        },
+        (error) => {
+          this.errorMessage = 'Username or Email already exists!';
+          console.log('Registration failed!');
+          console.log(error);
+          this.toastr.error('WARNING: Username or Email already exists!');
+        }
+      );
+    } else {
+      this.toastr.warning(
+        'Please fill all the fields accordingly',
+        'Invalid form'
+      );
+    }
   }
 
   goToHome() {

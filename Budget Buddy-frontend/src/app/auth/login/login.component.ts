@@ -2,9 +2,9 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-// import { AuthService } from 'src/app/services/auth/auth.service';
-// import { ShareddataService } from 'src/app/services/sharedData/shared-data.service';
-// import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +17,10 @@ export class LoginComponent implements OnInit {
   userDetails: any = null;
   constructor(
     private fb: FormBuilder,
-    // private authService: AuthService,
-    // private sharedDataService: ShareddataService,
+    private authService: AuthService,
+    private sharedDataService: SharedDataService,
     private router: Router,
-    // private toastr: ToastrService,
+    private toastr: ToastrService,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -41,35 +41,35 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    // const email = this.loginForm.value.email;
-    // const password = this.loginForm.value.password;
-    // this.authService.login(email, password).subscribe(
-    //   (response: any) => {
-    //     localStorage.setItem('token', response.token);
-    //     localStorage.setItem('role', response.role);
-    //     // this.sharedDataService.setUserRole(localStorage.getItem('role'));
-    //     this.authService.getUserDetails().subscribe(
-    //       (user: any) => {
-    //         console.log(response.token);
-    //         // console.log(user);
+    const email = this.loginForm.value.email;
+    const password = this.loginForm.value.password;
+    this.authService.login(email, password).subscribe(
+      (response: any) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('role', response.role);
+        // this.sharedDataService.setUserRole(localStorage.getItem('role'));
+        this.authService.getUserDetails().subscribe(
+          (user: any) => {
+            console.log(response.token);
+            // console.log(user);
 
-    //         this.sharedDataService.setUserDetails(user);
-    //         this.userDetails = user;
-    //       },
-    //       (error) => {
-    //         this.toastr.error('Something went wrong!');
-    //       }
-    //     );
+            this.sharedDataService.setUserDetails(user);
+            this.userDetails = user;
+          },
+          (error) => {
+            this.toastr.error('Something went wrong!');
+          }
+        );
 
-    //     this.router.navigate(['/home']);
-    //     this.toastr.success('Yay! You are logged in.', 'Login Succesful');
-    //   },
-    //   (error) => {
-    //     this.errorMessage = 'Wrong user credentials';
-    //     console.log(this.errorMessage);
-    //     this.toastr.error('Please enter correct login credentials.');
-    //   }
-    // );
+        this.router.navigate(['/']);
+        this.toastr.success('Yay! You are logged in.', 'Login Succesful');
+      },
+      (error) => {
+        this.errorMessage = 'Wrong user credentials';
+        console.log(this.errorMessage);
+        this.toastr.error('Please enter correct login credentials.');
+      }
+    );
   }
   goToHome() {
     this.router.navigate(['/']);
