@@ -18,6 +18,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { TooltipDirective } from './tooltip/directive/tooltip.directive';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +33,8 @@ import { TooltipDirective } from './tooltip/directive/tooltip.directive';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    TooltipDirective
+    TooltipDirective,
+    
   ],
   imports: [
     BrowserModule,
