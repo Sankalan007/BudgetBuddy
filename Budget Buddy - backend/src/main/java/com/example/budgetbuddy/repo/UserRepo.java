@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface UserRepo extends JpaRepository<User,Integer> {
 
     User findByEmailId(@Param("email") String email);

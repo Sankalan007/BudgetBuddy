@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
         // this.sharedDataService.setUserRole(localStorage.getItem('role'));
         this.authService.getUserDetails().subscribe(
           (user: any) => {
+            localStorage.setItem('userDetails', user);
             console.log(response.token);
             // console.log(user);
 

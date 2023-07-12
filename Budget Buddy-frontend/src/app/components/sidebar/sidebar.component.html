@@ -24,7 +24,7 @@
           [class.hover:bg-primary-active-tab]="lightTheme"
           [class.hover:bg-dark-active-tab]="!lightTheme">
   
-            <span class="w-8"><i class={{item.icon}}></i></span>
+            <span title={{item.label}} class="w-8"><i class={{item.icon}}></i></span>
             <span *ngIf="sidebarOpen">{{item.label}}</span>
           </li>
         </ul>
@@ -38,7 +38,7 @@
           [class.hover:bg-primary-active-tab]="lightTheme"
           [class.hover:bg-dark-active-tab]="!lightTheme">
   
-            <span class="w-8"><i class={{item.icon}}></i></span>
+            <span title={{item.label}} class="w-8"><i class={{item.icon}}></i></span>
             <span *ngIf="sidebarOpen">{{item.label}}</span>
           </li>
         </ul>
@@ -52,7 +52,7 @@
           [class.hover:bg-primary-active-tab]="lightTheme"
           [class.hover:bg-dark-active-tab]="!lightTheme">
   
-            <span class="w-8"><i class={{item.icon}}></i></span>
+            <span title={{item.label}} class="w-8"><i class={{item.icon}}></i></span>
             <span *ngIf="sidebarOpen">{{item.label}}</span>
           </li>
         </ul>
