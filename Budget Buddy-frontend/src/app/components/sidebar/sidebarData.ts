@@ -1,17 +1,17 @@
 export const sidebarData = [
     {
       routeLink: 'dashboard',
-      icon: 'fa fa-pie-chart',
+      icon: 'fas fa-line-chart',
       label: 'Dashboard',
     },
     {
       routeLink: 'transactions',
-      icon: 'fas fa-wrench',
+      icon: 'fas fa-credit-card',
       label: 'Transactions',
     },
     {
       routeLink: 'budget',
-      icon: 'fas fa-dollar',
+      icon: 'fas fa-piggy-bank',
       label: 'Budget',
     },
     {
@@ -22,7 +22,7 @@ export const sidebarData = [
 
     {
       routeLink: 'analytics',
-      icon: 'fas fa-tachometer-alt',
+      icon: 'fas fa-pie-chart',
       label: 'Analytics',
     },
   ];

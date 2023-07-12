@@ -11,22 +11,15 @@ import { SharedDataService } from 'src/app/services/sharedData/shared-data.servi
 })
 
 export class NavbarComponent implements OnInit{
-  userDetails: any = [
-    {
-      id: 5,
-      firstName: 'Sankalan',
-      lastName: 'Chanda',
-      email: 'test1@gmail.com',
-      userName: 'test1',
-      status: 'true',
-    },
-  ];
+  userDetails!: any;
   constructor(private authService: AuthService, private router: Router, private sharedDataService: SharedDataService, private toastr: ToastrService){}
 
   ngOnInit(): void {
-      this.sharedDataService.userDetailsObservable.subscribe((userDetails) => {
-        this.userDetails = userDetails;
-      })
+    this.sharedDataService.userDetailsObservable.subscribe((userDetails) => {
+      this.userDetails = userDetails;
+      console.log(userDetails.id);
+      
+    })
   }
 
   isAuthenticated() {

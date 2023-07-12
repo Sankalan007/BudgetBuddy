@@ -17,5 +17,4 @@ public class SpendCategory {
     private Double Utilities;
     private Double Housing;
     private Double Other;
-
 }

@@ -1,1 +1,479 @@
-<p>transactions works!</p>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">Transactions</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">Filter</h1>
+  
+    <div class="flex mb-4">
+      <h1 class="text-xl font-bold text-gray-800 mb-4 mr-3">
+        Filter type (<span class="text-sm italic text-red-500">required*</span>) :
+      </h1>
+      <label class="mr-4 mt-1">
+        <input
+          type="radio"
+          name="filterType"
+          value="preset"
+          [(ngModel)]="filterType"
+        />
+        Preset
+      </label>
+      <label class="mr-4 mt-1">
+        <input
+          type="radio"
+          name="filterType"
+          value="custom"
+          [(ngModel)]="filterType"
+        />
+        Custom
+      </label>
+    </div>
+  
+    <div *ngIf="filterType === 'preset'" class="mb-4">
+      <h1 class="text-xl font-bold text-gray-800 mb-4 mr-3">
+        Custom filter (<span class="text-sm italic text-red-500">required*</span>)
+        :
+      </h1>
+      <label class="mr-4">
+        <input
+          type="radio"
+          name="presetFilter"
+          value="daily"
+          [(ngModel)]="presetFilter"
+          (change)="resetDailyFilters()"
+        />
+        Daily
+      </label>
+      <label class="mr-4">
+        <input
+          type="radio"
+          name="presetFilter"
+          value="monthly"
+          [(ngModel)]="presetFilter"
+        />
+        Monthly
+      </label>
+      <label class="mr-4">
+        <input
+          type="radio"
+          name="presetFilter"
+          value="annual"
+          [(ngModel)]="presetFilter"
+        />
+        Annual
+      </label>
+      <label class="mr-4">
+        <input
+          type="radio"
+          name="presetFilter"
+          value="all"
+          [(ngModel)]="presetFilter"
+        />
+        All Time
+      </label>
+    </div>
+  
+    <div *ngIf="filterType === 'custom'" class="mb-4">
+      <h1 class="text-xl font-bold text-gray-800 mb-4 mr-3">
+        Custom filter (<span class="text-sm italic text-red-500">required*</span>)
+        :
+      </h1>
+      <div class="flex mb-2">
+        <label for="startDate" class="mr-2">Start Date:</label>
+        <input
+          type="date"
+          id="startDate"
+          name="startDate"
+          [(ngModel)]="startDate"
+        />
+      </div>
+      <div class="flex mb-2">
+        <label for="endDate" class="mr-2">End Date:</label>
+        <input
+          type="date"
+          id="endDate"
+          name="endDate"
+          [(ngModel)]="endDate"
+          [disabled]="!startDate"
+        />
+      </div>
+    </div>
+  
+    <div class="flex mb-4">
+      <h1 class="text-xl font-bold text-gray-800 mb-4 mr-3">
+        Sorting order (<span class="text-sm italic text-red-500">required*</span>)
+        :
+      </h1>
+      <label class="mr-4 mt-1">
+        <input type="radio" name="sortOrder" value="asc" [(ngModel)]="order" />
+        Ascending
+      </label>
+      <label class="mr-4 mt-1">
+        <input type="radio" name="sortOrder" value="desc" [(ngModel)]="order" />
+        Descending
+      </label>
+    </div>
+  
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+      [disabled]="!applyButtonDisabled()"
+      (click)="applyFilters()"
+    >
+      Apply
+    </button>
+  
+    <table
+      class="table-auto w-full bg-white shadow-md rounded-lg overflow-hidden"
+    >
+      <thead class="bg-gray-100">
+        <tr>
+          <th
+            class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Date
+          </th>
+          <th
+            class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Time
+          </th>
+          <th
+            class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Description
+          </th>
+          <th
+            class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Category
+          </th>
+          <th
+            class="px-6 py-3 text-right text-sm font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Amount
+          </th>
+          <th
+            class="pl-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Action
+          </th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let transaction of transactions; let i = index">
+        <tr class="bg-gray-50">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ transaction.transactionDate }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ formatTime(transaction.transactionTime) }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ transaction.description }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ transaction.category }}
+          </td>
+          <td
+            class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold"
+            [ngClass]="{
+              'text-safe': transaction.type === 'earn',
+              'text-danger': transaction.type === 'spend'
+            }"
+          >
+            {{ transaction.amount | currency : "INR" }}
+          </td>
+          <td class="pl-6 py-4 whitespace-nowrap text-sm text-left font-bold">
+            <button
+              (click)="updateClicked[i] = !updateClicked[i]"
+              class="mr-8 text-blue-500 hover:text-blue-700"
+              title="Update"
+              id="updateButton"
+            >
+              <i class="fas fa-edit"></i>
+            </button>
+            <button
+              (click)="deleteTransaction(transaction.id)"
+              class="text-red-500 hover:text-red-700"
+              title="Delete"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+  
+        <div *ngIf="updateClicked[i]" class="m-4">
+          <form
+            [formGroup]="updateTransactionForm"
+            (ngSubmit)="
+              updateTransaction(
+                updateTransactionForm.value,
+                transaction.transactionDate,
+                transaction.transactionTime,
+                transaction.id
+              )
+            "
+          >
+            <input
+              type="hidden"
+              formControlName="id"
+              value="{{ transaction.id }}"
+            />
+            <div class="mb-4">
+              <label class="block text-gray-700 font-bold mb-2" for="type">
+                Transaction Type
+              </label>
+              <div class="flex items-center">
+                <div class="mr-4">
+                  <input
+                    type="radio"
+                    class="form-radio h-4 w-4 text-indigo-600"
+                    name="type"
+                    formControlName="type"
+                    value="earn"
+                    id="earn"
+                  />
+                  <label for="earn" class="ml-2 text-gray-700">Earn</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    class="form-radio h-4 w-4 text-red-600"
+                    name="type"
+                    formControlName="type"
+                    value="spend"
+                    id="spend"
+                  />
+                  <label for="spend" class="ml-2 text-gray-700">Spend</label>
+                </div>
+              </div>
+            </div>
+            <ng-container
+              *ngIf="updateTransactionForm.get('type')?.value === 'spend'"
+            >
+              <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="category">
+                  Category
+                </label>
+                <div class="flex items-center">
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-red-600"
+                      formControlName="category"
+                      name="category"
+                      value="Food"
+                      id="food"
+                    />
+                    <label for="food" class="ml-2 text-gray-700">Food</label>
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-red-600"
+                      formControlName="category"
+                      name="category"
+                      value="Entertainment"
+                      id="entertainment"
+                    />
+                    <label for="entertainment" class="ml-2 text-gray-700"
+                      >Entertainment</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-red-600"
+                      formControlName="category"
+                      name="category"
+                      value="Transport"
+                      id="transport"
+                    />
+                    <label for="transport" class="ml-2 text-gray-700"
+                      >Transport</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-red-600"
+                      formControlName="category"
+                      name="category"
+                      value="Shopping"
+                      id="shopping"
+                    />
+                    <label for="shopping" class="ml-2 text-gray-700"
+                      >Shopping</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-red-600"
+                      formControlName="category"
+                      name="category"
+                      value="Utilities"
+                      id="utilities"
+                    />
+                    <label for="utilities" class="ml-2 text-gray-700"
+                      >Utilities</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-red-600"
+                      formControlName="category"
+                      name="category"
+                      value="Housing"
+                      id="housing"
+                    />
+                    <label for="housing" class="ml-2 text-gray-700"
+                      >Housing</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-red-600"
+                      formControlName="ategory"
+                      name="category"
+                      value="Other Spendings"
+                      id="other"
+                    />
+                    <label for="other" class="ml-2 text-gray-700">Other</label>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container
+              *ngIf="updateTransactionForm.get('type')?.value === 'earn'"
+            >
+              <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="category">
+                  Category
+                </label>
+                <div class="flex items-center">
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-green-600"
+                      formControlName="category"
+                      name="category"
+                      value="Salary"
+                      id="salary"
+                    />
+                    <label for="salary" class="ml-2 text-gray-700">Salary</label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-green-600"
+                      formControlName="category"
+                      name="category"
+                      value="Business"
+                      id="business"
+                    />
+                    <label for="business" class="ml-2 text-gray-700"
+                      >Business Income</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-green-600"
+                      formControlName="category"
+                      name="category"
+                      value="Rental"
+                      id="salary"
+                    />
+                    <label for="salary" class="ml-2 text-gray-700"
+                      >Rental Income</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-green-600"
+                      formControlName="category"
+                      name="category"
+                      value="Investment"
+                      id="investment"
+                    />
+                    <label for="investment" class="ml-2 text-gray-700"
+                      >Investment</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-green-600"
+                      formControlName="category"
+                      name="category"
+                      value="Gifts/Inheritence"
+                      id="gifts"
+                    />
+                    <label for="gifts" class="ml-2 text-gray-700"
+                      >Gifts/Inheritence</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-green-600"
+                      formControlName="category"
+                      name="category"
+                      value="Freelance"
+                      id="freelance"
+                    />
+                    <label for="freelance" class="ml-2 text-gray-700"
+                      >Freelance</label
+                    >
+                  </div>
+                  <div class="mr-4">
+                    <input
+                      type="radio"
+                      class="form-radio h-4 w-4 text-green-600"
+                      formControlName="category"
+                      name="category"
+                      value="Other Incomes"
+                      id="otherIncomes"
+                    />
+                    <label for="otherIncomes" class="ml-2 text-gray-700"
+                      >Other Income</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+  
+            <div class="mb-4">
+              <label class="block text-gray-700 font-bold mb-2" for="description">
+                Description
+              </label>
+              <textarea
+                type="text"
+                class="form-input w-full outline-dotted text-black"
+                formControlName="description"
+                id="description"
+              ></textarea>
+            </div>
+  
+            <div class="mb-4">
+              <label for="amount"> Amount </label>
+              <input
+                type="number"
+                class="form-input w-full outline-dotted text-black"
+                formControlName="amount"
+                id="amount"
+              />
+            </div>
+            <button
+              [disabled]="updateTransactionForm.invalid"
+              type="submit"
+              class="bg-blue-500 rounded-lg p-2 text-white"
+            >
+              Update
+            </button>
+          </form>
+        </div>
+      </tbody>
+    </table>
+  </div>
+  
