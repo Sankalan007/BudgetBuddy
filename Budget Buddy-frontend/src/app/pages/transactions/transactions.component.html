@@ -1,10 +1,11 @@
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-8 rounded-lg p-6 ">
     <h1 class="text-3xl font-bold text-gray-800 mb-4">Transactions</h1>
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Filter</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-2">Filter</h1>
+    <h1 class="text-xl font-bold text-gray-800 mb-6">Add all filters before applying</h1>
   
     <div class="flex mb-4">
       <h1 class="text-xl font-bold text-gray-800 mb-4 mr-3">
-        Filter type (<span class="text-sm italic text-red-500">required*</span>) :
+        Filter type (<span class="text-sm italic text-danger">required*</span>) :
       </h1>
       <label class="mr-4 mt-1">
         <input
@@ -28,7 +29,7 @@
   
     <div *ngIf="filterType === 'preset'" class="mb-4">
       <h1 class="text-xl font-bold text-gray-800 mb-4 mr-3">
-        Custom filter (<span class="text-sm italic text-red-500">required*</span>)
+        Custom filter (<span class="text-sm italic text-danger">required*</span>)
         :
       </h1>
       <label class="mr-4">
@@ -72,7 +73,7 @@
   
     <div *ngIf="filterType === 'custom'" class="mb-4">
       <h1 class="text-xl font-bold text-gray-800 mb-4 mr-3">
-        Custom filter (<span class="text-sm italic text-red-500">required*</span>)
+        Custom filter (<span class="text-sm italic text-danger">required*</span>)
         :
       </h1>
       <div class="flex mb-2">
@@ -81,6 +82,7 @@
           type="date"
           id="startDate"
           name="startDate"
+          class="text-primary-black"
           [(ngModel)]="startDate"
         />
       </div>
@@ -90,6 +92,7 @@
           type="date"
           id="endDate"
           name="endDate"
+          class="text-primary-black"
           [(ngModel)]="endDate"
           [disabled]="!startDate"
         />
@@ -98,7 +101,7 @@
   
     <div class="flex mb-4">
       <h1 class="text-xl font-bold text-gray-800 mb-4 mr-3">
-        Sorting order (<span class="text-sm italic text-red-500">required*</span>)
+        Sorting order (<span class="text-sm italic text-danger">required*</span>)
         :
       </h1>
       <label class="mr-4 mt-1">
@@ -112,7 +115,7 @@
     </div>
   
     <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+      class="bg-safe text-white font-bold py-2 px-4 rounded mb-4 cursor-pointer"
       [disabled]="!applyButtonDisabled()"
       (click)="applyFilters()"
     >
@@ -120,37 +123,37 @@
     </button>
   
     <table
-      class="table-auto w-full bg-white shadow-md rounded-lg overflow-hidden"
+      class="table-auto w-full bg-primary shadow-md rounded-lg overflow-hidden"
     >
       <thead class="bg-gray-100">
         <tr>
           <th
-            class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+            class="px-6 py-3 text-left text-sm font-medium text-primary-black uppercase tracking-wider"
           >
             Date
           </th>
           <th
-            class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+            class="px-6 py-3 text-left text-sm font-medium text-primary-black uppercase tracking-wider"
           >
             Time
           </th>
           <th
-            class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+            class="px-6 py-3 text-left text-sm font-medium text-primary-black0 uppercase tracking-wider"
           >
             Description
           </th>
           <th
-            class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+            class="px-6 py-3 text-left text-sm font-medium text-primary-black uppercase tracking-wider"
           >
             Category
           </th>
           <th
-            class="px-6 py-3 text-right text-sm font-medium text-gray-500 uppercase tracking-wider"
+            class="px-6 py-3 text-right text-sm font-medium text-primary-black uppercase tracking-wider"
           >
             Amount
           </th>
           <th
-            class="pl-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+            class="pl-6 py-3 text-left text-sm font-medium text-primary-black uppercase tracking-wider"
           >
             Action
           </th>
@@ -158,16 +161,16 @@
       </thead>
       <tbody *ngFor="let transaction of transactions; let i = index">
         <tr class="bg-gray-50">
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-black">
             {{ transaction.transactionDate }}
           </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-black">
             {{ formatTime(transaction.transactionTime) }}
           </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-black">
             {{ transaction.description }}
           </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-black">
             {{ transaction.category }}
           </td>
           <td
@@ -182,7 +185,7 @@
           <td class="pl-6 py-4 whitespace-nowrap text-sm text-left font-bold">
             <button
               (click)="updateClicked[i] = !updateClicked[i]"
-              class="mr-8 text-blue-500 hover:text-blue-700"
+              class="mr-8 text-info hover:text-blue-700"
               title="Update"
               id="updateButton"
             >
@@ -190,7 +193,7 @@
             </button>
             <button
               (click)="deleteTransaction(transaction.id)"
-              class="text-red-500 hover:text-red-700"
+              class="text-danger hover:text-red-700"
               title="Delete"
             >
               <i class="fas fa-trash"></i>
