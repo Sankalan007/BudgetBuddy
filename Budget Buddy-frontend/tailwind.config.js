@@ -5,6 +5,7 @@ module.exports = {
   theme: {
     colors: {
       safe:"#1fa349",
+      "safe-deep": "#1f9c3c",
       info: "#1c89d6",
       warning: "#dbbd14",
       danger: "#c23013",
