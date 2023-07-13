@@ -53,6 +53,8 @@ public class TransactionController {
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
+
+
     @Transactional
     @GetMapping("/filter/current-day/{date}/{userId}")
     public ResponseEntity<List<Transaction>> getTransactionsOfCurrentDay(@PathVariable("userId") Long userId, @PathVariable("date") String date ){
@@ -97,7 +99,7 @@ public class TransactionController {
         SpendCategory spendCategory = transactionService.getAmountByCategory(userId, date);
         return new ResponseEntity<>(spendCategory, HttpStatus.OK);
     }
-
+    
 
     @PostMapping("/add")
     public ResponseEntity<Transaction> addNewTransaction(@RequestBody Transaction transaction){
