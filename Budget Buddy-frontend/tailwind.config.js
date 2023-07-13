@@ -4,6 +4,26 @@ module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
     colors: {
+      // solid colors
+      red:"#FF0000",
+      green:"#008000",
+      blue:"#0000FF",
+      yellow:"#FFFF00",
+      orange:"#ffa500",
+      navy:"#000080",
+      teal:"#008080",
+      aqua:"#00FFFF",
+      lime:"#00FF00",
+      purple:"#800080",
+      fuchsia:"#FF00FF",
+      maroon:"#800000",
+      olive:"#808000",
+      white:"#FFFFFF",
+      black:"#000000",
+      gray:"#808080",
+      silver:"#C0C0C0",
+
+      // colors by importance
       safe:"#1fa349",
       "safe-deep": "#1f9c3c",
       info: "#1c89d6",

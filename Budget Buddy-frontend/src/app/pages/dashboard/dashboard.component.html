@@ -1,22 +1,141 @@
-<div class="">
-    <div class="grid grid-cols-3 py-8 px-16 space-x-6 space-y-6">
-        <div class="rounded-md bg-info shadow-lg p-6">
-            A
-        </div>
-        <div class="rounded-md bg-info shadow-lg p-6">
-            A
-        </div>
-        <div class="rounded-md bg-info shadow-lg p-6">
-            A
-        </div>
-        <div class="rounded-md bg-info shadow-lg p-6">
-            A
-        </div>
-        <div class="rounded-md bg-info shadow-lg p-6">
-            A
-        </div>
-        <div class="rounded-md bg-info shadow-lg p-6">
-            A
-        </div>
+<div class="container mx-auto px-4 py-4 bg-gray-900">
+    <h1 class="text-4xl font-bold text-white mb-8">Dashboard</h1>
+  
+    <div class="grid grid-cols-3 gap-6 mb-8">
+      <div
+        class="bg-safe rounded-lg p-8 flex flex-col items-center justify-center text-white"
+      >
+        <h2 class="text-lg font-bold mb-4">Daily Earn</h2>
+        <p class="text-3xl font-bold">
+          {{ presetTransactions.dailyEarn | currency : "INR" }}
+        </p>
+      </div>
+  
+      <div
+        class="bg-safe rounded-lg p-8 flex flex-col items-center justify-center text-white"
+      >
+        <h2 class="text-lg font-bold mb-4">Monthly Earn</h2>
+        <p class="text-3xl font-bold">
+          {{ presetTransactions.monthlyEarn | currency : "INR" }}
+        </p>
+      </div>
+  
+      <div
+        class="bg-safe rounded-lg p-8 flex flex-col items-center justify-center text-white"
+      >
+        <h2 class="text-lg font-bold mb-4">Annual Earn</h2>
+        <p class="text-3xl font-bold">
+          {{ presetTransactions.annualEarn | currency : "INR" }}
+        </p>
+      </div>
     </div>
-</div>
+    <div class="grid grid-cols-3 gap-6 mb-8">
+      <div
+        class="bg-orange rounded-lg p-8 flex flex-col items-center justify-center text-white"
+      >
+        <h2 class="text-lg font-bold mb-4">Daily Spend</h2>
+        <p class="text-3xl font-bold">
+          {{ presetTransactions.dailySpend | currency : "INR" }}
+        </p>
+      </div>
+  
+      <div
+        class="bg-orange rounded-lg p-8 flex flex-col items-center justify-center text-white"
+      >
+        <h2 class="text-lg font-bold mb-4">Monthly Spend</h2>
+        <p class="text-3xl font-bold">
+          {{ presetTransactions.monthlySpend | currency : "INR" }}
+        </p>
+      </div>
+  
+      <div
+        class="bg-orange rounded-lg p-8 flex flex-col items-center justify-center text-white"
+      >
+        <h2 class="text-lg font-bold mb-4">Annual Spend</h2>
+        <p class="text-3xl font-bold">
+          {{ presetTransactions.annualSpend | currency : "INR" }}
+        </p>
+      </div>
+    </div>
+    <div class="flex flex-wrap justify-center mb-8">
+      <div
+        class="w-full md:w-[47%] bg-gray-800 rounded-lg p-8 mb-4 md:mr-4 flex flex-col items-center justify-center"
+      >
+        <h2 class="text-xl font-bold text-white mb-4">
+          This month's expenses by Category
+        </h2>
+        <canvas id="pie-chart" class="w-full"></canvas>
+      </div>
+    </div>
+    <div class="flex flex-col mb-5">
+      <div class="text-white text-2xl font-bold mb-3">Transaction averages:</div>
+      <div class="flex flex-row justify-center">
+        <div
+          class="bg-warning rounded-lg p-8 flex flex-col items-center justify-center text-white mx-28"
+        >
+          <h2 class="text-lg font-bold mb-4">Last 7 days</h2>
+          <p class="text-3xl font-bold">
+            {{ presetAverages.sevenDaysAverage | currency : "INR" }}
+          </p>
+        </div>
+        <div
+          class="bg-warning rounded-lg p-8 flex flex-col items-center justify-center text-white mx-28"
+        >
+          <h2 class="text-lg font-bold mb-4">This month</h2>
+          <p class="text-3xl font-bold">
+            {{ presetAverages.monthlyAverage | currency : "INR" }}
+          </p>
+        </div>
+        <div
+          class="bg-warning rounded-lg p-8 flex flex-col items-center justify-center text-white mx-28"
+        >
+          <h2 class="text-lg font-bold mb-4">This year</h2>
+          <p class="text-3xl font-bold">
+            {{ presetAverages.annualAverage | currency : "INR" }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-white mb-4">Recent Transactions</h2>
+      <table class="table-auto bg-white dark:bg-silver rounded-lg w-full mb-4">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 text-left text-black dark:text-white">Date</th>
+            <th class="px-4 py-2 text-left text-black dark:text-white">Time</th>
+            <th class="px-4 py-2 text-left text-black dark:text-white">Description</th>
+            <th class="px-4 py-2 text-left text-black dark:text-white">Category</th>
+            <th class="px-4 py-2 text-right text-black dark:text-white">Amount</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let transaction of transactions">
+          <tr>
+            <td class="px-4 py-2 text-gray dark:text-white">
+              {{ transaction.transactionDate }}
+            </td>
+            <td class="px-4 py-2 text-gray dark:text-white">
+              {{ formatTime(transaction.transactionTime) }}
+            </td>
+            <td class="px-4 py-2 text-gray dark:text-white">{{ transaction.description }}</td>
+            <td class="px-4 py-2 text-gray dark:text-white">{{ transaction.category }}</td>
+            <td
+              [ngClass]="{
+                'text-safe': transaction.type === 'earn',
+                'text-danger': transaction.type === 'spend'
+              }"
+              class="px-4 py-2 text-right"
+            >
+              {{ transaction.amount | currency : "INR" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button
+        routerLink="/transactions"
+        class="bg-blue-500 rounded-lg text-white text-xl font-bold p-4"
+      >
+        Show More
+      </button>
+    </div>
+  </div>
+  
