@@ -1,4 +1,10 @@
-<div class="px-4 mx-auto my-8">
+<div class="px-4 py-4 bg-[#081824] w-full min-h-[calc(100vh-4rem)]"
+style="
+    background-image: url('../../../assets/NewTransactionBG.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  ">
     <h1 class="text-3xl font-bold mb-10">Create New Transaction</h1>
     <form
       [formGroup]="transactionForm"
@@ -193,7 +199,7 @@
         <textarea
           type="text"
           id="description"
-          class="w-full px-3 py-2 border text-primary-black dark:text-primary rounded-lg"
+          class="w-full px-3 py-2 border text-black dark:text-primary rounded-lg"
           formControlName="description"
         ></textarea>
       </div>
@@ -206,7 +212,7 @@
           <input
             type="number"
             id="amount"
-            class="w-full px-3 py-2 border text-primary-black dark:text-primary rounded-lg"
+            class="w-full px-3 py-2 border text-black dark:text-primary rounded-lg"
             formControlName="amount"
           />
         </div>
@@ -217,7 +223,7 @@
           <input
             id="transactionDate"
             type="date"
-            class="w-full px-3 py-2 border text-primary-black dark:text-primary rounded-lg"
+            class="w-full px-3 py-2 border text-black dark:text-primary rounded-lg"
             formControlName="transactionDate"
           />
         </div>
@@ -228,7 +234,7 @@
           <input
             id="transactionTime"
             type="time"
-            class="w-full px-3 py-2 border text-primary-black dark:text-primary rounded-lg"
+            class="w-full px-3 py-2 border text-black dark:text-primary rounded-lg"
             formControlName="transactionTime"
           />
         </div>

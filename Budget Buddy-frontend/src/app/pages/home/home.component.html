@@ -1,88 +1,96 @@
 <div
-  class="flex flex-col justify-center items-center min-h-screen max-w-[95vw] bg-[#4fd6d4] dark:bg-primary-black"
+  class="flex flex-col justify-center items-center min-h-screen w-full bg-[#081824] dark:bg-primary-black"
 >
-<section
-class="relative flex items-center justify-center h-screen bg-gray-900 w-full "
->
-<img
-  src="https://source.unsplash.com/random/1600x900/?crypto,stock,economy"
-  alt="Money"
-  class="absolute inset-0 object-cover w-full h-full"
-/>
-<div class="absolute inset-0 bg-gray-900 opacity-75"></div>
-<div class="z-10 px-8 text-center">
-  <h1 class="text-5xl font-bold text-white tracking-wide font-outline-1">
-    Welcome to Budget Buddy
-  </h1>
-  <p class="mt-4 text-3xl font-medium text-gray-300 font-outline-1">
-    Your Personal Expense Tracker
-  </p>
-  <a
-    href="#features"
-    class="inline-block px-8 py-3 mt-8 font-medium text-white bg-primary-black rounded-md hover:bg-safe border-4 border-safe hover:border-primary-black"
-    >Get started</a
+  <section
+    class="relative flex items-center justify-center h-screen bg-gray-900 w-full"
   >
-</div>
-</section>
-<div id="features" class="flex flex-col items-center py-16 bg-gray-900"
-style="
-    background-image: url('../../../assets/FeaturesBG2.jpg');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-  ">
-  <h2 class="text-5xl font-bold text-white tracking-wide mb-12 animate-pulse">
-    Features
-  </h2>
-  <div class="flex flex-col md:flex-row justify-center items-center gap-8 px-4">
-    <div
-      class="w-full md:w-1/3 flex flex-col items-center justify-center rounded-lg bg-safe p-12 hover:bg-info transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
-    >
-      <i class="text-6xl text-white fas fa-chart-pie mb-8 animate-bounce"></i>
-      <h3 class="text-4xl font-bold text-white tracking-wide mb-8">
-        Analytics
-      </h3>
-      <p class="text-lg text-gray-400 tracking-wide text-center">
-        View your spending history and analyze your expenses with easy-to-read
-        charts and graphs.
+    <img
+      src="https://source.unsplash.com/random/1600x900/?crypto,stock,economy"
+      alt="Money"
+      class="absolute inset-0 object-cover w-full h-full"
+    />
+    <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
+    <div class="z-10 px-8 text-center">
+      <h1 class="text-5xl font-bold text-white tracking-wide font-outline-1">
+        Welcome to Budget Buddy
+      </h1>
+      <p class="mt-4 text-3xl font-medium text-gray-300 font-outline-1">
+        Your Personal Expense Tracker
       </p>
+      <a
+        href="#features"
+        class="inline-block px-8 py-3 mt-8 font-medium text-white bg-primary-black rounded-md hover:bg-safe border-4 border-safe hover:border-primary-black"
+        >Get started</a
+      >
     </div>
+  </section>
+  <div
+    id="features"
+    class="flex flex-col items-center py-16 bg-gray-900 min-h-screen"
+    style="
+      background-image: url('../../../assets/FeaturesBG2.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+    "
+  >
+    <h2 class="text-5xl font-bold text-white tracking-wide mb-12 animate-pulse">
+      Features
+    </h2>
     <div
-      class="w-full md:w-1/3 flex flex-col items-center justify-center rounded-lg bg-safe p-12 hover:bg-info transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+      class="flex flex-col md:flex-row justify-center items-center gap-8 px-4"
     >
-      <i class="text-6xl text-white fas fa-wallet mb-8 animate-bounce"></i>
-      <h3 class="text-4xl font-bold text-white tracking-wide mb-8">
-        Budgeting
-      </h3>
-      <p class="text-lg text-gray-400 tracking-wide text-center">
-        Set your monthly budget and receive notifications when you're getting
-        close to your limit.
-      </p>
-    </div>
-    <div
-      class="w-full md:w-1/3 flex flex-col items-center justify-center rounded-lg bg-safe p-12 hover:bg-info transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
-    >
-      <i class="text-6xl text-white fas fa-sync-alt mb-8 animate-bounce"></i>
-      <h3 class="text-4xl font-bold text-white tracking-wide mb-8">Syncing</h3>
-      <p class="text-lg text-gray-400 tracking-wide text-center">
-        Sync your data across multiple devices and platforms, so you can always
-        stay up to date.
-      </p>
+      <div
+        class="features w-full md:w-1/3 flex flex-col items-center justify-center rounded-lg backdrop-blur-sm border border-white shadow-lg p-12 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+      >
+        <i class="text-6xl text-white fas fa-chart-pie mb-8 animate-bounce"></i>
+        <h3 class="text-4xl font-bold text-white tracking-wide mb-8">
+          Analytics
+        </h3>
+        <p class="text-lg text-gray-400 tracking-wide text-center">
+          View your spending history and analyze your expenses with easy-to-read
+          charts and graphs.
+        </p>
+      </div>
+      <div
+        class="features w-full md:w-1/3 flex flex-col items-center justify-center rounded-lg backdrop-blur-sm border border-white shadow-lg p-12 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+      >
+        <i class="text-6xl text-white fas fa-wallet mb-8 animate-bounce"></i>
+        <h3 class="text-4xl font-bold text-white tracking-wide mb-8">
+          Budgeting
+        </h3>
+        <p class="text-lg text-gray-400 tracking-wide text-center">
+          Set your monthly budget and receive notifications when you're getting
+          close to your limit.
+        </p>
+      </div>
+      <div
+        class="features w-full md:w-1/3 flex flex-col items-center justify-center rounded-lg backdrop-blur-sm border border-white p-12 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+      >
+        <i class="text-6xl text-white fas fa-sync-alt mb-8 animate-bounce"></i>
+        <h3 class="text-4xl font-bold text-white tracking-wide mb-8">Goals</h3>
+        <p class="text-lg text-gray-400 tracking-wide text-center">
+          Set your daily, monthly or annual goals and track how far you have
+          progressed.
+        </p>
+      </div>
     </div>
   </div>
-</div>
-<div class="flex flex-col items-center py-16 bg-gray-800">
-  <h2 class="text-3xl font-bold text-white tracking-wide mb-8">Get Started</h2>
-  <div class="flex space-x-6">
-    <a
-    routerLink="/register"
-    class="rounded-full py-3 px-6 bg-safe hover:bg-info text-white text-lg tracking-wide transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
-    >Register now</a
-  >
-  <a
-    routerLink="/login"
-    class="rounded-full py-3 px-6 bg-safe hover:bg-info text-white text-lg tracking-wide transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
-    >Login</a
-  >
+  <div class="flex flex-col items-center py-16 bg-gray-800">
+    <h2 class="text-3xl font-bold text-white tracking-wide mb-8">
+      Get Started
+    </h2>
+    <div class="flex space-x-6">
+      <a
+        routerLink="/register"
+        class="rounded-full py-3 px-6 bg-safe hover:bg-info text-white text-lg tracking-wide transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+        >Register now</a
+      >
+      <a
+        routerLink="/login"
+        class="rounded-full py-3 px-6 bg-safe hover:bg-info text-white text-lg tracking-wide transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+        >Login</a
+      >
+    </div>
   </div>
 </div>

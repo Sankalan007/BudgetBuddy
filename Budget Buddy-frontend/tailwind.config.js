@@ -45,6 +45,7 @@ module.exports = {
       "dark-active-tab": "#3f63c6",
 
       // miscellanous colors
+      "primary-bg": "#081824",
       "logo-green-500": "#1cb33a",
       "avatar-border": "#ffffff",
     },
