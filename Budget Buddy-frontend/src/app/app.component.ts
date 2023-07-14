@@ -20,7 +20,7 @@ export class AppComponent implements OnInit{
     this.lightTheme = lightTheme;
   }
   isAuthRoute() {
-    console.log(this.router.url === '/login' || this.router.url === '/register');
+    // console.log(this.router.url === '/login' || this.router.url === '/register');
     return this.router.url === '/login' || this.router.url === '/register';
   }
   isAuthenticated(){

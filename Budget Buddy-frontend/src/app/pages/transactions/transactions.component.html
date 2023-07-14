@@ -225,31 +225,31 @@ style="
               value="{{ transaction.id }}"
             />
             <div class="mb-4">
-              <label class="block text-gray-700 font-bold mb-2" for="type">
+              <label class="block text-black font-bold mb-2" for="type">
                 Transaction Type
               </label>
               <div class="flex items-center">
                 <div class="mr-4">
                   <input
                     type="radio"
-                    class="form-radio h-4 w-4 text-indigo-600"
+                    class="form-radio h-4 w-4 text-safe"
                     name="type"
                     formControlName="type"
                     value="earn"
                     id="earn"
                   />
-                  <label for="earn" class="ml-2 text-gray-700">Earn</label>
+                  <label for="earn" class="ml-2 text-safe">Earn</label>
                 </div>
                 <div>
                   <input
                     type="radio"
-                    class="form-radio h-4 w-4 text-red-600"
+                    class="form-radio h-4 w-4 text-danger"
                     name="type"
                     formControlName="type"
                     value="spend"
                     id="spend"
                   />
-                  <label for="spend" class="ml-2 text-gray-700">Spend</label>
+                  <label for="spend" class="ml-2 text-red">Spend</label>
                 </div>
               </div>
             </div>
@@ -257,7 +257,7 @@ style="
               *ngIf="updateTransactionForm.get('type')?.value === 'spend'"
             >
               <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2" for="category">
+                <label class="block text-black font-bold mb-2" for="category">
                   Category
                 </label>
                 <div class="flex items-center">
@@ -270,7 +270,7 @@ style="
                       value="Food"
                       id="food"
                     />
-                    <label for="food" class="ml-2 text-gray-700">Food</label>
+                    <label for="food" class="ml-2 text-black">Food</label>
                   </div>
                   <div class="mr-4">
                     <input
@@ -281,7 +281,7 @@ style="
                       value="Entertainment"
                       id="entertainment"
                     />
-                    <label for="entertainment" class="ml-2 text-gray-700"
+                    <label for="entertainment" class="ml-2 text-black"
                       >Entertainment</label
                     >
                   </div>
@@ -294,7 +294,7 @@ style="
                       value="Transport"
                       id="transport"
                     />
-                    <label for="transport" class="ml-2 text-gray-700"
+                    <label for="transport" class="ml-2 text-black"
                       >Transport</label
                     >
                   </div>
@@ -307,7 +307,7 @@ style="
                       value="Shopping"
                       id="shopping"
                     />
-                    <label for="shopping" class="ml-2 text-gray-700"
+                    <label for="shopping" class="ml-2 text-black"
                       >Shopping</label
                     >
                   </div>
@@ -320,7 +320,7 @@ style="
                       value="Utilities"
                       id="utilities"
                     />
-                    <label for="utilities" class="ml-2 text-gray-700"
+                    <label for="utilities" class="ml-2 text-black"
                       >Utilities</label
                     >
                   </div>
@@ -333,7 +333,7 @@ style="
                       value="Housing"
                       id="housing"
                     />
-                    <label for="housing" class="ml-2 text-gray-700"
+                    <label for="housing" class="ml-2 text-black"
                       >Housing</label
                     >
                   </div>
@@ -346,7 +346,7 @@ style="
                       value="Other Spendings"
                       id="other"
                     />
-                    <label for="other" class="ml-2 text-gray-700">Other</label>
+                    <label for="other" class="ml-2 text-black">Other</label>
                   </div>
                 </div>
               </div>
@@ -368,7 +368,7 @@ style="
                       value="Salary"
                       id="salary"
                     />
-                    <label for="salary" class="ml-2 text-gray-700">Salary</label>
+                    <label for="salary" class="ml-2 text-black">Salary</label>
                   </div>
                   <div>
                     <input
@@ -379,7 +379,7 @@ style="
                       value="Business"
                       id="business"
                     />
-                    <label for="business" class="ml-2 text-gray-700"
+                    <label for="business" class="ml-2 text-black"
                       >Business Income</label
                     >
                   </div>
@@ -392,7 +392,7 @@ style="
                       value="Rental"
                       id="salary"
                     />
-                    <label for="salary" class="ml-2 text-gray-700"
+                    <label for="salary" class="ml-2 text-black"
                       >Rental Income</label
                     >
                   </div>
@@ -405,7 +405,7 @@ style="
                       value="Investment"
                       id="investment"
                     />
-                    <label for="investment" class="ml-2 text-gray-700"
+                    <label for="investment" class="ml-2 text-black"
                       >Investment</label
                     >
                   </div>
@@ -418,7 +418,7 @@ style="
                       value="Gifts/Inheritence"
                       id="gifts"
                     />
-                    <label for="gifts" class="ml-2 text-gray-700"
+                    <label for="gifts" class="ml-2 text-black"
                       >Gifts/Inheritence</label
                     >
                   </div>
@@ -431,7 +431,7 @@ style="
                       value="Freelance"
                       id="freelance"
                     />
-                    <label for="freelance" class="ml-2 text-gray-700"
+                    <label for="freelance" class="ml-2 text-black"
                       >Freelance</label
                     >
                   </div>
@@ -444,7 +444,7 @@ style="
                       value="Other Incomes"
                       id="otherIncomes"
                     />
-                    <label for="otherIncomes" class="ml-2 text-gray-700"
+                    <label for="otherIncomes" class="ml-2 text-black"
                       >Other Income</label
                     >
                   </div>
@@ -453,7 +453,7 @@ style="
             </ng-container>
   
             <div class="mb-4">
-              <label class="block text-gray-700 font-bold mb-2" for="description">
+              <label class="block text-black font-bold mb-2" for="description">
                 Description
               </label>
               <textarea
@@ -464,8 +464,8 @@ style="
               ></textarea>
             </div>
   
-            <div class="mb-4">
-              <label for="amount"> Amount </label>
+            <div class="mb-4 text-black font-bold">
+              <label for="amount" class="mb-8"> Amount </label>
               <input
                 type="number"
                 class="form-input w-full outline-dotted text-black"
