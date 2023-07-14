@@ -5,6 +5,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { Chart } from 'chart.js';
 
 import PresetAverages from 'src/app/model/PresetAverages';
 import PresetTransactions from 'src/app/model/PresetTransactions';
@@ -14,7 +15,7 @@ import User from 'src/app/model/User';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
-import { Chart } from 'chart.js';
+
 
 @Component({
   selector: 'app-dashboard',
