@@ -55,7 +55,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.RenderChart();
+    this.RenderCategoryExpenseChart();
+    this.RenderDayOfMonthChart();
   }
 
   generateRandomColors(numColors: number) {
@@ -69,13 +70,37 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return colors;
   }
 
-  RenderChart() {
+  RenderCategoryExpenseChart() {
     const ctx = document.getElementById('PieChart');
     const categoryLabels = Object.keys(this.categories);
     const categoriesData = Object.values(this.categories);
     // const data = categoriesArray.slice(1);
 
-    const myChart = new Chart('pie-chart', {
+    const myChart = new Chart('categories-chart', {
+      type: 'doughnut',
+      data: {
+        labels: categoryLabels,
+        datasets: [
+          {
+            label: 'monthly spend categories',
+            data: categoriesData,
+            backgroundColor: this.generateRandomColors(categoriesData.length),
+            borderColor: ['rgba(255, 99, 132, 1)'],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {},
+    });
+  }
+
+  RenderDayOfMonthChart() {
+    const ctx = document.getElementById('PieChart');
+    const categoryLabels = Object.keys(this.categories);
+    const categoriesData = Object.values(this.categories);
+    // const data = categoriesArray.slice(1);
+
+    const myChart = new Chart('dayOfMonth-chart', {
       type: 'doughnut',
       data: {
         labels: categoryLabels,

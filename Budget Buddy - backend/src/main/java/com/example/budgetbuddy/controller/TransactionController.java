@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -99,7 +100,42 @@ public class TransactionController {
         SpendCategory spendCategory = transactionService.getAmountByCategory(userId, date);
         return new ResponseEntity<>(spendCategory, HttpStatus.OK);
     }
-    
+
+    @GetMapping("/dayOfMonthSpending/{userId}/{date}")
+    public ResponseEntity<List<Double>> getDayOfMonthSpending(@PathVariable("userId") Long userId, @PathVariable("date") String date){
+        List<Double> dayOfMonthSpending = transactionService.getDayOfMonthSpending(userId, date);
+        return new ResponseEntity<>(dayOfMonthSpending, HttpStatus.OK);
+    }
+
+    @GetMapping("/monthOfYearSpending/{userId}/{date}")
+    public ResponseEntity<List<Double>> getMonthOfYearSpending(@PathVariable("userId") Long userId, @PathVariable("date") String date){
+        List<Double> monthOfYearSpending = transactionService.getMonthOfYearSpending(userId, date);
+        return new ResponseEntity<>(monthOfYearSpending, HttpStatus.OK);
+    }
+
+    @GetMapping("/dayOfLastSevenDays/{userId}/{date}")
+    public ResponseEntity<List<Double>> getDayOfLastSevenDaysSpending(@PathVariable("userId") Long userId, @PathVariable("date") String date){
+        List<Double> dayOfLastSevenDays = transactionService.getDayOfLastSevenDays(userId, date);
+        return new ResponseEntity<>(dayOfLastSevenDays, HttpStatus.OK);
+    }
+
+    @GetMapping("/dayOfMonthEarning/{userId}/{date}")
+    public ResponseEntity<List<Double>> getDayOfMonthEarning(@PathVariable("userId") Long userId, @PathVariable("date") String date){
+        List<Double> dayOfMonthEarning = transactionService.getDayOfMonthEarning(userId, date);
+        return new ResponseEntity<>(dayOfMonthEarning, HttpStatus.OK);
+    }
+
+    @GetMapping("/monthOfYearEarning/{userId}/{date}")
+    public ResponseEntity<List<Double>> getMonthOfYearEarning(@PathVariable("userId") Long userId, @PathVariable("date") String date){
+        List<Double> monthOfYearSpending = transactionService.getMonthOfYearEarning(userId, date);
+        return new ResponseEntity<>(monthOfYearSpending, HttpStatus.OK);
+    }
+
+    @GetMapping("/dayOfLastSevenDaysEarn/{userId}/{date}")
+    public ResponseEntity<List<Double>> getDayOfLastSevenDaysEarning(@PathVariable("userId") Long userId, @PathVariable("date") String date){
+        List<Double> dayOfLastSevenDays = transactionService.getDayOfLastSevenDaysEarning(userId, date);
+        return new ResponseEntity<>(dayOfLastSevenDays, HttpStatus.OK);
+    }
 
     @PostMapping("/add")
     public ResponseEntity<Transaction> addNewTransaction(@RequestBody Transaction transaction){
