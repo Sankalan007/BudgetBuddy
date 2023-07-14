@@ -4,12 +4,14 @@ import com.example.budgetbuddy.model.PresetAverages;
 import com.example.budgetbuddy.model.PresetTransactions;
 import com.example.budgetbuddy.model.SpendCategory;
 import com.example.budgetbuddy.model.Transaction;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface TransactionRepo extends JpaRepository<Transaction, Long> {
@@ -163,6 +165,102 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
 
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Other Spendings' AND transactionDate BETWEEN ?2 AND ?3")
     Double otherAmount(Long userId, String from, String to);
+
+    default List<Double> getDayOfMonthSpending(Long userId, String Date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Double> dayOfMonthSpending = new ArrayList<>();
+        LocalDate date = LocalDate.parse(Date, formatter);
+        LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
+        for(int i = 1; i <= date.getDayOfMonth(); ++i){
+            LocalDate specificDate = LocalDate.of(date.getYear(), date.getMonth(), i);
+            Double spendOnDay = spendBetweenDates(userId, specificDate.toString(), specificDate.toString());
+            dayOfMonthSpending.add(spendOnDay);
+        }
+        return dayOfMonthSpending;
+    }
+
+    default List<Double> getMonthOfYearSpending(Long userId, String Date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Double> monthOfYearSpending = new ArrayList<>();
+        LocalDate date = LocalDate.parse(Date, formatter);
+        LocalDate yearStartDate = LocalDate.of(date.getYear(), 1, 1);
+        for(int i = 1; i <= date.getMonthValue(); ++i){
+            LocalDate specificMonthStartDate = LocalDate.of(date.getYear(), i, 1);
+            LocalDate specificMonthEndDate = LocalDate.of(date.getYear(), i, specificMonthStartDate.lengthOfMonth());
+            Double spendOnMonth = spendBetweenDates(userId, specificMonthStartDate.toString(), specificMonthEndDate.toString());
+            monthOfYearSpending.add(spendOnMonth);
+        }
+        return monthOfYearSpending;
+    }
+
+    default List<Double> getDayOfLastSevenDaysSpending(Long userId, String Date){
+        List<Double> dayOfLastSevenDays = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd"));
+        LocalDate date = LocalDate.parse(Date, formatter);
+        LocalDate last7DaysStartDate = date.minusDays(6);
+
+        int toIncrement = 7;
+
+        while(toIncrement > 0){
+            LocalDate specificDate = last7DaysStartDate;
+            Double spendOnDay = spendBetweenDates(userId, specificDate.toString(), specificDate.toString());
+            dayOfLastSevenDays.add(spendOnDay);
+            last7DaysStartDate = last7DaysStartDate.plusDays(1);
+            toIncrement--;
+        }
+
+        return dayOfLastSevenDays;
+    }
+
+    default List<Double> getDayOfMonthEarning(Long userId, String Date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Double> dayOfMonthEarning = new ArrayList<>();
+        LocalDate date = LocalDate.parse(Date, formatter);
+        LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
+        for(int i = 1; i <= date.getDayOfMonth(); ++i){
+            LocalDate specificDate = LocalDate.of(date.getYear(), date.getMonth(), i);
+            Double earnOnDay = earnBetweenDates(userId, specificDate.toString(), specificDate.toString());
+            dayOfMonthEarning.add(earnOnDay);
+        }
+        return dayOfMonthEarning;
+    }
+
+    default List<Double> getMonthOfYearEarning(Long userId, String Date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Double> monthOfYearEarning = new ArrayList<>();
+        LocalDate date = LocalDate.parse(Date, formatter);
+        LocalDate yearStartDate = LocalDate.of(date.getYear(), 1, 1);
+        for(int i = 1; i <= date.getMonthValue(); ++i){
+            LocalDate specificMonthStartDate = LocalDate.of(date.getYear(), i, 1);
+            LocalDate specificMonthEndDate = LocalDate.of(date.getYear(), i, specificMonthStartDate.lengthOfMonth());
+            Double earnOnMonth = earnBetweenDates(userId, specificMonthStartDate.toString(), specificMonthEndDate.toString());
+            monthOfYearEarning.add(earnOnMonth);
+        }
+        return monthOfYearEarning;
+    }
+
+    default List<Double> getDayOfLastSevenDaysEarning(Long userId, String Date){
+        List<Double> dayOfLastSevenDays = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd"));
+        LocalDate date = LocalDate.parse(Date, formatter);
+        LocalDate last7DaysStartDate = date.minusDays(6);
+
+        int toIncrement = 7;
+
+        while(toIncrement > 0){
+            LocalDate specificDate = last7DaysStartDate;
+            Double earnOnDay = earnBetweenDates(userId, specificDate.toString(), specificDate.toString());
+            dayOfLastSevenDays.add(earnOnDay);
+            last7DaysStartDate = last7DaysStartDate.plusDays(1);
+            toIncrement--;
+        }
+
+        return dayOfLastSevenDays;
+    }
+
+
 
     default SpendCategory findMonthlySpendCategorySumByUserId(Long userId, String Date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

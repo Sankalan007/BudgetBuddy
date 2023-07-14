@@ -135,4 +135,8 @@ export class TransactionService {
       `${this.baseUrl}/filter/current-year-desc/${date}/${userId}`
     );
   }
+
+  getDayOfMonthSpending(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/dayOfMonthSpending/${userId}/${date}`);
+  }
 }
