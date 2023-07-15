@@ -139,4 +139,19 @@ export class TransactionService {
   getDayOfMonthSpending(userId: number, date: String): Observable<number[]>{
     return this.http.get<number[]>(`${this.baseUrl}/dayOfMonthSpending/${userId}/${date}`);
   }
+  getMonthOfYearSpending(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/monthOfYearSpending/${userId}/${date}`);
+  }
+  getDayOfLastSevenDaysSpending(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/dayOfLastSevenDays/${userId}/${date}`);
+  }
+  getDayOfMonthEarning(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/dayOfMonthEarning/${userId}/${date}`);
+  }
+  getMonthOfYearEarning(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/monthOfYearEarning/${userId}/${date}`);
+  }
+  getDayOfLastSevenDaysEarning(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/dayOfLastSevenDaysEarn/${userId}/${date}`);
+  }
 }
