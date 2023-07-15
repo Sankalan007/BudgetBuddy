@@ -1,10 +1,10 @@
 export default interface SpendCategories {
-    food: number;
-    transport: number;
-    utilities: number;
-    shopping: number;
-    entertainment: number;
-    housing: number;
-    other: number;
+    food: number | null;
+    transport: number | null;
+    utilities: number | null;
+    shopping: number | null;
+    entertainment: number | null;
+    housing: number | null;
+    other: number | null;
 }
   
