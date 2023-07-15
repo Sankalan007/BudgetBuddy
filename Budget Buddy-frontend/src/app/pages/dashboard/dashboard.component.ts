@@ -14,7 +14,7 @@ import User from 'src/app/model/User';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
-import { Chart } from 'chart.js';
+// import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,20 +22,22 @@ import { Chart } from 'chart.js';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
+  dayOfMonthData: any;
+  dayOfMonthOptions: any;
+  dayOfMonthSpending!: number[];
+  dayOfMonthSpendingLabels!: number[];
+
+  categoriesData: any;
+  categoriesOptions: any;
+  categories: any;
+  categoriesLabels!: any;
+
   presetTransactions!: PresetTransactions;
   presetAverages!: PresetAverages;
   userDetails!: any;
   userDetailsSet = false;
   transactions!: Transaction[];
-  categories: SpendCategories = {
-    food: 0,
-    transport: 0,
-    entertainment: 0,
-    shopping: 0,
-    utilities: 0,
-    housing: 0,
-    other: 0,
-  };
+  
   constructor(
     private transactionService: TransactionService,
     private authService: AuthService,
@@ -43,7 +45,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
-    // console.log(localStorage.getItem('token'));
     this.sharedDataService.userDetailsObservable.subscribe((res) => {
       this.userDetails = res;
     });
@@ -55,8 +56,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.RenderCategoryExpenseChart();
-    this.RenderDayOfMonthChart();
+    if(this.categories){
+      this.renderCategoriesChart();
+    }
   }
 
   generateRandomColors(numColors: number) {
@@ -68,54 +70,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       colors.push(color);
     }
     return colors;
-  }
-
-  RenderCategoryExpenseChart() {
-    const ctx = document.getElementById('PieChart');
-    const categoryLabels = Object.keys(this.categories);
-    const categoriesData = Object.values(this.categories);
-    // const data = categoriesArray.slice(1);
-
-    const myChart = new Chart('categories-chart', {
-      type: 'doughnut',
-      data: {
-        labels: categoryLabels,
-        datasets: [
-          {
-            label: 'monthly spend categories',
-            data: categoriesData,
-            backgroundColor: this.generateRandomColors(categoriesData.length),
-            borderColor: ['rgba(255, 99, 132, 1)'],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {},
-    });
-  }
-
-  RenderDayOfMonthChart() {
-    const ctx = document.getElementById('PieChart');
-    const categoryLabels = Object.keys(this.categories);
-    const categoriesData = Object.values(this.categories);
-    // const data = categoriesArray.slice(1);
-
-    const myChart = new Chart('dayOfMonth-chart', {
-      type: 'doughnut',
-      data: {
-        labels: categoryLabels,
-        datasets: [
-          {
-            label: 'monthly spend categories',
-            data: categoriesData,
-            backgroundColor: this.generateRandomColors(categoriesData.length),
-            borderColor: ['rgba(255, 99, 132, 1)'],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {},
-    });
   }
 
   formatTime(time: string) {
@@ -140,11 +94,72 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       .subscribe(
         (res: SpendCategories) => {
           this.categories = res;
+          this.renderCategoriesChart();
         },
         (error: HttpErrorResponse) => {
           alert(error.message);
         }
       );
+  }
+
+  renderCategoriesChart() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    
+    // this.dayOfMonthSpendingLabels = Array.from({ length: this.dayOfMonthSpending.length }, (_, index) => `Day ${index + 1}`);
+
+    this.categoriesData = {
+      labels: this.categoriesLabels,
+      datasets: [
+        {
+          data: this.categories,
+          backgroundColor: this.generateRandomColors(
+            7
+          ),
+          hoverBackgroundColor: this.generateRandomColors(
+            7
+          ),
+        },
+      ],
+    };
+
+    this.dayOfMonthOptions = {
+      maintainAspectRatio: false,
+            aspectRatio: 0.8,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#ffffff'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: textColorSecondary,
+                        font: {
+                            weight: 500
+                        }
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                }
+
+            }
+        };
   }
 
   getPresetTransactions() {

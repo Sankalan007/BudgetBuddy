@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
@@ -11,42 +10,46 @@ import { TransactionService } from 'src/app/services/transaction/transaction.ser
   styleUrls: ['./analytics.component.css'],
 })
 export class AnalyticsComponent implements OnInit, AfterViewInit {
-  userDetails: any;
+  dayOfMonthData: any;
+  dayOfMonthOptions: any;
   dayOfMonthSpending!: number[];
-  dayOfMonthSpendingLabels!: number[];
+  dayOfMonthSpendingLabels!: string[];
+
+  monthOfYearData: any;
+  monthOfYearOptions: any;
+  monthOfYearSpending!: number[];
+  monthOfYearSpendingLabels!: string[];
+
+
+  userDetails: any;
+
   constructor(
     private transactionService: TransactionService,
     private authService: AuthService,
     private sharedDataService: SharedDataService
   ) {}
+
   ngOnInit(): void {
     this.sharedDataService.userDetailsObservable.subscribe((res) => {
       this.userDetails = res;
     });
+
     const today = new Date();
     const date = new Date(today.getTime() + 5.5 * 60 * 60 * 1000)
       .toISOString()
       .slice(0, 10);
-    this.getDayOfMonthSpending(
-      this.userDetails[0]?.id,
-      date
-    );
+
+    this.getDayOfMonthSpending(this.userDetails[0]?.id, date);
+    this.getMonthOfYearSpending(this.userDetails[0]?.id, date);
   }
 
   ngAfterViewInit(): void {
-    this.RenderDayOfMonthExpenseChart();
-  }
-
-  getDayOfMonthSpending(userId: number, date: String) {
-    this.transactionService.getDayOfMonthSpending(userId, date).subscribe(
-      (res: number[]) => {
-        console.log(res);
-        this.dayOfMonthSpending = res;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error);
-      }
-    );
+    if (this.dayOfMonthSpending) {
+      this.renderDayOfMonthSpedingChart();
+    }
+    if (this.monthOfYearSpending) {
+      this.renderMonthOfYearSpedingChart();
+    }
   }
 
   generateRandomColors(numColors: number) {
@@ -60,36 +63,92 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     return colors;
   }
 
-  RenderDayOfMonthExpenseChart() {
-    const ctx = document.getElementById('dayOfMonthSpend-chart');
-    this.dayOfMonthSpendingLabels = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-    for (let index = 1; index < this.dayOfMonthSpending?.length; index++) {
-      this.dayOfMonthSpendingLabels.push(index);
-    }
-    
-    console.log(this.dayOfMonthSpendingLabels);
-    
-    // const categoryLabels = Object.keys(this.dayOfMonthSpending);
-    // const categoriesData = this.dayOfMonthSpending;
-    // const data = categoriesArray.slice(1);
-
-    const myChart = new Chart('dayOfMonthSpend-chart', {
-      type: 'doughnut',
-      data: {
-        labels: this.dayOfMonthSpendingLabels,
-        datasets: [
-          {
-            label: 'Spendings each day of this month',
-            data: this.dayOfMonthSpending,
-            backgroundColor: this.generateRandomColors(
-              this.dayOfMonthSpending?.length
-            ),
-            borderColor: ['rgba(255, 99, 132, 1)'],
-            borderWidth: 1,
-          },
-        ],
+  getDayOfMonthSpending(userId: number, date: string) {
+    this.transactionService.getDayOfMonthSpending(userId, date).subscribe(
+      (res: number[]) => {
+        console.log(res);
+        this.dayOfMonthSpending = res;
+        this.renderDayOfMonthSpedingChart();
       },
-      options: {},
-    });
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
   }
+
+  renderDayOfMonthSpedingChart() {
+    this.dayOfMonthSpendingLabels = Array.from({ length: this.dayOfMonthSpending.length }, (_, index) => `Day ${index + 1}`);
+
+    this.dayOfMonthData = {
+      labels: this.dayOfMonthSpendingLabels,
+      datasets: [
+        {
+          data: this.dayOfMonthSpending,
+          backgroundColor: this.generateRandomColors(
+            this.dayOfMonthSpending.length
+          ),
+          hoverBackgroundColor: this.generateRandomColors(
+            this.dayOfMonthSpending.length
+          ),
+        },
+      ],
+    };
+
+    this.dayOfMonthOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: '#008080',
+          },
+        },
+      },
+    };
+  }
+
+
+  getMonthOfYearSpending(userId: number, date: string) {
+    this.transactionService.getMonthOfYearSpending(userId, date).subscribe(
+      (res: number[]) => {
+        console.log(res);
+        this.monthOfYearSpending = res;
+        this.renderMonthOfYearSpedingChart();
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
+  }
+
+  renderMonthOfYearSpedingChart() {
+    this.monthOfYearSpendingLabels = Array.from({ length: this.monthOfYearSpending.length }, (_, index) => `Day ${index + 1}`);
+
+    this.monthOfYearData = {
+      labels: this.monthOfYearSpendingLabels,
+      datasets: [
+        {
+          data: this.monthOfYearSpending,
+          backgroundColor: this.generateRandomColors(
+            this.monthOfYearSpending.length
+          ),
+          hoverBackgroundColor: this.generateRandomColors(
+            this.monthOfYearSpending.length
+          ),
+        },
+      ],
+    };
+
+    this.monthOfYearOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: '#008080',
+          },
+        },
+      },
+    };
+  }
+
+  
 }

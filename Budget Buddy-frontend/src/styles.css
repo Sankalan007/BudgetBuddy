@@ -12,6 +12,9 @@
 @import "@fortawesome/fontawesome-free/css/regular.css";
 @import "@fortawesome/fontawesome-free/css/solid.css";
 
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
 @layer base {
     .font-outline-03 {
         -webkit-text-stroke: 0.3px black;
