@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import SpendCategories from 'src/app/model/SpendCategories';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
@@ -10,16 +11,48 @@ import { TransactionService } from 'src/app/services/transaction/transaction.ser
   styleUrls: ['./analytics.component.css'],
 })
 export class AnalyticsComponent implements OnInit, AfterViewInit {
-  dayOfMonthData: any;
-  dayOfMonthOptions: any;
+  monthlyCategoriesSpendingsData: any;
+  monthlyCategoriesSpendingsOptions: any;
+  monthlyCategoriesSpendings!: SpendCategories;
+  monthlyCategoriesSpendingsLabels!: string[];
+
+  monthlySpendingsAndEarningsData: any;
+  monthlySpendingsAndEarningsOptions: any;
+  monthlySpendingsAndEarningsLabels!: string[];
+
+  annualSpendingsAndEarningsData: any;
+  annualSpendingsAndEarningsOptions: any;
+  annualSpendingsAndEarningsLabels!: string[];
+
+  dayOfMonthSpendingData: any;
+  dayOfMonthSpendingOptions: any;
   dayOfMonthSpending!: number[];
   dayOfMonthSpendingLabels!: string[];
 
-  monthOfYearData: any;
-  monthOfYearOptions: any;
+  monthOfYearSpendingData: any;
+  monthOfYearSpendingOptions: any;
   monthOfYearSpending!: number[];
   monthOfYearSpendingLabels!: string[];
 
+  dayOfLastSevenDaysSpendingData: any;
+  dayOfLastSevenDaysSpendingOptions: any;
+  dayOfLastSevenDaysSpending!: number[];
+  dayOfLastSevenDaysSpendingLabels!: string[];
+
+  dayOfMonthEarningData: any;
+  dayOfMonthEarningOptions: any;
+  dayOfMonthEarning!: number[];
+  dayOfMonthEarningLabels!: string[];
+
+  monthOfYearEarningData: any;
+  monthOfYearEarningOptions: any;
+  monthOfYearEarning!: number[];
+  monthOfYearEarningLabels!: string[];
+
+  dayOfLastSevenDaysEarningData: any;
+  dayOfLastSevenDaysEarningOptions: any;
+  dayOfLastSevenDaysEarning!: number[];
+  dayOfLastSevenDaysEarningLabels!: string[];
 
   userDetails: any;
 
@@ -39,16 +72,42 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       .toISOString()
       .slice(0, 10);
 
+    this.getMonthlyCategoriesSpending(this.userDetails[0]?.id, date);
     this.getDayOfMonthSpending(this.userDetails[0]?.id, date);
     this.getMonthOfYearSpending(this.userDetails[0]?.id, date);
+    this.getDayOfLastSevenDaysSpending(this.userDetails[0]?.id, date);
+    this.getDayOfMonthEarning(this.userDetails[0].id, date);
+    this.getMonthOfYearEarning(this.userDetails[0]?.id, date);
+    this.getDayOfLastSevenDaysEarning(this.userDetails[0]?.id, date);
   }
 
   ngAfterViewInit(): void {
+    if (this.monthlyCategoriesSpendings) {
+      this.renderMonthlyCategoriesSpendingChart();
+    }
+    if (this.dayOfMonthEarning && this.dayOfMonthSpending) {
+      this.renderMonthlySpendingsAndEarningsChart();
+    }
+    if (this.monthOfYearEarning && this.monthOfYearSpending) {
+      this.renderAnnualSpendingsAndEarningsChart();
+    }
     if (this.dayOfMonthSpending) {
-      this.renderDayOfMonthSpedingChart();
+      this.renderDayOfMonthSpendingChart();
     }
     if (this.monthOfYearSpending) {
-      this.renderMonthOfYearSpedingChart();
+      this.renderMonthOfYearSpendingChart();
+    }
+    if (this.dayOfLastSevenDaysSpending) {
+      this.renderDayOfLastSevenDaysSpendingChart();
+    }
+    if (this.dayOfMonthEarning) {
+      this.renderDayOfMonthEarningChart();
+    }
+    if (this.monthOfYearEarning) {
+      this.renderMonthOfYearEarningChart();
+    }
+    if (this.dayOfLastSevenDaysEarning) {
+      this.renderDayOfLastSevenDaysEarningChart();
     }
   }
 
@@ -63,12 +122,203 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     return colors;
   }
 
+  getMonthlyCategoriesSpending(userId: number, date: string) {
+    this.transactionService
+      .getMonthlyCategoriesSpending(userId, date)
+      .subscribe(
+        (res: SpendCategories) => {
+          console.log(res);
+          this.monthlyCategoriesSpendings = res;
+          this.renderMonthlyCategoriesSpendingChart();
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      );
+  }
+
+  renderMonthlyCategoriesSpendingChart() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue(
+      '--text-color-secondary'
+    );
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    // this.dayOfMonthSpendingLabels = Array.from({ length: this.dayOfMonthSpending.length }, (_, index) => `Day ${index + 1}`);
+
+    this.monthlyCategoriesSpendingsData = {
+      labels: this.monthlyCategoriesSpendingsLabels,
+      datasets: [
+        {
+          data: this.monthlyCategoriesSpendings,
+          backgroundColor: this.generateRandomColors(7),
+          hoverBackgroundColor: this.generateRandomColors(7),
+        },
+      ],
+    };
+
+    this.monthlyCategoriesSpendingsOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.8,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#ffffff',
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary,
+            font: {
+              weight: 500,
+            },
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+      },
+    };
+  }
+
+  renderMonthlySpendingsAndEarningsChart() {
+    this.monthlySpendingsAndEarningsLabels = Array.from(
+      { length: this.dayOfMonthSpending.length },
+      (_, index) => `Day ${index + 1}`
+    );
+
+    this.monthlySpendingsAndEarningsData = {
+      labels: this.monthlySpendingsAndEarningsLabels,
+      datasets: [
+        {
+          label: 'Earnings',
+          data: this.dayOfMonthEarning,
+          fill: false,
+          borderColor: '#008080',
+          tension: 0.4,
+        },
+        {
+          label: 'Spendings',
+          data: this.dayOfMonthSpending,
+          fill: false,
+          borderColor: '#000000',
+          tension: 0.4,
+        },
+      ],
+    };
+
+    this.monthlySpendingsAndEarningsOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#008080',
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#808080',
+          },
+          grid: {
+            color: '#C0C0C0',
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: '#808080',
+          },
+          grid: {
+            color: '#C0C0C0',
+            drawBorder: false,
+          },
+        },
+      },
+    };
+  }
+
+  renderAnnualSpendingsAndEarningsChart() {
+    this.annualSpendingsAndEarningsLabels = Array.from(
+      { length: this.monthOfYearSpending.length },
+      (_, index) => `Month ${index + 1}`
+    );
+
+    this.annualSpendingsAndEarningsData = {
+      labels: this.annualSpendingsAndEarningsLabels,
+      datasets: [
+        {
+          label: 'Earnings',
+          data: this.monthOfYearEarning,
+          fill: false,
+          borderColor: '#008080',
+          tension: 0.4,
+        },
+        {
+          label: 'Spendings',
+          data: this.monthOfYearSpending,
+          fill: false,
+          borderColor: '#000000',
+          tension: 0.4,
+        },
+      ],
+    };
+
+    this.annualSpendingsAndEarningsOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#008080',
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#808080',
+          },
+          grid: {
+            color: '#C0C0C0',
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: '#808080',
+          },
+          grid: {
+            color: '#C0C0C0',
+            drawBorder: false,
+          },
+        },
+      },
+    };
+  }
+
   getDayOfMonthSpending(userId: number, date: string) {
     this.transactionService.getDayOfMonthSpending(userId, date).subscribe(
       (res: number[]) => {
         console.log(res);
         this.dayOfMonthSpending = res;
-        this.renderDayOfMonthSpedingChart();
+        this.renderDayOfMonthSpendingChart();
+        this.renderMonthlySpendingsAndEarningsChart();
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -76,10 +326,13 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  renderDayOfMonthSpedingChart() {
-    this.dayOfMonthSpendingLabels = Array.from({ length: this.dayOfMonthSpending.length }, (_, index) => `Day ${index + 1}`);
+  renderDayOfMonthSpendingChart() {
+    this.dayOfMonthSpendingLabels = Array.from(
+      { length: this.dayOfMonthSpending.length },
+      (_, index) => `Day ${index + 1}`
+    );
 
-    this.dayOfMonthData = {
+    this.dayOfMonthSpendingData = {
       labels: this.dayOfMonthSpendingLabels,
       datasets: [
         {
@@ -94,7 +347,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       ],
     };
 
-    this.dayOfMonthOptions = {
+    this.dayOfMonthSpendingOptions = {
       plugins: {
         legend: {
           labels: {
@@ -106,13 +359,13 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     };
   }
 
-
   getMonthOfYearSpending(userId: number, date: string) {
     this.transactionService.getMonthOfYearSpending(userId, date).subscribe(
       (res: number[]) => {
         console.log(res);
         this.monthOfYearSpending = res;
-        this.renderMonthOfYearSpedingChart();
+        this.renderMonthOfYearSpendingChart();
+        this.renderAnnualSpendingsAndEarningsChart();
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -120,10 +373,13 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  renderMonthOfYearSpedingChart() {
-    this.monthOfYearSpendingLabels = Array.from({ length: this.monthOfYearSpending.length }, (_, index) => `Day ${index + 1}`);
+  renderMonthOfYearSpendingChart() {
+    this.monthOfYearSpendingLabels = Array.from(
+      { length: this.monthOfYearSpending.length },
+      (_, index) => `Month ${index + 1}`
+    );
 
-    this.monthOfYearData = {
+    this.monthOfYearSpendingData = {
       labels: this.monthOfYearSpendingLabels,
       datasets: [
         {
@@ -138,7 +394,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       ],
     };
 
-    this.monthOfYearOptions = {
+    this.monthOfYearSpendingOptions = {
       plugins: {
         legend: {
           labels: {
@@ -150,5 +406,193 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     };
   }
 
-  
+  getDayOfLastSevenDaysSpending(userId: number, date: string) {
+    this.transactionService
+      .getDayOfLastSevenDaysSpending(userId, date)
+      .subscribe(
+        (res: number[]) => {
+          console.log(res);
+          this.dayOfLastSevenDaysSpending = res;
+          this.renderDayOfLastSevenDaysSpendingChart();
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      );
+  }
+
+  renderDayOfLastSevenDaysSpendingChart() {
+    this.dayOfLastSevenDaysSpendingLabels = Array.from(
+      { length: this.dayOfLastSevenDaysSpending.length },
+      (_, index) => `Day ${index + 1}`
+    );
+
+    this.dayOfLastSevenDaysSpendingData = {
+      labels: this.dayOfLastSevenDaysSpendingLabels,
+      datasets: [
+        {
+          data: this.dayOfLastSevenDaysSpending,
+          backgroundColor: this.generateRandomColors(
+            this.dayOfLastSevenDaysSpending.length
+          ),
+          hoverBackgroundColor: this.generateRandomColors(
+            this.dayOfLastSevenDaysSpending.length
+          ),
+        },
+      ],
+    };
+
+    this.dayOfLastSevenDaysSpendingOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: '#008080',
+          },
+        },
+      },
+    };
+  }
+
+  getDayOfMonthEarning(userId: number, date: string) {
+    this.transactionService.getDayOfMonthEarning(userId, date).subscribe(
+      (res: number[]) => {
+        console.log(res);
+        this.dayOfMonthEarning = res;
+        this.renderDayOfMonthEarningChart();
+        this.renderMonthlySpendingsAndEarningsChart();
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
+  }
+
+  renderDayOfMonthEarningChart() {
+    this.dayOfMonthEarningLabels = Array.from(
+      { length: this.dayOfMonthEarning.length },
+      (_, index) => `Day ${index + 1}`
+    );
+
+    this.dayOfMonthEarningData = {
+      labels: this.dayOfMonthEarningLabels,
+      datasets: [
+        {
+          data: this.dayOfMonthEarning,
+          backgroundColor: this.generateRandomColors(
+            this.dayOfMonthEarning.length
+          ),
+          hoverBackgroundColor: this.generateRandomColors(
+            this.dayOfMonthEarning.length
+          ),
+        },
+      ],
+    };
+
+    this.dayOfMonthEarningOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: '#008080',
+          },
+        },
+      },
+    };
+  }
+
+  getMonthOfYearEarning(userId: number, date: string) {
+    this.transactionService.getMonthOfYearEarning(userId, date).subscribe(
+      (res: number[]) => {
+        console.log(res);
+        this.monthOfYearEarning = res;
+        this.renderMonthOfYearEarningChart();
+        this.renderAnnualSpendingsAndEarningsChart();
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
+  }
+
+  renderMonthOfYearEarningChart() {
+    this.monthOfYearEarningLabels = Array.from(
+      { length: this.monthOfYearEarning.length },
+      (_, index) => `Month ${index + 1}`
+    );
+
+    this.monthOfYearEarningData = {
+      labels: this.monthOfYearEarningLabels,
+      datasets: [
+        {
+          data: this.monthOfYearEarning,
+          backgroundColor: this.generateRandomColors(
+            this.monthOfYearEarning.length
+          ),
+          hoverBackgroundColor: this.generateRandomColors(
+            this.monthOfYearEarning.length
+          ),
+        },
+      ],
+    };
+
+    this.monthOfYearEarningOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: '#008080',
+          },
+        },
+      },
+    };
+  }
+
+  getDayOfLastSevenDaysEarning(userId: number, date: string) {
+    this.transactionService
+      .getDayOfLastSevenDaysEarning(userId, date)
+      .subscribe(
+        (res: number[]) => {
+          console.log(res);
+          this.dayOfLastSevenDaysEarning = res;
+          this.renderDayOfLastSevenDaysEarningChart();
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      );
+  }
+
+  renderDayOfLastSevenDaysEarningChart() {
+    this.dayOfLastSevenDaysEarningLabels = Array.from(
+      { length: this.dayOfLastSevenDaysEarning.length },
+      (_, index) => `Day ${index + 1}`
+    );
+
+    this.dayOfLastSevenDaysEarningData = {
+      labels: this.dayOfLastSevenDaysEarningLabels,
+      datasets: [
+        {
+          data: this.dayOfLastSevenDaysEarning,
+          backgroundColor: this.generateRandomColors(
+            this.dayOfLastSevenDaysEarning.length
+          ),
+          hoverBackgroundColor: this.generateRandomColors(
+            this.dayOfLastSevenDaysEarning.length
+          ),
+        },
+      ],
+    };
+
+    this.dayOfLastSevenDaysEarningOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: '#008080',
+          },
+        },
+      },
+    };
+  }
 }

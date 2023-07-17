@@ -137,6 +137,12 @@ public class TransactionController {
         return new ResponseEntity<>(dayOfLastSevenDays, HttpStatus.OK);
     }
 
+    @GetMapping("/insights/{userId}/{date}")
+    public ResponseEntity<Insights> getTransactionInsights(@PathVariable("userId") Long userId, @PathVariable("date") String date){
+        Insights insights = transactionService.getTransactionInsights(userId, date);
+        return new ResponseEntity<>(insights, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Transaction> addNewTransaction(@RequestBody Transaction transaction){
         Transaction newTransaction = transactionService.addTransaction(transaction);

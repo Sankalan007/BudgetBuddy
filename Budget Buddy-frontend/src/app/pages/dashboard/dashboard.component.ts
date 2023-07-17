@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       .toISOString()
       .slice(0, 10);
     this.transactionService
-      .getMonthlyCategories(this.userDetails[0].id, date)
+      .getMonthlyCategoriesSpending(this.userDetails[0].id, date)
       .subscribe(
         (res: SpendCategories) => {
           this.categories = res;
