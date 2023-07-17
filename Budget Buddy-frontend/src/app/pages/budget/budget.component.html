@@ -1,228 +1,354 @@
 <div class="grid grid-cols-3 grid-row-2 gap-1">
-    <div class="space-y-6 bg-logo-green-500 h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 rounded-xl">
-        <h1 class="text-3xl font-bold justify-center ">Food</h1>
+  <div
+    class="space-y-6 bg-logo-green-500 h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 rounded-xl"
+  >
+    <h1 class="text-3xl font-bold justify-center">Food</h1>
 
-        (buget.category)="Food"
+    (buget.category)="Food"
 
-        <div class=" h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl">
-            <div class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl">
-                <span class="absolute text-black text-[10px]">25%</span>
-            </div>
-        </div>
-        
-
-        <div class="mt-10">
-            <div class="flex space-x-4" *ngIf="spendCategory.food == null">
-                <input [(ngModel)]="foodBudget" type = "text" class = "px-3 py-2 text-black rounded-md caret-black w-56">
-                
-                <button  *ngIf="isFoodShowing" (click)="setBudget('Food', foodBudget)" class="bg-white p-2 rounded-sm">
-                    <p class="text-black text-[15px]">Add Budget</p>
-                </button>
-            </div>
-            <div *ngIf="spendCategory.food != null" class="flex space-x-8">
-                <span>
-                    budget is : {{spendCategory.food}}
-                    
-                </span>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Update Budget</p>
-                </button>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Delete Budget</p>
-                </button>
-            </div>
-        
-        </div>
-        
+    <div
+      class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+        [style.width.%]="updateProgressBar('Food')"
+        [style.backgroundColor]="getColor('Food')"
+      >
+        <span class="absolute text-black text-[10px]"
+          >{{ updateProgressBar("Food") }}%</span
+        >
+      </div>
     </div>
-    <div class="bg-logo-green-500  h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 rounded-xl">
-        <h1 class="text-3xl font-bold justify-center mb-10">Transport</h1>
 
-        <div class=" h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl">
-            <div class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl">
-                <span class="absolute text-black text-[10px]">25%</span>
-            </div>
+    <div class="mt-10">
+      <div class="flex space-x-4" *ngIf="budgetCategory.food == null">
+        <input
+          [(ngModel)]="foodBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+
+        <button
+          (click)="setBudget('Food', foodBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.food != null" class="flex space-x-8">
+        <span *ngIf="!isFoodUpdateShowing">
+          budget is : {{ budgetCategory.food }}
+        </span>
+        <button
+          *ngIf="!isFoodUpdateShowing"
+          class="bg-white"
+          (click)="doToggle('Food')"
+        >
+          <p class="text-black text-[15px]">Update Budget</p>
+        </button>
+
+        <div class="flex space-x-4" *ngIf="isFoodUpdateShowing">
+          <input
+            [(ngModel)]="updatedFoodBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56"
+          />
+
+          <button
+            (click)="updateBudget('Food', updatedFoodBudget)"
+            class="bg-white p-2 rounded-sm"
+          >
+            <p class="text-black text-[15px]">Update</p>
+          </button>
         </div>
 
-        <div class="mt-10">
-            <div class="flex space-x-4" *ngIf="spendCategory.transport == null">
-                <input [(ngModel)]="transportBudget" type = "text" class = "px-3 py-2 text-black rounded-md caret-black w-56">
-                <button  *ngIf="isTransportShowing" (click)="setBudget('Transport', transportBudget)" class="bg-white p-2 rounded-sm">
-                    <p class="text-black text-[15px]">Add Budget</p>
-                </button>
-            </div>
-            <div *ngIf="spendCategory.transport != null" class="flex space-x-8">
-                <span>
-                     budget is : {{spendCategory.transport}}  <!--add food buget individually -->
-                </span>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Update Buget</p>
-                </button>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Delete Budget</p>
-                </button>
-            </div>
-        </div>
-        
+        <button
+          class="bg-white"
+          *ngIf="!isFoodUpdateShowing"
+          
+        >
+          <p class="text-black text-[15px]">Delete Budget</p>
+        </button>
+      </div>
     </div>
-    
-    <div class="bg-logo-green-500  h-[250px] flex flex-col p-[10px] justify-center items-center ml-10 mt-10 mr-[15px] rounded-xl">
-        <h1 class="text-3xl font-bold justify-center mb-10">Entertainment</h1>
+  </div>
 
-        <div class=" h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl">
-            <div class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl">
-                <span class="absolute text-black text-[10px]">25%</span>
-            </div>
-        </div>
+  <!-- ------------------------------------------------------- -->
 
-        <div class="mt-10">
-            <div class="flex space-x-4" *ngIf="spendCategory.entertainment == null">
-                <input [(ngModel)]="entertainmentBudget" type = "text" class = "px-3 py-2 text-black rounded-md caret-black w-56">
-                <button *ngIf="isEntertainmentShowing"   (click)="setBudget('Entertainment', entertainmentBudget)" class="bg-white p-2 rounded-sm">
-                    <p class="text-black text-[15px]">Add Budget</p>
-                </button>
-            </div>
-            <div *ngIf="spendCategory.entertainment != null" class="flex space-x-8">
-                <span>
-                    budget is : {{spendCategory.entertainment}}
-                </span>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Update Budget</p>
-                </button>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Delete Budget</p>
-                </button>
-            </div>
-        
-        </div>
-        
+  <div
+    class="bg-logo-green-500 h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 rounded-xl"
+  >
+    <h1 class="text-3xl font-bold justify-center mb-10">Transport</h1>
+
+    <div
+      class="h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+        [style.width.%]="updateProgressBar('Transport')"
+        [style.background-color]="getColor('Transport')"
+      >
+        <span class="absolute text-black text-[10px]"
+          >{{ updateProgressBar("Transport") }}%</span
+        >
+      </div>
     </div>
+
+    <div class="mt-10">
+      <div class="flex space-x-4" *ngIf="budgetCategory.transport == null">
+        <input
+          [(ngModel)]="transportBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+        <button
+          (click)="setBudget('Transport', transportBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.transport != null" class="flex space-x-8">
+        <span *ngIf="!isTransportUpdateShowing">
+          budget is : {{ budgetCategory.transport }}
+          <!--add food buget individually -->
+        </span>
+        <button
+          *ngIf="!isTransportUpdateShowing"
+          class="bg-white"
+          (click)="doToggle('Transport')"
+        >
+          <p class="text-black text-[15px]">Update Buget</p>
+        </button>
+        <div class="flex space-x-4" *ngIf="isTransportUpdateShowing">
+          <input
+            [(ngModel)]="updatedTransportBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56"
+          />
+
+          <button
+            (click)="updateBudget('Transport', updatedTransportBudget)"
+            class="bg-white p-2 rounded-sm"
+          >
+            <p class="text-black text-[15px]">Update</p>
+          </button>
+        </div>
+        <button
+          class="bg-white"
+          *ngIf="!isTransportUpdateShowing"
+         
+        >
+          <p class="text-black text-[15px]">Delete Budget</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="bg-logo-green-500 h-[250px] flex flex-col p-[10px] justify-center items-center ml-10 mt-10 mr-[15px] rounded-xl"
+  >
+    <h1 class="text-3xl font-bold justify-center mb-10">Entertainment</h1>
+
+    <div
+      class="h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+      >
+        <span class="absolute text-black text-[10px]">25%</span>
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <div class="flex space-x-4" *ngIf="budgetCategory.entertainment == null">
+        <input
+          [(ngModel)]="entertainmentBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+        <button
+          (click)="setBudget('Entertainment', entertainmentBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.entertainment != null" class="flex space-x-8">
+        <span> budget is : {{ budgetCategory.entertainment }} </span>
+        <button class="bg-white">
+          <p class="text-black text-[15px]">Update Budget</p>
+        </button>
+        <button class="bg-white" (click)="deleteBudget('Entertainment')">
+          <p class="text-black text-[15px]">Delete Budget</p>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="grid grid-cols-3 grid-row-2 gap-1">
-    <div class="bg-orange  h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 rounded-xl">
-        <h1 class="text-3xl font-bold justify-center mb-10">Shopping</h1>
+  <div
+    class="bg-orange h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 rounded-xl"
+  >
+    <h1 class="text-3xl font-bold justify-center mb-10">Shopping</h1>
 
-        <div class=" h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl">
-            <div class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl">
-                <span class="absolute text-black text-[10px]">25%</span>
-            </div>
-        </div>
-
-        <div class="mt-10">
-            <div class="flex space-x-4" *ngIf="spendCategory.shopping == null">
-                <input [(ngModel)]="shoppingBudget" type = "text" class = "px-3 py-2 text-black rounded-md caret-black w-56">
-                <button *ngIf="isShoppingShowing" (click)="setBudget('Shopping', shoppingBudget)" class="bg-white p-2 rounded-sm">
-                    <p class="text-black text-[15px]">Add Budget</p>
-                </button>
-            </div>
-            <div *ngIf="spendCategory.shopping != null" class="flex space-x-8">
-                <span>
-                    budget is : {{spendCategory.shopping}}
-                </span>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Update Budget</p>
-                </button>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Delete Budget</p>
-                </button>
-            </div>
-        
-        </div>
-        
+    <div
+      class="h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+      >
+        <span class="absolute text-black text-[10px]">25%</span>
+      </div>
     </div>
-    <div class="bg-orange  h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10  rounded-xl">
-        <h1 class="text-3xl font-bold justify-center mb-10">Utilities</h1>
 
-        <div class=" h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl">
-            <div class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl">
-                <span class="absolute text-black text-[10px]">25%</span>
-            </div>
-        </div>
-
-        <div class="mt-10">
-            <div class="flex space-x-4" *ngIf="spendCategory.utilities == null">
-                <input [(ngModel)]="utilitiesBudget" type = "text" class = "px-3 py-2 text-black rounded-md caret-black w-56">
-                <button *ngIf="isUtilitiesShowing"  (click)="setBudget('Utilities', utilitiesBudget)" class="bg-white p-2 rounded-sm">
-                    <p class="text-black text-[15px]">Add Budget</p>
-                </button>
-            </div>
-            <div *ngIf="spendCategory.utilities != null" class="flex space-x-8">
-                <span>
-                    budget is : {{spendCategory.utilities}}
-                </span>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Update Buget</p>
-                </button>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Delete Budget</p>
-                </button>
-            </div>
-        </div>
-        
+    <div class="mt-10">
+      <div class="flex space-x-4" *ngIf="budgetCategory.shopping == null">
+        <input
+          [(ngModel)]="shoppingBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+        <button
+          (click)="setBudget('Shopping', shoppingBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.shopping != null" class="flex space-x-8">
+        <span> budget is : {{ budgetCategory.shopping }} </span>
+        <button class="bg-white">
+          <p class="text-black text-[15px]">Update Budget</p>
+        </button>
+        <button class="bg-white" (click)="deleteBudget('Shopping')">
+          <p class="text-black text-[15px]">Delete Budget</p>
+        </button>
+      </div>
     </div>
-    <div class="bg-orange  h-[250px] flex flex-col p-[10px] justify-center items-center ml-10 mt-10 mr-[15px] rounded-xl">
-        <h1 class="text-3xl font-bold justify-center mb-10">Housing</h1>
+  </div>
+  <div
+    class="bg-orange h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 rounded-xl"
+  >
+    <h1 class="text-3xl font-bold justify-center mb-10">Utilities</h1>
 
-        <div class=" h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl">
-            <div class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl">
-                <span class="absolute text-black text-[10px]">25%</span>
-            </div>
-        </div>
-
-        <div class="mt-10">
-            <div class="flex space-x-4" *ngIf="spendCategory.housing == null">
-                <input [(ngModel)]="housingBudget" type = "text" class = "px-3 py-2 text-black rounded-md caret-black w-56">
-                <button *ngIf="isHousingShowing" (click)="setBudget('Housing', housingBudget)" class="bg-white p-1 rounded-sm">
-                    <p class="text-black text-[15px]">Add Budget</p>
-                </button>
-            </div>
-            <div *ngIf="spendCategory.utilities != null" class="flex space-x-8">
-                <span>
-                    budget is : {{spendCategory.housing}}
-                </span>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Update Buget</p>
-                </button>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Delete Budget</p>
-                </button>
-            </div>
-        </div>
-        
+    <div
+      class="h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+      >
+        <span class="absolute text-black text-[10px]">25%</span>
+      </div>
     </div>
+
+    <div class="mt-10">
+      <div class="flex space-x-4" *ngIf="budgetCategory.utilities == null">
+        <input
+          [(ngModel)]="utilitiesBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+        <button
+          (click)="setBudget('Utilities', utilitiesBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.utilities != null" class="flex space-x-8">
+        <span> budget is : {{ budgetCategory.utilities }} </span>
+        <button class="bg-white">
+          <p class="text-black text-[15px]">Update Buget</p>
+        </button>
+        <button class="bg-white" (click)="deleteBudget('Utilities')">
+          <p class="text-black text-[15px]">Delete Budget</p>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="bg-orange h-[250px] flex flex-col p-[10px] justify-center items-center ml-10 mt-10 mr-[15px] rounded-xl"
+  >
+    <h1 class="text-3xl font-bold justify-center mb-10">Housing</h1>
+
+    <div
+      class="h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+      >
+        <span class="absolute text-black text-[10px]">25%</span>
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <div class="flex space-x-4" *ngIf="budgetCategory.housing == null">
+        <input
+          [(ngModel)]="housingBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+        <button
+          (click)="setBudget('Housing', housingBudget)"
+          class="bg-white p-1 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.utilities != null" class="flex space-x-8">
+        <span> budget is : {{ budgetCategory.housing }} </span>
+        <button class="bg-white">
+          <p class="text-black text-[15px]">Update Buget</p>
+        </button>
+        <button class="bg-white" (click)="deleteBudget('Housing')">
+          <p class="text-black text-[15px]">Delete Budget</p>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="grid grid-cols-3 grid-row-2 gap-1">
-    <div class="bg-orange  h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 rounded-xl">
-        <h1 class="text-3xl font-bold justify-center mb-10">Other</h1>
+  <div
+    class="bg-orange h-[250px] flex flex-col p-[20px] justify-center items-center ml-10 mt-10 mb-10 rounded-xl"
+  >
+    <h1 class="text-3xl font-bold justify-center mb-10">Other</h1>
 
-        <div class=" h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl">
-            <div class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl">
-                <span class="absolute text-black text-[10px]">25%</span>
-            </div>
-        </div>
-
-        <div class="mt-10">
-            <div class="flex space-x-4" *ngIf="spendCategory.other == null">
-                <input [(ngModel)]="otherBudget" type = "text" class = "px-3 py-2 text-black rounded-md caret-black w-56">
-                <button *ngIf="isOtherShowing" (click)="setBudget('Other', otherBudget)" class="bg-white p-2 rounded-sm">
-                    <p class="text-black text-[15px]">Add Budget</p>
-                </button>
-            </div>
-            <div *ngIf="spendCategory.other != null" class="flex space-x-8">
-                <span>
-                    budget is : {{spendCategory.other}}
-                </span>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Update Buget</p>
-                </button>
-                <button class="bg-white">
-                <p class="text-black text-[15px]">Delete Budget</p>
-                </button>
-            </div>
-        
-        </div>
-        
+    <div
+      class="h-[10px] w-full bg-black dark:bg-white justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] w-[25%] flex justify-center bg-primary text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+      >
+        <span class="absolute text-black text-[10px]">25%</span>
+      </div>
     </div>
+
+    <div class="mt-10">
+      <div class="flex space-x-4" *ngIf="budgetCategory.other == null">
+        <input
+          [(ngModel)]="otherBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+        <button
+          (click)="setBudget('Other', otherBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.other != null" class="flex space-x-8">
+        <span> budget is : {{ budgetCategory.other }} </span>
+        <button class="bg-white">
+          <p class="text-black text-[15px]">Update Buget</p>
+        </button>
+        <button class="bg-white" (click)="deleteBudget('Other')">
+          <p class="text-black text-[15px]">Delete Budget</p>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
