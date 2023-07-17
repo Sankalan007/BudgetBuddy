@@ -97,4 +97,8 @@ public class TransactionService {
     public List<Double> getDayOfLastSevenDaysEarning(Long userId, String Date){
         return transactionRepository.getDayOfLastSevenDaysEarning(userId, Date);
     }
+
+    public Insights getTransactionInsights(Long userId, String date) {
+        return transactionRepository.getTransactionsInsights(userId, date);
+    }
 }

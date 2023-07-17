@@ -1,7 +1,116 @@
 <div class="w-full flex flex-col justify-center">
-  <div class="m-6 ">
-    <div class="grid grid-cols-2 gap-4 rounded-lg p-6 bg-white">
-        <p-chart type="doughnut" [data]="dayOfMonthData" [options]="dayOfMonthOptions"></p-chart>
+  <div class="flex justify-between m-6">
+    <div class="text-3xl font-bold">Analytics</div>
+    <div class="text-aqua flex space-x-6">
+      <div class="cursor-pointer hover:text-xl transition-all">
+        Insights<i class="fa fa-lightbulb ml-2"></i>
+      </div>
+      <div class="cursor-pointer underline hover:text-xl transition-all">
+        Download Report
+      </div>
+    </div>
+  </div>
+  <div class="m-6 flex flex-col">
+    <div class="ml-6 mb-8 text-2xl font-bold">Summary</div>
+    <div class="ml-6 text-xl">Categories</div>
+    <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Monthly spendings by category</span
+        >
+        <p-chart
+          type="bar"
+          [data]="monthlyCategoriesSpendingsData"
+          [options]="monthlyCategoriesSpendingsOptions"
+        ></p-chart>
+      </div>
+    </div>
+    <div class="ml-6 text-xl">Overall financial health</div>
+    <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Monthly earnings and spendings</span
+        >
+        <p-chart
+          type="line"
+          [data]="monthlySpendingsAndEarningsData"
+          [options]="monthlySpendingsAndEarningsOptions"
+        ></p-chart>
+      </div>
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Annual earnings and spendings</span
+        >
+        <p-chart
+          type="line"
+          [data]="annualSpendingsAndEarningsData"
+          [options]="annualSpendingsAndEarningsOptions"
+        ></p-chart>
+      </div>
+    </div>
+    <div class="ml-6 mb-8 mt-8 text-2xl font-bold">Detailed</div>
+    <div class="ml-6 text-xl">Spending trends over time</div>
+    <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Spendings of each day in this month</span
+        >
+        <p-chart
+          type="bar"
+          [data]="dayOfMonthSpendingData"
+          [options]="dayOfMonthSpendingOptions"
+        ></p-chart>
+      </div>
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Earnings of each day in this month</span
+        >
+        <p-chart
+          type="bar"
+          [data]="dayOfMonthEarningData"
+          [options]="dayOfMonthEarningOptions"
+        ></p-chart>
+      </div>
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Spendings of each month in this year</span
+        >
+        <p-chart
+          type="pie"
+          [data]="monthOfYearSpendingData"
+          [options]="monthOfYearSpendingOptions"
+        ></p-chart>
+      </div>
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Earnings of each month in this year</span
+        >
+        <p-chart
+          type="doughnut"
+          [data]="monthOfYearEarningData"
+          [options]="monthOfYearEarningOptions"
+        ></p-chart>
+      </div>
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Spendings of each day in last seven days</span
+        >
+        <p-chart
+          type="pie"
+          [data]="dayOfLastSevenDaysSpendingData"
+          [options]="dayOfLastSevenDaysSpendingOptions"
+        ></p-chart>
+      </div>
+      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+        <span class="mb-4 text-black mx-auto text-xl font-mono"
+          >Earnings of each day in last seven days</span
+        >
+        <p-chart
+          type="doughnut"
+          [data]="dayOfLastSevenDaysEarningData"
+          [options]="dayOfLastSevenDaysEarningOptions"
+        ></p-chart>
+      </div>
     </div>
   </div>
 </div>

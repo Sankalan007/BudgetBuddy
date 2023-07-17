@@ -76,7 +76,7 @@ export class TransactionService {
     );
   }
 
-  getMonthlyCategories(
+  getMonthlyCategoriesSpending(
     userId: number,
     date: string
   ): Observable<SpendCategories> {
