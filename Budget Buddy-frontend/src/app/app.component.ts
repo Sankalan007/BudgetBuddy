@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth/auth.service';
+import { SmoothScrollService } from '@boatzako/ngx-smooth-scroll';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,11 @@ import { AuthService } from './services/auth/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit{
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private smooth: SmoothScrollService) {}
 
   ngOnInit(): void {
     // this.isAuthRoute();
+    this.smooth.smoothScrollToAnchor();
     this.isAuthenticated();
   }
 
@@ -30,6 +32,10 @@ export class AppComponent implements OnInit{
   sidebarOpen: boolean = true;
   toggleSidebar(sidebarOpen: any) {
     this.sidebarOpen = sidebarOpen;
+  }
+
+  goTop(){
+    this.smooth.smoothScrollToTop({ duration: 1000, easing: 'linear' });
   }
   
 }

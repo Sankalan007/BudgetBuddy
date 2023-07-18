@@ -1,5 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { SmoothScrollService } from '@boatzako/ngx-smooth-scroll';
+import EarnCategories from 'src/app/model/EarnCategories';
+import Insights from 'src/app/model/Insights';
 import SpendCategories from 'src/app/model/SpendCategories';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
@@ -11,10 +14,37 @@ import { TransactionService } from 'src/app/services/transaction/transaction.ser
   styleUrls: ['./analytics.component.css'],
 })
 export class AnalyticsComponent implements OnInit, AfterViewInit {
+  monthList: Array<string> = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  insights!: Insights;
+  // leastEarnMonth: number = this.insights.leastEarnMonth as number;.
+
+  formatMonth(month: number): string {
+    return this.monthList[month - 1];
+  }
+
   monthlyCategoriesSpendingsData: any;
   monthlyCategoriesSpendingsOptions: any;
   monthlyCategoriesSpendings!: SpendCategories;
   monthlyCategoriesSpendingsLabels!: string[];
+
+  monthlyCategoriesEarningsData: any;
+  monthlyCategoriesEarningsOptions: any;
+  monthlyCategoriesEarnings!: EarnCategories;
+  monthlyCategoriesEarningsLabels!: string[];
 
   monthlySpendingsAndEarningsData: any;
   monthlySpendingsAndEarningsOptions: any;
@@ -59,10 +89,12 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   constructor(
     private transactionService: TransactionService,
     private authService: AuthService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private smooth: SmoothScrollService
   ) {}
 
   ngOnInit(): void {
+    this.smooth.smoothScrollToAnchor();
     this.sharedDataService.userDetailsObservable.subscribe((res) => {
       this.userDetails = res;
     });
@@ -72,7 +104,9 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       .toISOString()
       .slice(0, 10);
 
+    this.getInsights(this.userDetails[0]?.id, date);
     this.getMonthlyCategoriesSpending(this.userDetails[0]?.id, date);
+    this.getMonthlyCategoriesEarning(this.userDetails[0]?.id, date);
     this.getDayOfMonthSpending(this.userDetails[0]?.id, date);
     this.getMonthOfYearSpending(this.userDetails[0]?.id, date);
     this.getDayOfLastSevenDaysSpending(this.userDetails[0]?.id, date);
@@ -84,6 +118,9 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.monthlyCategoriesSpendings) {
       this.renderMonthlyCategoriesSpendingChart();
+    }
+    if (this.monthlyCategoriesEarnings) {
+      this.renderMonthlyCategoriesEarningChart();
     }
     if (this.dayOfMonthEarning && this.dayOfMonthSpending) {
       this.renderMonthlySpendingsAndEarningsChart();
@@ -111,6 +148,10 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  goTop() {
+    this.smooth.smoothScrollToTop({ duration: 1000, easing: 'linear' });
+  }
+
   generateRandomColors(numColors: number) {
     const colors = [];
     for (let i = 0; i < numColors; i++) {
@@ -120,6 +161,17 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       colors.push(color);
     }
     return colors;
+  }
+
+  getInsights(userId: number, date: string) {
+    this.transactionService.getInsights(userId, date).subscribe(
+      (res: Insights) => {
+        this.insights = res;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
   }
 
   getMonthlyCategoriesSpending(userId: number, date: string) {
@@ -159,6 +211,76 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     };
 
     this.monthlyCategoriesSpendingsOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.8,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#ffffff',
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary,
+            font: {
+              weight: 500,
+            },
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+      },
+    };
+  }
+
+  getMonthlyCategoriesEarning(userId: number, date: string) {
+    this.transactionService.getMonthlyCategoriesEarning(userId, date).subscribe(
+      (res: EarnCategories) => {
+        console.log(res);
+        this.monthlyCategoriesEarnings = res;
+        this.renderMonthlyCategoriesEarningChart();
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
+  }
+
+  renderMonthlyCategoriesEarningChart() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue(
+      '--text-color-secondary'
+    );
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    // this.dayOfMonthSpendingLabels = Array.from({ length: this.dayOfMonthSpending.length }, (_, index) => `Day ${index + 1}`);
+
+    this.monthlyCategoriesEarningsData = {
+      labels: this.monthlyCategoriesEarningsLabels,
+      datasets: [
+        {
+          data: this.monthlyCategoriesEarnings,
+          backgroundColor: this.generateRandomColors(7),
+          hoverBackgroundColor: this.generateRandomColors(7),
+        },
+      ],
+    };
+
+    this.monthlyCategoriesEarningsOptions = {
       maintainAspectRatio: false,
       aspectRatio: 0.8,
       plugins: {

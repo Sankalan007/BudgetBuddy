@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 public class Insights {
     private Integer leastEarnDay;
     private Integer leastEarnMonth;
-    private String leastEarnCategory;
+    private InsightsCategories leastEarnCategory;
     private Integer leastSpendDay;
     private Integer leastSpendMonth;
-    private String leastSpendCategory;
+    private InsightsCategories leastSpendCategory;
     private Integer mostEarnDay;
     private Integer mostEarnMonth;
-    private String mostEarnCategory;
+    private InsightsCategories mostEarnCategory;
     private Integer mostSpendDay;
     private Integer mostSpendMonth;
-    private String mostSpendCategory;
+    private InsightsCategories mostSpendCategory;
 
 }

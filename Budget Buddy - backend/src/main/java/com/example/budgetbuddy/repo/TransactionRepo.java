@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     // find all transactions of a user
@@ -346,22 +347,42 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         Integer leastEarnMonth = least(monthOfYearEarning);
 
         EarnCategory monthlyEarnCategory = findMonthlyEarnCategorySumByUserId(userId, Date);
-        String leastEarnCategory = null;
-        Double minValue = Double.MAX_VALUE;
+
+        InsightsCategories leastEarnCategory;
+        List<String> leastEarnCategories = new ArrayList<>();
+        Double minEarnValue = Double.MAX_VALUE;
+
 
         Field[] fields = monthlyEarnCategory.getClass().getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
             try {
                 Double value = (Double) field.get(monthlyEarnCategory);
-                if (value < minValue) {
-                    minValue = value;
-                    leastEarnCategory = field.getName();
+                if (value < minEarnValue) {
+                    minEarnValue = value;
+//                    leastEarnCategories.add(field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlyEarnCategory);
+                if (Objects.equals(value, minEarnValue)) {
+//                    minEarnValue = value;
+                    leastEarnCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        leastEarnCategory = InsightsCategories.builder()
+                .categories(leastEarnCategories)
+                .value(minEarnValue)
+                .build();
 
         List<Double> dayOfMonthSpending = getDayOfMonthSpending(userId, Date);
         Integer leastSpendDay = least(dayOfMonthSpending);
@@ -369,8 +390,10 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         List<Double> monthOfYearSpending = getMonthOfYearSpending(userId, Date);
         Integer leastSpendMonth = least(monthOfYearSpending);
 
-        EarnCategory monthlySpendCategory = findMonthlyEarnCategorySumByUserId(userId, Date);
-        String leastSpendCategory = null;
+        SpendCategory monthlySpendCategory = findMonthlySpendCategorySumByUserId(userId, Date);
+
+        InsightsCategories leastSpendCategory;
+        List<String> leastSpendCategories = new ArrayList<>();
         Double minSpendValue = Double.MAX_VALUE;
 
         Field[] fieldsSpend = monthlySpendCategory.getClass().getDeclaredFields();
@@ -380,12 +403,30 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
                 Double value = (Double) field.get(monthlySpendCategory);
                 if (value < minSpendValue) {
                     minSpendValue = value;
-                    leastSpendCategory = field.getName();
+//                    leastSpendCategories.add(field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
+
+        for (Field field : fieldsSpend) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlySpendCategory);
+                if (Objects.equals(value, minSpendValue)) {
+//                    minSpendValue = value;
+                    leastSpendCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        leastSpendCategory = InsightsCategories.builder()
+                .categories(leastSpendCategories)
+                .value(minSpendValue)
+                .build();
 
 
         List<Double> dayOfMonthEarningMost = getDayOfMonthEarning(userId, Date);
@@ -394,58 +435,98 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         List<Double> monthOfYearEarningMost = getMonthOfYearEarning(userId, Date);
         Integer mostEarnMonth = most(monthOfYearEarningMost);
 
-        EarnCategory monthlyEarnCategoryMost = findMonthlyEarnCategorySumByUserId(userId, Date);
-        String mostEarnCategory = null;
-        Double maxValue = Double.MAX_VALUE;
+        monthlyEarnCategory = findMonthlyEarnCategorySumByUserId(userId, Date);
 
-        Field[] fieldsMost = monthlyEarnCategoryMost.getClass().getDeclaredFields();
+        InsightsCategories mostEarnCategory;
+        List<String> mostEarnCategories = new ArrayList<>();
+        Double maxEarnValue = Double.MIN_VALUE;
+
+        Field[] fieldsMost = monthlyEarnCategory.getClass().getDeclaredFields();
         for (Field field : fieldsMost) {
             field.setAccessible(true);
             try {
-                Double value = (Double) field.get(monthlyEarnCategoryMost);
-                if (value > maxValue) {
-                    maxValue = value;
-                    mostEarnCategory = field.getName();
+                Double value = (Double) field.get(monthlyEarnCategory);
+                if (value > maxEarnValue) {
+                    maxEarnValue = value;
+//                    mostEarnCategories.add(field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
+
+        for (Field field : fieldsMost) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlyEarnCategory);
+                if (Objects.equals(value, maxEarnValue)) {
+//                    maxEarnValue = value;
+                    mostEarnCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        mostEarnCategory = InsightsCategories.builder()
+                .categories(mostEarnCategories)
+                .value(maxEarnValue)
+                .build();
 
 
         Integer mostSpendDay = most(dayOfMonthSpending);
 
         Integer mostSpendMonth = most(monthOfYearSpending);
 
-        String mostSpendCategory = null;
-        Double maxSpendValue = Double.MAX_VALUE;
+        monthlySpendCategory = findMonthlySpendCategorySumByUserId(userId, Date);
 
-//        Field[] fieldsEarn = monthlyEarnCategory.getClass().getDeclaredFields();
+        InsightsCategories mostSpendCategory;
+        List<String> mostSpendCategories = new ArrayList<>();
+        Double maxSpendValue = Double.MIN_VALUE;
+
         for (Field field : fieldsSpend) {
             field.setAccessible(true);
             try {
                 Double value = (Double) field.get(monthlySpendCategory);
                 if (value > maxSpendValue) {
                     maxSpendValue = value;
-                    mostSpendCategory = field.getName();
+//                    mostSpendCategories.add(field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
 
+        for (Field field : fieldsSpend) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlySpendCategory);
+                if (Objects.equals(value, maxSpendValue)) {
+//                    maxSpendValue = value;
+                    mostSpendCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        mostSpendCategory = InsightsCategories.builder()
+                .categories(mostSpendCategories)
+                .value(maxSpendValue)
+                .build();
+
         return Insights.builder()
-                .leastEarnDay(leastEarnDay)
-                .leastEarnMonth(leastEarnMonth)
+                .leastEarnDay(leastEarnDay + 1)
+                .leastEarnMonth(leastEarnMonth + 1)
                 .leastEarnCategory(leastEarnCategory)
-                .leastSpendDay(leastSpendDay)
-                .leastSpendMonth(leastSpendMonth)
+                .leastSpendDay(leastSpendDay + 1)
+                .leastSpendMonth(leastSpendMonth + 1)
                 .leastSpendCategory(leastSpendCategory)
-                .mostEarnDay(mostEarnDay)
-                .mostEarnMonth(mostEarnMonth)
+                .mostEarnDay(mostEarnDay + 1)
+                .mostEarnMonth(mostEarnMonth + 1)
                 .mostEarnCategory(mostEarnCategory)
-                .mostSpendDay(mostSpendDay)
-                .mostSpendMonth(mostSpendMonth)
+                .mostSpendDay(mostSpendDay + 1)
+                .mostSpendMonth(mostSpendMonth + 1)
                 .mostSpendCategory(mostSpendCategory)
                 .build();
     }

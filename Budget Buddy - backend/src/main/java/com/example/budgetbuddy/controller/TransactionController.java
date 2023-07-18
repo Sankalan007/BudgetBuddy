@@ -101,6 +101,12 @@ public class TransactionController {
         return new ResponseEntity<>(spendCategory, HttpStatus.OK);
     }
 
+    @GetMapping("/earnCategory/month/{userId}/{date}")
+    public ResponseEntity<EarnCategory> getEarnAmountByCategory(@PathVariable("userId") Long userId, @PathVariable("date") String date){
+        EarnCategory earnCategory = transactionService.getEarnAmountByCategory(userId, date);
+        return new ResponseEntity<>(earnCategory, HttpStatus.OK);
+    }
+
     @GetMapping("/dayOfMonthSpending/{userId}/{date}")
     public ResponseEntity<List<Double>> getDayOfMonthSpending(@PathVariable("userId") Long userId, @PathVariable("date") String date){
         List<Double> dayOfMonthSpending = transactionService.getDayOfMonthSpending(userId, date);
