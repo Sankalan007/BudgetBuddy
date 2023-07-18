@@ -174,7 +174,7 @@ export class BudgetComponent implements OnInit {
       category: category,
       amount: amount,
     };
-    this.budgetService.updateThisBudget(this.userId, budget).subscribe(
+    this.budgetService.addNewBudget(budget).subscribe(
       (res) => {
         // console.log(res);
         this.budgetService.getAllBudget(this.userId).subscribe(
@@ -210,7 +210,7 @@ export class BudgetComponent implements OnInit {
     this.transactionServices
       .getMonthlyCategories(this.userId, date)
       .subscribe((res) => {
-        // console.log(res);
+        console.log(res);
         this.spendCategory = res;
       });
   }
@@ -218,6 +218,8 @@ export class BudgetComponent implements OnInit {
   updateProgressBar(category: String): any {
     // // console.log(this.spendCategory);
     // // console.log(this.budgetCategory);
+
+
     
     switch (category) {
       case 'Food': {
@@ -225,10 +227,14 @@ export class BudgetComponent implements OnInit {
         break;
       }
       case 'Transport': {
+        //console.log(this.spendCategory.transport);
+
+        //console.log((((this.budgetCategory.transport - this.spendCategory.transport)/this.budgetCategory.transport)*100).toFixed(2));
         return (((this.budgetCategory.transport - this.spendCategory.transport)/this.budgetCategory.transport)*100).toFixed(2);
         break;
       }
       case 'Entertainment': {
+       // console.log(this.spendCategory.entertainment)
         return (((this.budgetCategory.entertainment - this.spendCategory.entertainment)/this.budgetCategory.entertainment)*100).toFixed(2);
         break;
       }
@@ -245,6 +251,7 @@ export class BudgetComponent implements OnInit {
         break;
       }
       case 'Other': {
+       // console.log(this.spendCategory.other);
         return (((this.budgetCategory.other - this.spendCategory.other)/this.budgetCategory.other)*100).toFixed(2);
         break;
       }
@@ -261,7 +268,7 @@ export class BudgetComponent implements OnInit {
       return "#FFFF";
     }
     else if(progress>33 && progress <66){
-      return "#FFFF00";
+      return "#d1d435";
     }
     else{
       return "#FF0000";
