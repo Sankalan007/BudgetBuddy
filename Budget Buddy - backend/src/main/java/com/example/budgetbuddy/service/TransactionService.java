@@ -74,6 +74,10 @@ public class TransactionService {
         return transactionRepository.findMonthlySpendCategorySumByUserId(userId, date);
     }
 
+    public EarnCategory getEarnAmountByCategory(Long userId, String date){
+        return transactionRepository.findMonthlyEarnCategorySumByUserId(userId, date);
+    }
+
     public List<Double> getDayOfMonthSpending(Long userId, String Date){
         return transactionRepository.getDayOfMonthSpending(userId, Date);
     }
@@ -96,5 +100,9 @@ public class TransactionService {
 
     public List<Double> getDayOfLastSevenDaysEarning(Long userId, String Date){
         return transactionRepository.getDayOfLastSevenDaysEarning(userId, Date);
+    }
+
+    public Insights getTransactionInsights(Long userId, String date) {
+        return transactionRepository.getTransactionsInsights(userId, date);
     }
 }

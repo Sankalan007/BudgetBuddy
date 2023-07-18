@@ -9,17 +9,18 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { GoalsComponent } from './pages/goals/goals.component';
 import { NewtransactionComponent } from './pages/newtransaction/newtransaction.component';
+import { AuthGuard } from './guard/auth/auth.guard';
 
 const routes: Routes = [
 
   { path: '', component: HomeComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'transactions', component: TransactionsComponent },
-  { path: 'budget', component: BudgetComponent },
-  { path: 'goals', component: GoalsComponent },
-  { path: 'analytics', component: AnalyticsComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'transactions', component: TransactionsComponent, canActivate: [AuthGuard] },
+  { path: 'budget', component: BudgetComponent, canActivate: [AuthGuard] },
+  { path: 'goals', component: GoalsComponent, canActivate: [AuthGuard] },
+  { path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
 
-  { path: 'new-transaction', component: NewtransactionComponent },
+  { path: 'new-transaction', component: NewtransactionComponent, canActivate: [AuthGuard] },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import EarnCategories from 'src/app/model/EarnCategories';
+import Insights from 'src/app/model/Insights';
 import PresetAverages from 'src/app/model/PresetAverages';
 import PresetTransactions from 'src/app/model/PresetTransactions';
 import SpendCategories from 'src/app/model/SpendCategories';
@@ -76,12 +78,21 @@ export class TransactionService {
     );
   }
 
-  getMonthlyCategories(
+  getMonthlyCategoriesSpending(
     userId: number,
     date: string
   ): Observable<SpendCategories> {
     return this.http.get<SpendCategories>(
       `${this.baseUrl}/category/month/${userId}/${date}`
+    );
+  }
+
+  getMonthlyCategoriesEarning(
+    userId: number,
+    date: string
+  ): Observable<EarnCategories> {
+    return this.http.get<EarnCategories>(
+      `${this.baseUrl}/earnCategory/month/${userId}/${date}`
     );
   }
 
@@ -138,5 +149,23 @@ export class TransactionService {
 
   getDayOfMonthSpending(userId: number, date: String): Observable<number[]>{
     return this.http.get<number[]>(`${this.baseUrl}/dayOfMonthSpending/${userId}/${date}`);
+  }
+  getMonthOfYearSpending(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/monthOfYearSpending/${userId}/${date}`);
+  }
+  getDayOfLastSevenDaysSpending(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/dayOfLastSevenDays/${userId}/${date}`);
+  }
+  getDayOfMonthEarning(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/dayOfMonthEarning/${userId}/${date}`);
+  }
+  getMonthOfYearEarning(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/monthOfYearEarning/${userId}/${date}`);
+  }
+  getDayOfLastSevenDaysEarning(userId: number, date: String): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/dayOfLastSevenDaysEarn/${userId}/${date}`);
+  }
+  getInsights(userId: number, date: String): Observable<Insights>{
+    return this.http.get<Insights>(`${this.baseUrl}/insights/${userId}/${date}`);
   }
 }

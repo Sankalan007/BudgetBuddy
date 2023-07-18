@@ -1,18 +1,18 @@
 package com.example.budgetbuddy.repo;
 
-import com.example.budgetbuddy.model.PresetAverages;
-import com.example.budgetbuddy.model.PresetTransactions;
-import com.example.budgetbuddy.model.SpendCategory;
-import com.example.budgetbuddy.model.Transaction;
+import com.example.budgetbuddy.model.*;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     // find all transactions of a user
@@ -166,6 +166,22 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Other Spendings' AND transactionDate BETWEEN ?2 AND ?3")
     Double otherAmount(Long userId, String from, String to);
 
+    default SpendCategory findMonthlySpendCategorySumByUserId(Long userId, String Date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(Date, formatter);
+        LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
+
+        return SpendCategory.builder()
+                .Food(foodAmount(userId, monthStartDate.toString(), date.toString()))
+                .Transport(transportAmount(userId, monthStartDate.toString(), date.toString()))
+                .Entertainment(entertainmentAmount(userId, monthStartDate.toString(), date.toString()))
+                .Shopping(shoppingAmount(userId, monthStartDate.toString(), date.toString()))
+                .Utilities(utilitiesAmount(userId, monthStartDate.toString(), date.toString()))
+                .Housing(housingAmount(userId, monthStartDate.toString(), date.toString()))
+                .Other(otherAmount(userId, monthStartDate.toString(), date.toString()))
+                .build();
+    }
+
     default List<Double> getDayOfMonthSpending(Long userId, String Date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<Double> dayOfMonthSpending = new ArrayList<>();
@@ -262,21 +278,259 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
 
 
 
-    default SpendCategory findMonthlySpendCategorySumByUserId(Long userId, String Date){
+
+
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Salary' AND transactionDate BETWEEN ?2 AND ?3")
+    Double salaryAmount(Long userId, String from, String to);
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Business' AND transactionDate BETWEEN ?2 AND ?3")
+    Double businessAmount(Long userId, String from, String to);
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Rental' AND transactionDate BETWEEN ?2 AND ?3")
+    Double rentalAmount(Long userId, String from, String to);
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Investment' AND transactionDate BETWEEN ?2 AND ?3")
+    Double investmentAmount(Long userId, String from, String to);
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Gifts/Inheritence' AND transactionDate BETWEEN ?2 AND ?3")
+    Double giftsAmount(Long userId, String from, String to);
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Freelance' AND transactionDate BETWEEN ?2 AND ?3")
+    Double freelanceAmount(Long userId, String from, String to);
+    @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Other Incomes' AND transactionDate BETWEEN ?2 AND ?3")
+    Double otherIncomesAmount(Long userId, String from, String to);
+
+    default EarnCategory findMonthlyEarnCategorySumByUserId(Long userId, String Date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
 
-        return SpendCategory.builder()
-                .Food(foodAmount(userId, monthStartDate.toString(), date.toString()))
-                .Transport(transportAmount(userId, monthStartDate.toString(), date.toString()))
-                .Entertainment(entertainmentAmount(userId, monthStartDate.toString(), date.toString()))
-                .Shopping(shoppingAmount(userId, monthStartDate.toString(), date.toString()))
-                .Utilities(utilitiesAmount(userId, monthStartDate.toString(), date.toString()))
-                .Housing(housingAmount(userId, monthStartDate.toString(), date.toString()))
-                .Other(otherAmount(userId, monthStartDate.toString(), date.toString()))
+        return EarnCategory.builder()
+                .Salary(salaryAmount(userId, monthStartDate.toString(), date.toString()))
+                .Business(businessAmount(userId, monthStartDate.toString(), date.toString()))
+                .Rental(rentalAmount(userId, monthStartDate.toString(), date.toString()))
+                .Investment(investmentAmount(userId, monthStartDate.toString(), date.toString()))
+                .Gifts(giftsAmount(userId, monthStartDate.toString(), date.toString()))
+                .Freelance(freelanceAmount(userId, monthStartDate.toString(), date.toString()))
+                .OtherIncomes(otherIncomesAmount(userId, monthStartDate.toString(), date.toString()))
                 .build();
     }
+
+
+    default Integer least(List<Double> items) {
+        int mini = Integer.MAX_VALUE;
+        int minIndex = -1;
+        for (int i = 0; i < items.size(); i++) {
+            Double item = items.get(i);
+            int intValue = item.intValue();
+            if (intValue < mini) {
+                mini = intValue;
+                minIndex = i;
+            }
+        }
+        return minIndex;
+    }
+    default Integer most(List<Double> items) {
+        int maxi = Integer.MIN_VALUE;
+        int maxIndex = -1;
+        for (int i = 0; i < items.size(); i++) {
+            Double item = items.get(i);
+            int intValue = item.intValue();
+            if (intValue > maxi) {
+                maxi = intValue;
+                maxIndex = i;
+            }
+        }
+        return maxIndex;
+    }
+
+    default Insights getTransactionsInsights(Long userId, String Date){
+        List<Double> dayOfMonthEarning = getDayOfMonthEarning(userId, Date);
+        Integer leastEarnDay = least(dayOfMonthEarning);
+
+        List<Double> monthOfYearEarning = getMonthOfYearEarning(userId, Date);
+        Integer leastEarnMonth = least(monthOfYearEarning);
+
+        EarnCategory monthlyEarnCategory = findMonthlyEarnCategorySumByUserId(userId, Date);
+
+        InsightsCategories leastEarnCategory;
+        List<String> leastEarnCategories = new ArrayList<>();
+        Double minEarnValue = Double.MAX_VALUE;
+
+
+        Field[] fields = monthlyEarnCategory.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlyEarnCategory);
+                if (value < minEarnValue) {
+                    minEarnValue = value;
+//                    leastEarnCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlyEarnCategory);
+                if (Objects.equals(value, minEarnValue)) {
+//                    minEarnValue = value;
+                    leastEarnCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        leastEarnCategory = InsightsCategories.builder()
+                .categories(leastEarnCategories)
+                .value(minEarnValue)
+                .build();
+
+        List<Double> dayOfMonthSpending = getDayOfMonthSpending(userId, Date);
+        Integer leastSpendDay = least(dayOfMonthSpending);
+
+        List<Double> monthOfYearSpending = getMonthOfYearSpending(userId, Date);
+        Integer leastSpendMonth = least(monthOfYearSpending);
+
+        SpendCategory monthlySpendCategory = findMonthlySpendCategorySumByUserId(userId, Date);
+
+        InsightsCategories leastSpendCategory;
+        List<String> leastSpendCategories = new ArrayList<>();
+        Double minSpendValue = Double.MAX_VALUE;
+
+        Field[] fieldsSpend = monthlySpendCategory.getClass().getDeclaredFields();
+        for (Field field : fieldsSpend) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlySpendCategory);
+                if (value < minSpendValue) {
+                    minSpendValue = value;
+//                    leastSpendCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (Field field : fieldsSpend) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlySpendCategory);
+                if (Objects.equals(value, minSpendValue)) {
+//                    minSpendValue = value;
+                    leastSpendCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        leastSpendCategory = InsightsCategories.builder()
+                .categories(leastSpendCategories)
+                .value(minSpendValue)
+                .build();
+
+
+        List<Double> dayOfMonthEarningMost = getDayOfMonthEarning(userId, Date);
+        Integer mostEarnDay = most(dayOfMonthEarningMost);
+
+        List<Double> monthOfYearEarningMost = getMonthOfYearEarning(userId, Date);
+        Integer mostEarnMonth = most(monthOfYearEarningMost);
+
+        monthlyEarnCategory = findMonthlyEarnCategorySumByUserId(userId, Date);
+
+        InsightsCategories mostEarnCategory;
+        List<String> mostEarnCategories = new ArrayList<>();
+        Double maxEarnValue = Double.MIN_VALUE;
+
+        Field[] fieldsMost = monthlyEarnCategory.getClass().getDeclaredFields();
+        for (Field field : fieldsMost) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlyEarnCategory);
+                if (value > maxEarnValue) {
+                    maxEarnValue = value;
+//                    mostEarnCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (Field field : fieldsMost) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlyEarnCategory);
+                if (Objects.equals(value, maxEarnValue)) {
+//                    maxEarnValue = value;
+                    mostEarnCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        mostEarnCategory = InsightsCategories.builder()
+                .categories(mostEarnCategories)
+                .value(maxEarnValue)
+                .build();
+
+
+        Integer mostSpendDay = most(dayOfMonthSpending);
+
+        Integer mostSpendMonth = most(monthOfYearSpending);
+
+        monthlySpendCategory = findMonthlySpendCategorySumByUserId(userId, Date);
+
+        InsightsCategories mostSpendCategory;
+        List<String> mostSpendCategories = new ArrayList<>();
+        Double maxSpendValue = Double.MIN_VALUE;
+
+        for (Field field : fieldsSpend) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlySpendCategory);
+                if (value > maxSpendValue) {
+                    maxSpendValue = value;
+//                    mostSpendCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (Field field : fieldsSpend) {
+            field.setAccessible(true);
+            try {
+                Double value = (Double) field.get(monthlySpendCategory);
+                if (Objects.equals(value, maxSpendValue)) {
+//                    maxSpendValue = value;
+                    mostSpendCategories.add(field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        mostSpendCategory = InsightsCategories.builder()
+                .categories(mostSpendCategories)
+                .value(maxSpendValue)
+                .build();
+
+        return Insights.builder()
+                .leastEarnDay(leastEarnDay + 1)
+                .leastEarnMonth(leastEarnMonth + 1)
+                .leastEarnCategory(leastEarnCategory)
+                .leastSpendDay(leastSpendDay + 1)
+                .leastSpendMonth(leastSpendMonth + 1)
+                .leastSpendCategory(leastSpendCategory)
+                .mostEarnDay(mostEarnDay + 1)
+                .mostEarnMonth(mostEarnMonth + 1)
+                .mostEarnCategory(mostEarnCategory)
+                .mostSpendDay(mostSpendDay + 1)
+                .mostSpendMonth(mostSpendMonth + 1)
+                .mostSpendCategory(mostSpendCategory)
+                .build();
+    }
+
 
 
 }
