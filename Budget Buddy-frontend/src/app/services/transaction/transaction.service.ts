@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import EarnCategories from 'src/app/model/EarnCategories';
+import Insights from 'src/app/model/Insights';
 import PresetAverages from 'src/app/model/PresetAverages';
 import PresetTransactions from 'src/app/model/PresetTransactions';
 import SpendCategories from 'src/app/model/SpendCategories';
@@ -85,6 +87,15 @@ export class TransactionService {
     );
   }
 
+  getMonthlyCategoriesEarning(
+    userId: number,
+    date: string
+  ): Observable<EarnCategories> {
+    return this.http.get<EarnCategories>(
+      `${this.baseUrl}/earnCategory/month/${userId}/${date}`
+    );
+  }
+
   getDailyTransaction(userId: number, date: String): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(
       `${this.baseUrl}/filter/current-day/${date}/${userId}`
@@ -153,5 +164,8 @@ export class TransactionService {
   }
   getDayOfLastSevenDaysEarning(userId: number, date: String): Observable<number[]>{
     return this.http.get<number[]>(`${this.baseUrl}/dayOfLastSevenDaysEarn/${userId}/${date}`);
+  }
+  getInsights(userId: number, date: String): Observable<Insights>{
+    return this.http.get<Insights>(`${this.baseUrl}/insights/${userId}/${date}`);
   }
 }
