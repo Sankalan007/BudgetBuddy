@@ -1,334 +1,555 @@
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-4">Budgets</h1>
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">
-      Set your monthly budgets
-    </h2>
-  
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div
-        class="bg-green shadow-md rounded-lg overflow-hidden p-4 flex flex-col justify-between"
+<div class="m-6">
+  <div class="grid grid-cols-2 gap-4 grid-row-7">
+    <div
+      class="bg-[#227C70] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto"
+    >
+      <h1 class="text-3xl font-bold justify-center flex flex-col items-center my-auto mx-auto">
+        <span class="font-mono">Food</span>
+        <span
+          *ngIf="!isFoodUpdateShowing"
+          class="mt-3 text-sm font-merriweather"
+        >
+          Budget : {{ budgetCategory.food }}
+        </span>
+      </h1>
+
+      <span class="text-[10px] ml-2 text-sm mt-5 text-white"
+        >{{ updateProgressBar("Food") }}%</span
       >
-        <div>
-          <h2 class="text-lg font-bold mb-2">Food</h2>
-          <p class="text-gray-500 mb-2">
-            Spent: {{ categoryDivision.food | currency : "INR" }}
-          </p>
-  
-          <div *ngIf="budgets?.food">
-            <p class="text-gray-500">
-              Budget: {{ budgets.food | currency : "INR" }}
-            </p>
-            <div class="mt-4">
-              <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  class="h-2 bg-green-500 rounded-full"
-                  [style.width.%]="(categoryDivision.food / budgets.food) * 100"
-                ></div>
-              </div>
-            </div>
-          </div>
-  
-          <div *ngIf="!budgets?.food">
-            <label
-              class="block text-gray-700 font-bold mb-2"
-              for="food-budget-input"
-              >Set Budget:</label
-            >
-            <input
-              class="w-full border border-gray-400 p-2 mb-2"
-              type="number"
-              id="food-budget-input"
-              [(ngModel)]="newBudgets.food"
-            />
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              (click)="addBudget('Food', newBudgets.food)"
-            >
-              Create
-            </button>
-          </div>
-        </div>
+      <div
+        class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
+      >
+        <div
+          class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+          [style.width.%]="updateProgressBar('Food')"
+          [style.backgroundColor]="getColor('Food')"
+        ></div>
       </div>
-  
-      <div
-        class="bg-white shadow-md rounded-lg overflow-hidden p-4 flex flex-col justify-between"
-      >
-        <div>
-          <h2 class="text-lg font-bold mb-2">Transport</h2>
-          <p class="text-gray-500 mb-2">
-            Spent: {{ categoryDivision.transport | currency : "INR" }}
-          </p>
-  
-          <div *ngIf="budgets?.transport">
-            <p class="text-gray-500">
-              Budget: {{ budgets.transport | currency : "INR" }}
-            </p>
-            <div class="mt-4">
-              <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  class="h-2 bg-green-500 rounded-full"
-                  [style.width.%]="
-                    (categoryDivision.transport / budgets.transport) * 100
-                  "
-                ></div>
-              </div>
-            </div>
-          </div>
-  
-          <div *ngIf="!budgets?.transport">
-            <label
-              class="block text-gray-700 font-bold mb-2"
-              for="transport-budget-input"
-              >Set Budget:</label
-            >
-            <input
-              class="w-full border border-gray-400 p-2 mb-2"
-              type="number"
-              id="transport-budget-input"
-              [(ngModel)]="newBudgets.transport"
-            />
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              (click)="addBudget('Transport', newBudgets.transport)"
-            >
-              Create
-            </button>
-          </div>
+
+      <div class="mt-10 mx-auto">
+        <div class="flex space-x-4" *ngIf="budgetCategory.food == null">
+          <input
+            [(ngModel)]="foodBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56"
+          />
+
+          <button
+            (click)="setBudget('Food', foodBudget)"
+            class="bg-white p-2 rounded-sm"
+          >
+            <p class="text-black text-[15px]">Add Budget</p>
+          </button>
         </div>
-      </div>
-  
-      <div
-        class="bg-white shadow-md rounded-lg overflow-hidden p-4 flex flex-col justify-between"
-      >
-        <div>
-          <h2 class="text-lg font-bold mb-2">Entertainment</h2>
-          <p class="text-gray-500 mb-2">
-            Spent: {{ categoryDivision.entertainment | currency : "INR" }}
+        <div *ngIf="budgetCategory.food != null" class="flex space-x-4">
+          <p
+            *ngIf="!isFoodUpdateShowing"
+            (click)="doToggle('Food')"
+            class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+          >
+            Update<span><i class="fa fa-pen-to-square ml-2"></i></span>
           </p>
-  
-          <div *ngIf="budgets?.entertainment">
-            <p class="text-gray-500">
-              Budget: {{ budgets.entertainment | currency : "INR" }}
-            </p>
-            <div class="mt-4">
-              <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  class="h-2 bg-green-500 rounded-full"
-                  [style.width.%]="
-                    (categoryDivision.entertainment / budgets.entertainment) * 100
-                  "
-                ></div>
-              </div>
-            </div>
-          </div>
-  
-          <div *ngIf="!budgets?.entertainment">
-            <label
-              class="block text-gray-700 font-bold mb-2"
-              for="food-budget-input"
-              >Set Budget:</label
-            >
+
+          <div class="flex space-x-4" *ngIf="isFoodUpdateShowing">
+
+            <!-- <p class="space-x-[-10px] text-red">Set budget is less <br> than the spent <br>value</p> -->
             <input
-              class="w-full border border-gray-400 p-2 mb-2"
-              type="number"
-              id="food-budget-input"
-              [(ngModel)]="newBudgets.entertainment"
+              [(ngModel)]="updatedFoodBudget"
+              type="text"
+              class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
             />
+
+           
+
             <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              (click)="addBudget('Entertainment', newBudgets.entertainment)"
+              (click)="updateBudget('Food', updatedFoodBudget)"
+            
             >
-              Create
+              <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
             </button>
           </div>
-        </div>
-      </div>
-  
-      <div
-        class="bg-white shadow-md rounded-lg overflow-hidden p-4 flex flex-col justify-between"
-      >
-        <div>
-          <h2 class="text-lg font-bold mb-2">Shopping</h2>
-          <p class="text-gray-500 mb-2">
-            Spent: {{ categoryDivision.shopping | currency : "INR" }}
+
+          <p
+            *ngIf="!isFoodUpdateShowing"
+            (click)="deleteBudget('Food')"
+            class="cursor-pointer text-white bg-danger hover:bg-[#ab2b11] shadow-button border border-white rounded-md p-1 px-3 text-[15px]"
+          >
+            Delete<span><i class="fa fa-trash-alt ml-2"></i></span>
           </p>
-  
-          <div *ngIf="budgets?.shopping">
-            <p class="text-gray-500">
-              Budget: {{ budgets.shopping | currency : "INR" }}
-            </p>
-            <div class="mt-4">
-              <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  class="h-2 bg-green-500 rounded-full"
-                  [style.width.%]="
-                    (categoryDivision.shopping / budgets.shopping) * 100
-                  "
-                ></div>
-              </div>
-            </div>
-          </div>
-  
-          <div *ngIf="!budgets?.shopping">
-            <label
-              class="block text-gray-700 font-bold mb-2"
-              for="shopping-budget-input"
-              >Set Budget:</label
-            >
-            <input
-              class="w-full border border-gray-400 p-2 mb-2"
-              type="number"
-              id="shopping-budget-input"
-              [(ngModel)]="newBudgets.shopping"
-            />
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              (click)="addBudget('Shopping', newBudgets.shopping)"
-            >
-              Create
-            </button>
-          </div>
-        </div>
-      </div>
-  
-      <div
-        class="bg-white shadow-md rounded-lg overflow-hidden p-4 flex flex-col justify-between"
-      >
-        <div>
-          <h2 class="text-lg font-bold mb-2">Utilities</h2>
-          <p class="text-gray-500 mb-2">
-            Spent: {{ categoryDivision.utilities | currency : "INR" }}
-          </p>
-  
-          <div *ngIf="budgets?.utilities">
-            <p class="text-gray-500">
-              Budget: {{ budgets.utilities | currency : "INR" }}
-            </p>
-            <div class="mt-4">
-              <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  class="h-2 bg-green-500 rounded-full"
-                  [style.width.%]="
-                    (categoryDivision.utilities / budgets.utilities) * 100
-                  "
-                ></div>
-              </div>
-            </div>
-          </div>
-  
-          <div *ngIf="!budgets?.utilities">
-            <label
-              class="block text-gray-700 font-bold mb-2"
-              for="utilities-budget-input"
-              >Set Budget:</label
-            >
-            <input
-              class="w-full border border-gray-400 p-2 mb-2"
-              type="number"
-              id="utilities-budget-input"
-              [(ngModel)]="newBudgets.utilities"
-            />
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              (click)="addBudget('Utilities', newBudgets.utilities)"
-            >
-              Create
-            </button>
-          </div>
-        </div>
-      </div>
-  
-      <div
-        class="bg-white shadow-md rounded-lg overflow-hidden p-4 flex flex-col justify-between"
-      >
-        <div>
-          <h2 class="text-lg font-bold mb-2">Housing</h2>
-          <p class="text-gray-500 mb-2">
-            Spent: {{ categoryDivision.housing | currency : "INR" }}
-          </p>
-  
-          <div *ngIf="budgets?.housing">
-            <p class="text-gray-500">
-              Budget: {{ budgets.housing | currency : "INR" }}
-            </p>
-            <div class="mt-4">
-              <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  class="h-2 bg-green-500 rounded-full"
-                  [style.width.%]="
-                    (categoryDivision.housing / budgets.housing) * 100
-                  "
-                ></div>
-              </div>
-            </div>
-          </div>
-  
-          <div *ngIf="!budgets?.housing">
-            <label
-              class="block text-gray-700 font-bold mb-2"
-              for="housing-budget-input"
-              >Set Budget:</label
-            >
-            <input
-              class="w-full border border-gray-400 p-2 mb-2"
-              type="number"
-              id="housing-budget-input"
-              [(ngModel)]="newBudgets.housing"
-            />
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              (click)="addBudget('Housing', newBudgets.housing)"
-            >
-              Create
-            </button>
-          </div>
-        </div>
-      </div>
-  
-      <div
-        class="bg-white shadow-md rounded-lg overflow-hidden p-4 flex flex-col justify-between"
-      >
-        <div>
-          <h2 class="text-lg font-bold mb-2">Other</h2>
-          <p class="text-gray-500 mb-2">
-            Spent: {{ categoryDivision.other | currency : "INR" }}
-          </p>
-  
-          <div *ngIf="budgets?.other">
-            <p class="text-gray-500">
-              Budget: {{ budgets.other | currency : "INR" }}
-            </p>
-            <div class="mt-4">
-              <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  class="h-2 bg-green-500 rounded-full"
-                  [style.width.%]="(categoryDivision.other / budgets.other) * 100"
-                ></div>
-              </div>
-            </div>
-          </div>
-  
-          <div *ngIf="!budgets?.other">
-            <label
-              class="block text-gray-700 font-bold mb-2"
-              for="other-budget-input"
-              >Set Budget:</label
-            >
-            <input
-              class="w-full border border-gray-400 p-2 mb-2"
-              type="number"
-              id="other-budget-input"
-              [(ngModel)]="newBudgets.other"
-            />
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              (click)="addBudget('Other', newBudgets.other)"
-            >
-              Create
-            </button>
-          </div>
         </div>
       </div>
     </div>
+
+    <!-- ------------------------------------------------------- -->
+
+    <div
+      class="bg-[#227C70] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto"
+    >
+    <h1 class="text-3xl font-bold justify-center flex flex-col items-center my-auto mx-auto">
+      <span class="font-mono">Transport</span>
+      <span
+        *ngIf="!isTransportUpdateShowing"
+        class="mt-3 text-sm font-merriweather"
+      >
+        Budget : {{ budgetCategory.transport }}
+      </span>
+    </h1>
+
+    <span class="text-[10px] ml-2 text-sm mt-5 text-white"
+      >{{ updateProgressBar("Transport") }}%</span
+    >
+    <div
+      class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+        [style.width.%]="updateProgressBar('Transport')"
+        [style.backgroundColor]="getColor('Transport')"
+      ></div>
+    </div>
+
+    <div class="mt-10 mx-auto">
+      <div class="flex space-x-4" *ngIf="budgetCategory.transport == null">
+        <input
+          [(ngModel)]="transportBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+
+        <button
+          (click)="setBudget('Transport', transportBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.transport != null" class="flex space-x-4">
+        <p
+          *ngIf="!isTransportUpdateShowing"
+          (click)="doToggle('Transport')"
+          class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+        >
+          Update<span><i class="fa fa-pen-to-square ml-2"></i></span>
+        </p>
+
+        <div class="flex space-x-4" *ngIf="isTransportUpdateShowing">
+          <input
+            [(ngModel)]="updatedTransportBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+          />
+
+          <button
+            (click)="updateBudget('Transport', updatedTransportBudget)"
+          
+          >
+            <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
+          </button>
+        </div>
+
+        <p
+          *ngIf="!isTransportUpdateShowing"
+          (click)="deleteBudget('Transport')"
+          class="cursor-pointer text-white bg-danger hover:bg-[#ab2b11] shadow-button border border-white rounded-md p-1 px-3 text-[15px]"
+        >
+          Delete<span><i class="fa fa-trash-alt ml-2"></i></span>
+        </p>
+      </div>
+    </div>
   </div>
-  
+
+    <!-- ---------------------------------------------------- -->
+
+    <div
+      class="bg-[#88A47C] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto"
+    >
+      <h1 class="text-3xl font-bold justify-center flex flex-col items-center my-auto mx-auto">
+        <span class="font-mono">Entertainment</span>
+        <span
+          *ngIf="!isEntertainmentUpdateShowing"
+          class="mt-3 text-sm font-merriweather"
+        >
+          Budget : {{ budgetCategory.entertainment }}
+        </span>
+      </h1>
+
+      <span class="text-[10px] ml-2 text-sm mt-5 text-white"
+        >{{ updateProgressBar("Entertainment") }}%</span
+      >
+      <div
+        class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
+      >
+        <div
+          class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+          [style.width.%]="updateProgressBar('Entertainment')"
+          [style.backgroundColor]="getColor('Entertainment')"
+        ></div>
+      </div>
+
+      <div class="mt-10 mx-auto">
+        <div class="flex space-x-4" *ngIf="budgetCategory.entertainment == null">
+          <input
+            [(ngModel)]="entertainmentBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56"
+          />
+
+          <button
+            (click)="setBudget('Entertainment', entertainmentBudget)"
+            class="bg-white p-2 rounded-sm"
+          >
+            <p class="text-black text-[15px]">Add Budget</p>
+          </button>
+        </div>
+        <div *ngIf="budgetCategory.entertainment != null" class="flex space-x-4">
+          <p
+            *ngIf="!isEntertainmentUpdateShowing"
+            (click)="doToggle('Entertainment')"
+            class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+          >
+            Update<span><i class="fa fa-pen-to-square ml-2"></i></span>
+          </p>
+
+          <div class="flex space-x-4" *ngIf="isEntertainmentUpdateShowing">
+            <input
+              [(ngModel)]="updatedEntertainmentBudget"
+              type="text"
+              class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            />
+
+            <button
+              (click)="updateBudget('Entertainment', updatedEntertainmentBudget)"
+            
+            >
+              <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
+            </button>
+          </div>
+
+          <p
+            *ngIf="!isEntertainmentUpdateShowing"
+            (click)="deleteBudget('Entertainment')"
+            class="cursor-pointer text-white bg-danger hover:bg-[#ab2b11] shadow-button border border-white rounded-md p-1 px-3 text-[15px]"
+          >
+            Delete<span><i class="fa fa-trash-alt ml-2"></i></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  <!-- --------------------------------------------------- -->
+
+  <!-- <div class="grid grid-cols-3 grid-row-2 gap-1"> -->
+    <!-- ----------------------------------- -->
+    <div
+      class="bg-[#88A47C] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto"
+    >
+      <h1 class="text-3xl font-bold justify-center flex flex-col items-center my-auto mx-auto">
+        <span class="font-mono">Shopping</span>
+        <span
+          *ngIf="!isShoppingUpdateShowing"
+          class="mt-3 text-sm font-merriweather"
+        >
+          Budget : {{ budgetCategory.shopping }}
+        </span>
+      </h1>
+
+      <span class="text-[10px] ml-2 text-sm mt-5 text-white"
+        >{{ updateProgressBar("Shopping") }}%</span
+      >
+      <div
+        class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
+      >
+        <div
+          class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+          [style.width.%]="updateProgressBar('Shopping')"
+          [style.backgroundColor]="getColor('Shopping')"
+        ></div>
+      </div>
+
+      <div class="mt-10 mx-auto">
+        <div class="flex space-x-4" *ngIf="budgetCategory.shopping == null">
+          <input
+            [(ngModel)]="shoppingBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56"
+          />
+
+          <button
+            (click)="setBudget('Shopping', shoppingBudget)"
+            class="bg-white p-2 rounded-sm"
+          >
+            <p class="text-black text-[15px]">Add Budget</p>
+          </button>
+        </div>
+        <div *ngIf="budgetCategory.shopping != null" class="flex space-x-4">
+          <p
+            *ngIf="!isShoppingUpdateShowing"
+            (click)="doToggle('Shopping')"
+            class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+          >
+            Update<span><i class="fa fa-pen-to-square ml-2"></i></span>
+          </p>
+
+          <div class="flex space-x-4" *ngIf="isShoppingUpdateShowing">
+            <input
+              [(ngModel)]="updatedShoppingBudget"
+              type="text"
+              class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            />
+
+            <button
+              (click)="updateBudget('Shopping', updatedShoppingBudget)"
+            
+            >
+              <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
+            </button>
+          </div>
+
+          <p
+            *ngIf="!isShoppingUpdateShowing"
+            (click)="deleteBudget('Shopping')"
+            class="cursor-pointer text-white bg-danger hover:bg-[#ab2b11] shadow-button border border-white rounded-md p-1 px-3 text-[15px]"
+          >
+            Delete<span><i class="fa fa-trash-alt ml-2"></i></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----------------------------------------------- -->
+    <div
+      class="bg-[#227C70] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto"
+    >
+      <h1 class="text-3xl font-bold justify-center flex flex-col items-center my-auto mx-auto">
+        <span class="font-mono">Utilities</span>
+        <span
+          *ngIf="!isUtilitiesUpdateShowing"
+          class="mt-3 text-sm font-merriweather"
+        >
+          Budget : {{ budgetCategory.utilities }}
+        </span>
+      </h1>
+
+      <span class="text-[10px] ml-2 text-sm mt-5 text-white"
+        >{{ updateProgressBar("Utilities") }}%</span
+      >
+      <div
+        class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
+      >
+        <div
+          class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+          [style.width.%]="updateProgressBar('Utilities')"
+          [style.backgroundColor]="getColor('Utilities')"
+        ></div>
+      </div>
+
+      <div class="mt-10 mx-auto">
+        <div class="flex space-x-4" *ngIf="budgetCategory.utilities == null">
+          <input
+            [(ngModel)]="utilitiesBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56"
+          />
+
+          <button
+            (click)="setBudget('Utilities', utilitiesBudget)"
+            class="bg-white p-2 rounded-sm"
+          >
+            <p class="text-black text-[15px]">Add Budget</p>
+          </button>
+        </div>
+        <div *ngIf="budgetCategory.utilities != null" class="flex space-x-4">
+          <p
+            *ngIf="!isUtilitiesUpdateShowing"
+            (click)="doToggle('Utilities')"
+            class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+          >
+            Update<span><i class="fa fa-pen-to-square ml-2"></i></span>
+          </p>
+
+          <div class="flex space-x-4" *ngIf="isUtilitiesUpdateShowing">
+            <input
+              [(ngModel)]="updatedUtilitiesBudget"
+              type="text"
+              class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            />
+
+            <button
+              (click)="updateBudget('Utilities', updatedUtilitiesBudget)"
+            
+            >
+              <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
+            </button>
+          </div>
+
+          <p
+            *ngIf="!isUtilitiesUpdateShowing"
+            (click)="deleteBudget('Utilities')"
+            class="cursor-pointer text-white bg-danger hover:bg-[#ab2b11] shadow-button border border-white rounded-md p-1 px-3 text-[15px]"
+          >
+            Delete<span><i class="fa fa-trash-alt ml-2"></i></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----------------------------------- -->
+
+    <div
+    class="bg-[#227C70] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto"
+  >
+    <h1 class="text-3xl font-bold justify-center flex flex-col items-center my-auto mx-auto">
+      <span class="font-mono">Housing</span>
+      <span
+        *ngIf="!isHousingUpdateShowing"
+        class="mt-3 text-sm font-merriweather"
+      >
+        Budget : {{ budgetCategory.housing }}
+      </span>
+    </h1>
+
+    <span class="text-[10px] ml-2 text-sm mt-5 text-white"
+      >{{ updateProgressBar("Housing") }}%</span
+    >
+    <div
+      class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+        [style.width.%]="updateProgressBar('Housing')"
+        [style.backgroundColor]="getColor('Housing')"
+      ></div>
+    </div>
+
+    <div class="mt-10 mx-auto">
+      <div class="flex space-x-4" *ngIf="budgetCategory.housing == null">
+        <input
+          [(ngModel)]="housingBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+
+        <button
+          (click)="setBudget('Housing', housingBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.housing != null" class="flex space-x-4">
+        <p
+          *ngIf="!isHousingUpdateShowing"
+          (click)="doToggle('Housing')"
+          class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+        >
+          Update<span><i class="fa fa-pen-to-square ml-2"></i></span>
+        </p>
+
+        <div class="flex space-x-4" *ngIf="isHousingUpdateShowing">
+          <input
+            [(ngModel)]="updatedHousingBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+          />
+
+          <button
+            (click)="updateBudget('Housing', updatedHousingBudget)"
+          
+          >
+            <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
+          </button>
+        </div>
+
+        <p
+          *ngIf="!isHousingUpdateShowing"
+          (click)="deleteBudget('Housing')"
+          class="cursor-pointer text-white bg-danger hover:bg-[#ab2b11] shadow-button border border-white rounded-md p-1 px-3 text-[15px]"
+        >
+          Delete<span><i class="fa fa-trash-alt ml-2"></i></span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ----------------------------------------------- -->
+<!-- 
+  <div class="grid grid-cols-3 grid-row-2 gap-1"> -->
+    <!-- --------------------------- -->
+
+    <div
+    class="bg-[#88A47C] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto"
+  >
+    <h1 class="text-3xl font-bold justify-center flex flex-col items-center my-auto mx-auto">
+      <span class="font-mono">Other</span>
+      <span
+        *ngIf="!isOtherUpdateShowing"
+        class="mt-3 text-sm font-merriweather"
+      >
+        Budget : {{ budgetCategory.other }}
+      </span>
+    </h1>
+
+    <span class="text-[10px] ml-2 text-sm mt-5 text-white"
+      >{{ updateProgressBar("Other") }}%</span
+    >
+    <div
+      class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
+    >
+      <div
+        class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
+        [style.width.%]="updateProgressBar('Other')"
+        [style.backgroundColor]="getColor('Other')"
+      ></div>
+    </div>
+
+    <div class="mt-10 mx-auto">
+      <div class="flex space-x-4" *ngIf="budgetCategory.other == null">
+        <input
+          [(ngModel)]="otherBudget"
+          type="text"
+          class="px-3 py-2 text-black rounded-md caret-black w-56"
+        />
+
+        <button
+          (click)="setBudget('Other', otherBudget)"
+          class="bg-white p-2 rounded-sm"
+        >
+          <p class="text-black text-[15px]">Add Budget</p>
+        </button>
+      </div>
+      <div *ngIf="budgetCategory.other != null" class="flex space-x-4">
+        <p
+          *ngIf="!isOtherUpdateShowing"
+          (click)="doToggle('Other')"
+          class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+        >
+          Update<span><i class="fa fa-pen-to-square ml-2"></i></span>
+        </p>
+
+        <div class="flex space-x-4" *ngIf="isOtherUpdateShowing">
+          <input
+            [(ngModel)]="updatedOtherBudget"
+            type="text"
+            class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+          />
+
+          <button
+            (click)="updateBudget('Other', updatedOtherBudget)"
+          
+          >
+            <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
+          </button>
+        </div>
+
+        <p
+          *ngIf="!isOtherUpdateShowing"
+          (click)="deleteBudget('Other')"
+          class="cursor-pointer text-white bg-danger hover:bg-[#ab2b11] shadow-button border border-white rounded-md p-1 px-3 text-[15px]"
+        >
+          Delete<span><i class="fa fa-trash-alt ml-2"></i></span>
+        </p>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>

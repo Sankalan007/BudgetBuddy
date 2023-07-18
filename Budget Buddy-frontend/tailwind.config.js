@@ -23,6 +23,7 @@ module.exports = {
       gray:"#808080",
       silver:"#C0C0C0",
       brown: "#3F2229",
+      paleYellow: "#d1d435",
 
       // colors by importance
       safe:"#1fa349",

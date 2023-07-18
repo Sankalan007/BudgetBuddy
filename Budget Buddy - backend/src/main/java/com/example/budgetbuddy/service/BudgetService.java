@@ -27,6 +27,7 @@ public class BudgetService {
     }
 
     public Budget updateBudget(Budget budget){
+
         return budgetRepository.save(budget);
     }
     public void deleteBudget(Long id){

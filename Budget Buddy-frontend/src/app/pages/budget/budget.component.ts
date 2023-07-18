@@ -90,7 +90,6 @@ export class BudgetComponent implements OnInit {
       category: category,
       amount: amount,
     };
-    console.log(budget);
 
     this.budgetService.addNewBudget(budget).subscribe(
       (res) => {
@@ -103,32 +102,87 @@ export class BudgetComponent implements OnInit {
     );
   }
 
-  categorizeBudgets(budgets: Budget[]): CategorizedBudgets {
-    budgets.forEach((budget) => {
-      switch (budget.category) {
-        case 'Food':
-          this.categorizedBudgets.Food = budget.amount;
-          break;
-        case 'Transport':
-          this.categorizedBudgets.Transport = budget.amount;
-          break;
-        case 'Entertainment':
-          this.categorizedBudgets.Entertainment = budget.amount;
-          break;
-        case 'Shopping':
-          this.categorizedBudgets.Shopping = budget.amount;
-          break;
-        case 'Utilities':
-          this.categorizedBudgets.Utilities = budget.amount;
-          break;
-        case 'Housing':
-          this.categorizedBudgets.Housing = budget.amount;
-          break;
-        default:
-          this.categorizedBudgets.Other = budget.amount;
-          break;
+  isFoodUpdateShowing: boolean = false;
+  isEntertainmentUpdateShowing: boolean = false;
+  isTransportUpdateShowing: boolean = false;
+  isShoppingUpdateShowing: boolean = false;
+  isUtilitiesUpdateShowing: boolean = false;
+  isHousingUpdateShowing: boolean = false;
+  isOtherUpdateShowing: boolean = false;
+
+  getCategories() {
+    const today = new Date();
+    const date = new Date(today.getTime() + 5.5 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
+    this.transactionServices
+      .getMonthlyCategories(this.userId, date)
+      .subscribe((res) => {
+        console.log(res);
+        this.spendCategory = res;
+      });
+  }
+
+  updateProgressBar(category: String): any {
+    // // console.log(this.spendCategory);
+    // // console.log(this.budgetCategory);
+
+
+    
+    switch (category) {
+      case 'Food': {
+        return (((this.budgetCategory.food - this.spendCategory.food)/this.budgetCategory.food)*100).toFixed(2);
+        break;
       }
-    });
+      case 'Transport': {
+        //console.log(this.spendCategory.transport);
+
+        //console.log((((this.budgetCategory.transport - this.spendCategory.transport)/this.budgetCategory.transport)*100).toFixed(2));
+        return (((this.budgetCategory.transport - this.spendCategory.transport)/this.budgetCategory.transport)*100).toFixed(2);
+        break;
+      }
+      case 'Entertainment': {
+       // console.log(this.spendCategory.entertainment)
+        return (((this.budgetCategory.entertainment - this.spendCategory.entertainment)/this.budgetCategory.entertainment)*100).toFixed(2);
+        break;
+      }
+      case 'Shopping': {
+        return (((this.budgetCategory.shopping - this.spendCategory.shopping)/this.budgetCategory.shopping)*100).toFixed(2);
+        break;
+      }
+      case 'Utilities': {
+        return (((this.budgetCategory.utilities - this.spendCategory.utilities)/this.budgetCategory.utilities)*100).toFixed(2);
+        break;
+      }
+      case 'Housing': {
+        return (((this.budgetCategory.housing - this.spendCategory.housing)/this.budgetCategory.housing)*100).toFixed(2);
+        break;
+      }
+      case 'Other': {
+       // console.log(this.spendCategory.other);
+        return (((this.budgetCategory.other - this.spendCategory.other)/this.budgetCategory.other)*100).toFixed(2);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  getColor(category:String){
+    let progress: number = this.updateProgressBar(category);
+    
+    if(progress>66 ){
+      return "#FFFF";
+    }
+    else if(progress>33 && progress <66){
+      return "#d1d435";
+    }
+    else{
+      return "#FF0000";
+    }
+  }
+
 
     return this.categorizedBudgets;
   }
