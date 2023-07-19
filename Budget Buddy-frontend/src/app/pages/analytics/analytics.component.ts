@@ -216,7 +216,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       plugins: {
         legend: {
           labels: {
-            color: '#ffffff',
+            color: '#808080',
           },
         },
       },
