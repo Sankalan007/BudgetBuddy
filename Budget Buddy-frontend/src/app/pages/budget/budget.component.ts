@@ -63,6 +63,7 @@ export class BudgetComponent implements OnInit {
   baseUrl: string = 'http://localhost:8080/api/v1/budget';
   budgetAmount!: number;
   // // console.log(this.userDetails[0].id);
+
   foodBudget!: number;
   transportBudget!: number;
   utilitiesBudget!: number;
@@ -77,6 +78,8 @@ export class BudgetComponent implements OnInit {
   updatedEntertainmentBudget!: number;
   updatedHousingBudget!: number;
   updatedOtherBudget!: number;
+
+
   // newBudget: SpendCategories = {
   //   food: this.foodBudget,
   //   transport: this.transportBudget,
@@ -94,32 +97,43 @@ export class BudgetComponent implements OnInit {
         break;
       }
       case 'Transport': {
+
         this.isTransportGreater = false;
+
         this.isTransportUpdateShowing = !this.isTransportUpdateShowing;
         break;
       }
       case 'Entertainment': {
+
         this.isEntertainmentGreater = false;
         this.isEntertainmentUpdateShowing = !this.isEntertainmentUpdateShowing;
         break;
       }
       case 'Shopping': {
+
         this.isShoppingGreater = false;
+
         this.isShoppingUpdateShowing = !this.isShoppingUpdateShowing;
         break;
       }
       case 'Utilities': {
+
         this.isUtilitiesGreater = false;
+
         this.isUtilitiesUpdateShowing = !this.isUtilitiesUpdateShowing;
         break;
       }
       case 'Housing': {
+
         this.isHousingGreater = false;
+
         this.isHousingUpdateShowing = !this.isHousingUpdateShowing;
         break;
       }
       case 'Other': {
+
         this.isOtherGreater = false;
+
         this.isOtherUpdateShowing = !this.isOtherUpdateShowing;
         break;
       }
@@ -128,6 +142,7 @@ export class BudgetComponent implements OnInit {
       }
     }
   }
+
   setBudget(category: string, amount: Number, fieldId: string) {
     if (amount < this.getBudgetAmount(category) || amount == null) {
       this.addRed(fieldId, category);
@@ -136,6 +151,7 @@ export class BudgetComponent implements OnInit {
 
       return;
     }
+
 
     //  this.doToggle(category);
     let budget = {
@@ -163,14 +179,18 @@ export class BudgetComponent implements OnInit {
       }
     );
   }
+
   getBudgetAmount(category: String) {
+
     switch (category) {
       case 'Food': {
         return this.spendCategory.food;
         break;
       }
       case 'Transport': {
+
         return this.spendCategory.transport;
+
         break;
       }
       case 'Entertainment': {
@@ -194,11 +214,14 @@ export class BudgetComponent implements OnInit {
         break;
       }
       default: {
+
         return '';
+
         break;
       }
     }
   }
+
   isFoodGreater: boolean = false;
   isTransportGreater: boolean = false;
   isEntertainmentGreater: boolean = false;
@@ -219,6 +242,7 @@ export class BudgetComponent implements OnInit {
     }
 
     this.doToggle(category);
+
     let budget = {
       userId: this.userId,
       category: category,
@@ -278,6 +302,7 @@ export class BudgetComponent implements OnInit {
         break;
       }
       case 'Transport': {
+
         if (this.budgetCategory.transport == null) {
           return 0;
         }
@@ -287,6 +312,7 @@ export class BudgetComponent implements OnInit {
             this.budgetCategory.transport) *
           100
         ).toFixed(2);
+
         break;
       }
       case 'Entertainment': {
@@ -352,6 +378,7 @@ export class BudgetComponent implements OnInit {
       }
     }
   }
+
   getColor(category: String) {
     let progress: number = this.updateProgressBar(category);
     if (progress > 66) {
@@ -430,6 +457,7 @@ export class BudgetComponent implements OnInit {
       }
       case 'Other': {
         this.isOtherGreater = true;
+
         break;
       }
       default: {

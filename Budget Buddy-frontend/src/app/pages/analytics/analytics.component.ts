@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SmoothScrollService } from '@boatzako/ngx-smooth-scroll';
 import EarnCategories from 'src/app/model/EarnCategories';
 import Insights from 'src/app/model/Insights';
@@ -7,6 +7,8 @@ import SpendCategories from 'src/app/model/SpendCategories';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-analytics',
@@ -14,6 +16,7 @@ import { TransactionService } from 'src/app/services/transaction/transaction.ser
   styleUrls: ['./analytics.component.css'],
 })
 export class AnalyticsComponent implements OnInit, AfterViewInit {
+  @ViewChild('content', { static: false}) el!: ElementRef;
   monthList: Array<string> = [
     'January',
     'February',
@@ -30,11 +33,10 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   ];
 
   insights!: Insights;
-  // leastEarnMonth: number = this.insights.leastEarnMonth as number;.
 
-  formatMonth(month: number): string {
-    return this.monthList[month - 1];
-  }
+
+
+  
 
   monthlyCategoriesSpendingsData: any;
   monthlyCategoriesSpendingsOptions: any;
@@ -148,9 +150,32 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  formatMonth(month: number): string {
+    return this.monthList[month - 1];
+  }
+
   goTop() {
     this.smooth.smoothScrollToTop({ duration: 1000, easing: 'linear' });
   }
+
+  generatePDF(){
+    const doc = new jsPDF('p');
+    const elementToExport = this.el.nativeElement;
+    const divToHide = elementToExport.querySelector('.buttons');
+    if(divToHide){
+      divToHide.style.display = 'none';
+    }
+    html2canvas(elementToExport).then((canvas) => {
+      const imgData = canvas.toDataURL('image.png');
+      doc.addImage(imgData, 'PNG', 10, 10, 200, 0);
+      doc.save('demo.pdf');
+    });
+    if(divToHide){
+      divToHide.style.display = 'flex';
+    }
+  }
+
+
 
   generateRandomColors(numColors: number) {
     const colors = [];

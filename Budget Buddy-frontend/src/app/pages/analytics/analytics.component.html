@@ -1,7 +1,7 @@
-  <div class="w-full flex flex-col justify-center">
+<div class="w-full flex flex-col justify-center" #content>
   <div class="flex justify-between m-6">
     <div class="text-3xl font-bold">Analytics</div>
-    <div class="text-aqua flex space-x-6">
+    <div class="text-aqua flex space-x-6 buttons">
       <a
         href="analytics#insights"
         SmoothScroll
@@ -9,7 +9,7 @@
       >
         Insights<i class="fa fa-lightbulb ml-2"></i>
       </a>
-      <div class="cursor-pointer underline hover:text-xl transition-all">
+      <div class="cursor-pointer underline hover:text-xl transition-all" (click)="generatePDF()">
         Download Report
       </div>
     </div>
@@ -279,7 +279,7 @@
                     </ng-container>
                   </span>
                 </ng-container>
-                ...and from each of these sources you got
+                ...and in each of these sources you spent
                 {{ insights.mostEarnCategory.value | currency : "INR" }}
               </li>
             </ul>
