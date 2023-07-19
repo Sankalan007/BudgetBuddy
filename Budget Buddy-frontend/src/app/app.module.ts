@@ -48,6 +48,7 @@ import { ChartModule } from 'primeng/chart';
     HttpClientModule,
     FormsModule,
     ChartModule,
+    FormsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('token'),

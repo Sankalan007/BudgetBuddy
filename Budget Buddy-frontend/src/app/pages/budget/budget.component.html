@@ -1,7 +1,10 @@
+
+ <!-- transaction warning -->
+
 <div class="m-6">
   <div class="grid grid-cols-2 gap-4 grid-row-7">
     <div
-      class="bg-[#227C70] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto"
+      class="bg-[#227C70] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto items-center"
     >
       <h1 class="text-3xl font-bold justify-center flex flex-col items-center my-auto mx-auto">
         <span class="font-mono">Food</span>
@@ -9,13 +12,21 @@
           *ngIf="!isFoodUpdateShowing"
           class="mt-3 text-sm font-merriweather"
         >
-          Budget : {{ budgetCategory.food }}
+          <ng-container *ngIf="budgetCategory.food!=null">Budget : {{ budgetCategory.food }}</ng-container>
         </span>
       </h1>
 
-      <span class="text-[10px] ml-2 text-sm mt-5 text-white"
-        >{{ updateProgressBar("Food") }}%</span
+      <span class="text-[10px] text-sm mt-5 text-white flex justify-start w-full"
+        >
+        <ng-container *ngIf="updateProgressBar('Food') < 0;">
+          *set budget is lower than the spent value
+        </ng-container>
+        <ng-container *ngIf="updateProgressBar('Food') >= 0;">
+          {{ updateProgressBar('Food') }}%
+        </ng-container>
+        </span
       >
+
       <div
         class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
       >
@@ -26,19 +37,25 @@
         ></div>
       </div>
 
-      <div class="mt-10 mx-auto">
-        <div class="flex space-x-4" *ngIf="budgetCategory.food == null">
+      <div class="mt-10 mx-auto w-full items-center justify-center flex">
+        <div class="flex space-x-4 w-full mx-auto justify-center" *ngIf="budgetCategory.food == null">
+          <p *ngIf="isFoodGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
           <input
+            id="addFieldFood"
             [(ngModel)]="foodBudget"
             type="text"
-            class="px-3 py-2 text-black rounded-md caret-black w-56"
+            class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            placeholder="Enter Budget"
           />
 
           <button
-            (click)="setBudget('Food', foodBudget)"
-            class="bg-white p-2 rounded-sm"
+            
+            (click)="setBudget('Food', foodBudget,'addFieldFood')"
+            class=" rounded-sm"
           >
-            <p class="text-black text-[15px]">Add Budget</p>
+            <p  class="cursor-pointer text-white bg-[#7C9070] hover:bg-[#9CA777] rounded-md p-1 px-2 text-[15px]  shadow-button">
+              Add Budget
+              </p>
           </button>
         </div>
         <div *ngIf="budgetCategory.food != null" class="flex space-x-4">
@@ -50,19 +67,17 @@
             Update<span><i class="fa fa-pen-to-square ml-2"></i></span>
           </p>
 
-          <div class="flex space-x-4" *ngIf="isFoodUpdateShowing">
-
-            <!-- <p class="space-x-[-10px] text-red">Set budget is less <br> than the spent <br>value</p> -->
+          <div class="flex space-x-4 w-full" *ngIf="isFoodUpdateShowing">
+            <p *ngIf="isFoodGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
             <input
+              id="updateFoodBudgetBox"
               [(ngModel)]="updatedFoodBudget"
               type="text"
               class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+              placeholder="Enter Budget"
             />
-
-           
-
             <button
-              (click)="updateBudget('Food', updatedFoodBudget)"
+              (click)="updateBudget('Food', updatedFoodBudget,'updateFoodBudgetBox')"
             
             >
               <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
@@ -91,12 +106,20 @@
         *ngIf="!isTransportUpdateShowing"
         class="mt-3 text-sm font-merriweather"
       >
-        Budget : {{ budgetCategory.transport }}
+      <ng-container *ngIf="budgetCategory.transport!=null">Budget : {{ budgetCategory.transport }}</ng-container>
       </span>
     </h1>
 
     <span class="text-[10px] ml-2 text-sm mt-5 text-white"
-      >{{ updateProgressBar("Transport") }}%</span
+      >
+      <ng-container *ngIf="updateProgressBar('Transport') < 0;">
+          *set budget is lower than the spent value
+        </ng-container>
+        <ng-container *ngIf="updateProgressBar('Transport') >= 0;">
+          {{ updateProgressBar('Transport') }}%
+        </ng-container>
+      
+      </span
     >
     <div
       class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
@@ -110,17 +133,22 @@
 
     <div class="mt-10 mx-auto">
       <div class="flex space-x-4" *ngIf="budgetCategory.transport == null">
+        <p *ngIf="isTransportGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
         <input
+          id="addFieldTransport"
           [(ngModel)]="transportBudget"
           type="text"
-          class="px-3 py-2 text-black rounded-md caret-black w-56"
+          class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+          placeholder="Enter Budget"
         />
 
         <button
-          (click)="setBudget('Transport', transportBudget)"
-          class="bg-white p-2 rounded-sm"
+          (click)="setBudget('Transport', transportBudget,'addFieldTransport')"
+          class="rounded-sm"
         >
-          <p class="text-black text-[15px]">Add Budget</p>
+          <p class="cursor-pointer text-white bg-[#7C9070] hover:bg-[#9CA777] rounded-md p-1 px-2 text-[15px]  shadow-button">
+            Add Budget
+          </p>
         </button>
       </div>
       <div *ngIf="budgetCategory.transport != null" class="flex space-x-4">
@@ -133,14 +161,19 @@
         </p>
 
         <div class="flex space-x-4" *ngIf="isTransportUpdateShowing">
+
+          <p *ngIf="isTransportGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
+
           <input
+            id="updateTransportBudgetBox"
             [(ngModel)]="updatedTransportBudget"
             type="text"
             class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            placeholder="Enter Budget"
           />
 
           <button
-            (click)="updateBudget('Transport', updatedTransportBudget)"
+            (click)="updateBudget('Transport', updatedTransportBudget,'updateTransportBudgetBox')"
           
           >
             <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
@@ -169,12 +202,20 @@
           *ngIf="!isEntertainmentUpdateShowing"
           class="mt-3 text-sm font-merriweather"
         >
-          Budget : {{ budgetCategory.entertainment }}
+        <ng-container *ngIf="budgetCategory.entertainment!=null">Budget : {{ budgetCategory.entertainment }}</ng-container>
         </span>
       </h1>
 
       <span class="text-[10px] ml-2 text-sm mt-5 text-white"
-        >{{ updateProgressBar("Entertainment") }}%</span
+        >
+        <ng-container *ngIf="updateProgressBar('Entertainment') < 0;">
+          *set budget is lower than the spent value
+        </ng-container>
+        <ng-container *ngIf="updateProgressBar('Entertainment') >= 0;">
+          {{ updateProgressBar('Entertainment') }}%
+        </ng-container>
+        
+        </span
       >
       <div
         class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
@@ -188,17 +229,22 @@
 
       <div class="mt-10 mx-auto">
         <div class="flex space-x-4" *ngIf="budgetCategory.entertainment == null">
+          <p *ngIf="isEntertainmentGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
           <input
+            id="addFieldEntertainment"
             [(ngModel)]="entertainmentBudget"
             type="text"
-            class="px-3 py-2 text-black rounded-md caret-black w-56"
+            class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            placeholder="Enter Budget"
           />
 
           <button
-            (click)="setBudget('Entertainment', entertainmentBudget)"
-            class="bg-white p-2 rounded-sm"
+            (click)="setBudget('Entertainment', entertainmentBudget,'addFieldEntertainment')"
+            class=" rounded-sm"
           >
-            <p class="text-black text-[15px]">Add Budget</p>
+            <p class="cursor-pointer text-white bg-[#7C9070] hover:bg-[#9CA777] rounded-md p-1 px-2 text-[15px]  shadow-button">
+              Add Budget
+            </p>
           </button>
         </div>
         <div *ngIf="budgetCategory.entertainment != null" class="flex space-x-4">
@@ -211,14 +257,17 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isEntertainmentUpdateShowing">
-            <input
+            <p *ngIf="isEntertainmentGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
+            <input  
+              id="updateEntertainmentBudgetBox"
               [(ngModel)]="updatedEntertainmentBudget"
               type="text"
               class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+              placeholder="Enter Budget"
             />
 
             <button
-              (click)="updateBudget('Entertainment', updatedEntertainmentBudget)"
+              (click)="updateBudget('Entertainment', updatedEntertainmentBudget,'updateEntertainmentBudgetBox')"
             
             >
               <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
@@ -249,12 +298,20 @@
           *ngIf="!isShoppingUpdateShowing"
           class="mt-3 text-sm font-merriweather"
         >
-          Budget : {{ budgetCategory.shopping }}
+        <ng-container *ngIf="budgetCategory.shopping!=null">Budget : {{ budgetCategory.shopping }}</ng-container>
         </span>
       </h1>
 
       <span class="text-[10px] ml-2 text-sm mt-5 text-white"
-        >{{ updateProgressBar("Shopping") }}%</span
+        >
+        <ng-container *ngIf="updateProgressBar('Shopping') < 0;">
+          *set budget is lower than the spent value
+        </ng-container>
+        <ng-container *ngIf="updateProgressBar('Shopping') >= 0;">
+          {{ updateProgressBar('Shopping') }}%
+        </ng-container>
+        
+        </span
       >
       <div
         class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
@@ -268,17 +325,22 @@
 
       <div class="mt-10 mx-auto">
         <div class="flex space-x-4" *ngIf="budgetCategory.shopping == null">
+          <p *ngIf="isShoppingGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
           <input
+            id="addFieldShopping"
             [(ngModel)]="shoppingBudget"
             type="text"
             class="px-3 py-2 text-black rounded-md caret-black w-56"
+            placeholder="Enter Budget"
           />
 
           <button
-            (click)="setBudget('Shopping', shoppingBudget)"
-            class="bg-white p-2 rounded-sm"
+            (click)="setBudget('Shopping', shoppingBudget,'addFieldShopping')"
+            class="rounded-sm"
           >
-            <p class="text-black text-[15px]">Add Budget</p>
+            <p class="cursor-pointer text-white bg-[#7C9070] hover:bg-[#9CA777] rounded-md p-1 px-2 text-[15px]  shadow-button">
+              Add Budget
+            </p>
           </button>
         </div>
         <div *ngIf="budgetCategory.shopping != null" class="flex space-x-4">
@@ -291,14 +353,17 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isShoppingUpdateShowing">
+            <p *ngIf="isShoppingGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
             <input
+              id="updateShoppingBudgetBox"
               [(ngModel)]="updatedShoppingBudget"
               type="text"
               class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+              placeholder="Enter Budget"
             />
 
             <button
-              (click)="updateBudget('Shopping', updatedShoppingBudget)"
+              (click)="updateBudget('Shopping', updatedShoppingBudget,'updateShoppingBudgetBox')"
             
             >
               <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
@@ -326,12 +391,21 @@
           *ngIf="!isUtilitiesUpdateShowing"
           class="mt-3 text-sm font-merriweather"
         >
-          Budget : {{ budgetCategory.utilities }}
+        <ng-container *ngIf="budgetCategory.utilities!=null"> Budget : {{ budgetCategory.utilities }}</ng-container>
         </span>
       </h1>
 
       <span class="text-[10px] ml-2 text-sm mt-5 text-white"
-        >{{ updateProgressBar("Utilities") }}%</span
+        >
+        <ng-container *ngIf="updateProgressBar('Utilities') < 0;">
+          *set budget is lower than the spent value
+        </ng-container>
+        <ng-container *ngIf="updateProgressBar('Utilities') >= 0;">
+          {{ updateProgressBar('Utilities') }}%
+        </ng-container>
+        
+        
+        </span
       >
       <div
         class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
@@ -345,17 +419,22 @@
 
       <div class="mt-10 mx-auto">
         <div class="flex space-x-4" *ngIf="budgetCategory.utilities == null">
+          <p *ngIf="isUtilitiesGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
           <input
+            id="addFieldUtilities"
             [(ngModel)]="utilitiesBudget"
             type="text"
-            class="px-3 py-2 text-black rounded-md caret-black w-56"
+            class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            placeholder="Enter Budget"
           />
 
           <button
-            (click)="setBudget('Utilities', utilitiesBudget)"
-            class="bg-white p-2 rounded-sm"
+            (click)="setBudget('Utilities', utilitiesBudget,'addFieldUtilities')"
+            class="rounded-sm"
           >
-            <p class="text-black text-[15px]">Add Budget</p>
+            <p class="cursor-pointer text-white bg-[#7C9070] hover:bg-[#9CA777] rounded-md p-1 px-2 text-[15px]  shadow-button">
+              Add Budget
+            </p>
           </button>
         </div>
         <div *ngIf="budgetCategory.utilities != null" class="flex space-x-4">
@@ -368,14 +447,17 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isUtilitiesUpdateShowing">
+            <p *ngIf="isUtilitiesGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
             <input
+              id="updateUtilitiesBudgetBox"
               [(ngModel)]="updatedUtilitiesBudget"
               type="text"
               class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+              placeholder="Enter Budget"
             />
 
             <button
-              (click)="updateBudget('Utilities', updatedUtilitiesBudget)"
+              (click)="updateBudget('Utilities', updatedUtilitiesBudget,'updateUtilitiesBudgetBox')"
             
             >
               <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
@@ -404,12 +486,20 @@
         *ngIf="!isHousingUpdateShowing"
         class="mt-3 text-sm font-merriweather"
       >
-        Budget : {{ budgetCategory.housing }}
+      <ng-container *ngIf="budgetCategory.housing!=null">Budget : {{ budgetCategory.housing }}</ng-container>
       </span>
     </h1>
 
     <span class="text-[10px] ml-2 text-sm mt-5 text-white"
-      >{{ updateProgressBar("Housing") }}%</span
+      >
+      <ng-container *ngIf="updateProgressBar('Housing') < 0;">
+        *set budget is lower than the spent value
+      </ng-container>
+      <ng-container *ngIf="updateProgressBar('Housing') >= 0;">
+        {{ updateProgressBar('Housing') }}%
+      </ng-container>
+      
+      </span
     >
     <div
       class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
@@ -423,17 +513,22 @@
 
     <div class="mt-10 mx-auto">
       <div class="flex space-x-4" *ngIf="budgetCategory.housing == null">
+        <p *ngIf="isHousingGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
         <input
+          id="addFieldHousing"
           [(ngModel)]="housingBudget"
           type="text"
-          class="px-3 py-2 text-black rounded-md caret-black w-56"
+          class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+          placeholder="Enter Budget"
         />
 
         <button
-          (click)="setBudget('Housing', housingBudget)"
-          class="bg-white p-2 rounded-sm"
+          (click)="setBudget('Housing', housingBudget,'addFieldHousing')"
+          class="rounded-sm"
         >
-          <p class="text-black text-[15px]">Add Budget</p>
+          <p class="cursor-pointer text-white bg-[#7C9070] hover:bg-[#9CA777] rounded-md p-1 px-2 text-[15px]  shadow-button">
+            Add Budget
+          </p>
         </button>
       </div>
       <div *ngIf="budgetCategory.housing != null" class="flex space-x-4">
@@ -446,14 +541,17 @@
         </p>
 
         <div class="flex space-x-4" *ngIf="isHousingUpdateShowing">
+          <p *ngIf="isHousingGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
           <input
+             id="updateHousingBudgetBox"
             [(ngModel)]="updatedHousingBudget"
             type="text"
             class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            placeholder="Enter Budget"
           />
 
           <button
-            (click)="updateBudget('Housing', updatedHousingBudget)"
+            (click)="updateBudget('Housing', updatedHousingBudget,'updateHousingBudgetBox')"
           
           >
             <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
@@ -485,12 +583,19 @@
         *ngIf="!isOtherUpdateShowing"
         class="mt-3 text-sm font-merriweather"
       >
-        Budget : {{ budgetCategory.other }}
+      <ng-container *ngIf="budgetCategory.other!=null">Budget : {{ budgetCategory.other }}</ng-container>
       </span>
     </h1>
 
     <span class="text-[10px] ml-2 text-sm mt-5 text-white"
-      >{{ updateProgressBar("Other") }}%</span
+      >
+      <ng-container *ngIf="updateProgressBar('Other') < 0;">
+        *set budget is lower than the spent value
+      </ng-container>
+      <ng-container *ngIf="updateProgressBar('Other') >= 0;">
+        {{ updateProgressBar('Other') }}%
+      </ng-container>
+      </span
     >
     <div
       class="h-[10px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
@@ -504,17 +609,22 @@
 
     <div class="mt-10 mx-auto">
       <div class="flex space-x-4" *ngIf="budgetCategory.other == null">
+        <p *ngIf="isOtherGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
         <input
+          id="addFieldOther"
           [(ngModel)]="otherBudget"
           type="text"
-          class="px-3 py-2 text-black rounded-md caret-black w-56"
+          class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+          placeholder="Enter Budget"
         />
 
         <button
-          (click)="setBudget('Other', otherBudget)"
-          class="bg-white p-2 rounded-sm"
+          (click)="setBudget('Other', otherBudget,'addFieldOther')"
+          class="rounded-sm"
         >
-          <p class="text-black text-[15px]">Add Budget</p>
+          <p class="cursor-pointer text-white bg-[#7C9070] hover:bg-[#9CA777] rounded-md p-1 px-2 text-[15px]  shadow-button">
+            Add Budget
+          </p>
         </button>
       </div>
       <div *ngIf="budgetCategory.other != null" class="flex space-x-4">
@@ -527,14 +637,17 @@
         </p>
 
         <div class="flex space-x-4" *ngIf="isOtherUpdateShowing">
+           <p *ngIf="isOtherGreater" class="text-white font-medium">*set budget is less than <br><span class="ml-2">the spent value</span> </p>
           <input
+            id="updateOtherBudgetBox"
             [(ngModel)]="updatedOtherBudget"
             type="text"
             class="px-3 py-2 text-black rounded-md caret-black w-56 shadow-button"
+            placeholder="Enter Budget"
           />
 
           <button
-            (click)="updateBudget('Other', updatedOtherBudget)"
+            (click)="updateBudget('Other', updatedOtherBudget,'updateOtherBudgetBox')"
           
           >
             <p class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button">Update</p>
