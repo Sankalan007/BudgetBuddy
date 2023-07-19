@@ -28,6 +28,10 @@
     .font-outline-4 {
         -webkit-text-stroke: 4px black;
     }
+
+    .font-outline-03-white{
+        -webkit-text-stroke: 0.3px white;
+    }
 }
 
 ::-webkit-scrollbar-thumb {
