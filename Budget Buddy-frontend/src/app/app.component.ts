@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth/auth.service';
 import { SmoothScrollService } from '@boatzako/ngx-smooth-scroll';
+import AOS from 'aos';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent implements OnInit{
     // this.isAuthRoute();
     this.smooth.smoothScrollToAnchor();
     this.isAuthenticated();
+    AOS.init();
   }
 
   lightTheme: boolean = true;

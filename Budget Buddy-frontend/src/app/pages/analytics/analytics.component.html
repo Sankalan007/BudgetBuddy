@@ -6,288 +6,303 @@
         href="analytics#insights"
         SmoothScroll
         class="cursor-pointer hover:text-xl transition-all"
+        #goToInsights
+        (click)="moveToInsights()"
       >
         Insights<i class="fa fa-lightbulb ml-2"></i>
       </a>
-      <div class="cursor-pointer underline hover:text-xl transition-all" (click)="generatePDF()">
+      <div
+        class="cursor-pointer underline hover:text-xl transition-all"
+        (click)="generatePDF()"
+      >
         Download Report
       </div>
     </div>
   </div>
   <div class="m-6 flex flex-col">
-    <div class="ml-6 mb-8 text-2xl font-bold">Summary</div>
-    <div class="ml-6 text-xl">Categories</div>
-    <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Monthly spendings by category</span
-        >
-        <p-chart
-          type="bar"
-          [data]="monthlyCategoriesSpendingsData"
-          [options]="monthlyCategoriesSpendingsOptions"
-        ></p-chart>
+    <div #page1>
+      <div class="ml-6 mb-8 text-2xl font-bold">Summary</div>
+      <div class="ml-6 text-xl">Categories</div>
+      <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Monthly spendings by category</span
+          >
+          <p-chart
+            type="bar"
+            [data]="monthlyCategoriesSpendingsData"
+            [options]="monthlyCategoriesSpendingsOptions"
+          ></p-chart>
+        </div>
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Monthly earnings by category</span
+          >
+          <p-chart
+            type="bar"
+            [data]="monthlyCategoriesEarningsData"
+            [options]="monthlyCategoriesEarningsOptions"
+          ></p-chart>
+        </div>
       </div>
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Monthly earnings by category</span
-        >
-        <p-chart
-          type="bar"
-          [data]="monthlyCategoriesEarningsData"
-          [options]="monthlyCategoriesEarningsOptions"
-        ></p-chart>
+      <div class="ml-6 text-xl">Overall financial health</div>
+      <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Monthly earnings and spendings</span
+          >
+          <p-chart
+            type="line"
+            [data]="monthlySpendingsAndEarningsData"
+            [options]="monthlySpendingsAndEarningsOptions"
+          ></p-chart>
+        </div>
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Annual earnings and spendings</span
+          >
+          <p-chart
+            type="line"
+            [data]="annualSpendingsAndEarningsData"
+            [options]="annualSpendingsAndEarningsOptions"
+          ></p-chart>
+        </div>
       </div>
     </div>
-    <div class="ml-6 text-xl">Overall financial health</div>
-    <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Monthly earnings and spendings</span
-        >
-        <p-chart
-          type="line"
-          [data]="monthlySpendingsAndEarningsData"
-          [options]="monthlySpendingsAndEarningsOptions"
-        ></p-chart>
-      </div>
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Annual earnings and spendings</span
-        >
-        <p-chart
-          type="line"
-          [data]="annualSpendingsAndEarningsData"
-          [options]="annualSpendingsAndEarningsOptions"
-        ></p-chart>
+    <div #page2>
+      <div class="ml-6 mb-8 mt-8 text-2xl font-bold">Detailed</div>
+      <div class="ml-6 text-xl">Spending trends over time</div>
+      <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Spendings of each day in this month</span
+          >
+          <p-chart
+            type="bar"
+            [data]="dayOfMonthSpendingData"
+            [options]="dayOfMonthSpendingOptions"
+          ></p-chart>
+        </div>
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Earnings of each day in this month</span
+          >
+          <p-chart
+            type="bar"
+            [data]="dayOfMonthEarningData"
+            [options]="dayOfMonthEarningOptions"
+          ></p-chart>
+        </div>
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Spendings of each month in this year</span
+          >
+          <p-chart
+            type="pie"
+            [data]="monthOfYearSpendingData"
+            [options]="monthOfYearSpendingOptions"
+          ></p-chart>
+        </div>
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Earnings of each month in this year</span
+          >
+          <p-chart
+            type="doughnut"
+            [data]="monthOfYearEarningData"
+            [options]="monthOfYearEarningOptions"
+          ></p-chart>
+        </div>
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Spendings of each day in last seven days</span
+          >
+          <p-chart
+            type="pie"
+            [data]="dayOfLastSevenDaysSpendingData"
+            [options]="dayOfLastSevenDaysSpendingOptions"
+          ></p-chart>
+        </div>
+        <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
+          <span class="mb-4 text-black mx-auto text-xl font-mono"
+            >Earnings of each day in last seven days</span
+          >
+          <p-chart
+            type="doughnut"
+            [data]="dayOfLastSevenDaysEarningData"
+            [options]="dayOfLastSevenDaysEarningOptions"
+          ></p-chart>
+        </div>
       </div>
     </div>
-    <div class="ml-6 mb-8 mt-8 text-2xl font-bold">Detailed</div>
-    <div class="ml-6 text-xl">Spending trends over time</div>
-    <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Spendings of each day in this month</span
-        >
-        <p-chart
-          type="bar"
-          [data]="dayOfMonthSpendingData"
-          [options]="dayOfMonthSpendingOptions"
-        ></p-chart>
-      </div>
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Earnings of each day in this month</span
-        >
-        <p-chart
-          type="bar"
-          [data]="dayOfMonthEarningData"
-          [options]="dayOfMonthEarningOptions"
-        ></p-chart>
-      </div>
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Spendings of each month in this year</span
-        >
-        <p-chart
-          type="pie"
-          [data]="monthOfYearSpendingData"
-          [options]="monthOfYearSpendingOptions"
-        ></p-chart>
-      </div>
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Earnings of each month in this year</span
-        >
-        <p-chart
-          type="doughnut"
-          [data]="monthOfYearEarningData"
-          [options]="monthOfYearEarningOptions"
-        ></p-chart>
-      </div>
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Spendings of each day in last seven days</span
-        >
-        <p-chart
-          type="pie"
-          [data]="dayOfLastSevenDaysSpendingData"
-          [options]="dayOfLastSevenDaysSpendingOptions"
-        ></p-chart>
-      </div>
-      <div class="bg-white rounded-lg p-8 flex flex-col justify-center">
-        <span class="mb-4 text-black mx-auto text-xl font-mono"
-          >Earnings of each day in last seven days</span
-        >
-        <p-chart
-          type="doughnut"
-          [data]="dayOfLastSevenDaysEarningData"
-          [options]="dayOfLastSevenDaysEarningOptions"
-        ></p-chart>
-      </div>
-    </div>
-    <div class="ml-2 text-xl mt-8 min-h-screen" id="insights">
-      <span class="text-2xl font-bold"> Insights </span
-      ><i class="fa fa-lightbulb ml-3 mb-1"></i>
-      <div class="grid grid-cols-1 gap-4 mt-6">
-        <div class="bg-[#E57C23] p-4 rounded-md">
-          <div class="flex justify-between">
-            <ul class="text-white space-y-4 list-disc font-mono">
-              <li>
-                Least amount of earning was accumulated in day
-                {{ insights.leastEarnDay }}
-              </li>
-              <li>
-                Least amount of earning was credited in the month of
-                {{ formatMonth(insights.leastEarnMonth) }}
-              </li>
-              <li>
-                In this month, the least amount of earning was credited through
-                -
-                <ng-container
-                  *ngFor="
-                    let category of insights.leastEarnCategory.categories;
-                    let i = index
-                  "
-                >
-                  <span
-                    >{{ category }}
+    <div #page3>
+      <div class="ml-2 text-xl mt-8 min-h-screen" id="insights" #allInsights>
+        <span class="text-2xl font-bold"> Insights </span
+        ><i class="fa fa-lightbulb ml-3 mb-1"></i>
+        <ng-container *ngIf="insights">
+          <div class="grid grid-cols-1 gap-4 mt-6">
+            <div class="bg-[#E57C23] p-4 rounded-md">
+              <div class="flex justify-between">
+                <ul class="text-white space-y-4 list-disc font-mono">
+                  <li>
+                    Least amount of earning was accumulated in day
+                    {{ insights.leastEarnDay }}
+                  </li>
+                  <li>
+                    Least amount of earning was credited in the month of
+                    {{ formatMonth(insights.leastEarnMonth) }}
+                  </li>
+                  <li>
+                    In this month, the least amount of earning was credited
+                    through -
                     <ng-container
-                      *ngIf="
-                        i != insights.leastEarnCategory.categories.length - 1
+                      *ngFor="
+                        let category of insights.leastEarnCategory.categories;
+                        let i = index
                       "
                     >
-                      ,
+                      <span
+                        >{{ category }}
+                        <ng-container
+                          *ngIf="
+                            i !=
+                            insights.leastEarnCategory.categories.length - 1
+                          "
+                        >
+                          ,
+                        </ng-container>
+                      </span>
                     </ng-container>
-                  </span>
-                </ng-container>
-                ...and from each of these sources you got
-                {{ insights.leastEarnCategory.value | currency : "INR" }}
-              </li>
-            </ul>
-            <div class="my-auto ml-16">
-              <i class="fa fa-angle-double-down"></i>
+                    ...and from each of these sources you got
+                    {{ insights.leastEarnCategory.value | currency : "INR" }}
+                  </li>
+                </ul>
+                <div class="my-auto ml-16">
+                  <i class="fa fa-angle-double-down"></i>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="bg-safe p-4 rounded-md">
-          <div class="flex justify-between">
-            <ul class="text-white space-y-4 list-disc font-mono">
-              <li>
-                Most amount of earning was accumulated in day
-                {{ insights.mostEarnDay }}
-              </li>
-              <li>
-                Most amount of earning was credited in the month of
-                {{ formatMonth(insights.mostEarnMonth) }}
-              </li>
-              <li>
-                In this month, the most amount of earning was credited through -
-                <ng-container
-                  *ngFor="
-                    let category of insights.mostEarnCategory.categories;
-                    let i = index
-                  "
-                >
-                  <span
-                    >{{ category }}
+            <div class="bg-safe p-4 rounded-md">
+              <div class="flex justify-between">
+                <ul class="text-white space-y-4 list-disc font-mono">
+                  <li>
+                    Most amount of earning was accumulated in day
+                    {{ insights.mostEarnDay }}
+                  </li>
+                  <li>
+                    Most amount of earning was credited in the month of
+                    {{ formatMonth(insights.mostEarnMonth) }}
+                  </li>
+                  <li>
+                    In this month, the most amount of earning was credited
+                    through -
                     <ng-container
-                      *ngIf="
-                        i != insights.mostEarnCategory.categories.length - 1
+                      *ngFor="
+                        let category of insights.mostEarnCategory.categories;
+                        let i = index
                       "
                     >
-                      ,
+                      <span
+                        >{{ category }}
+                        <ng-container
+                          *ngIf="
+                            i != insights.mostEarnCategory.categories.length - 1
+                          "
+                        >
+                          ,
+                        </ng-container>
+                      </span>
                     </ng-container>
-                  </span>
-                </ng-container>
-                ...and from each of these sources you got
-                {{ insights.mostEarnCategory.value | currency : "INR" }}
-              </li>
-            </ul>
-            <div class="my-auto ml-16">
-              <i class="fa fa-angle-double-up"></i>
+                    ...and from each of these sources you got
+                    {{ insights.mostEarnCategory.value | currency : "INR" }}
+                  </li>
+                </ul>
+                <div class="my-auto ml-16">
+                  <i class="fa fa-angle-double-up"></i>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="bg-[#E57C23] p-4 rounded-md">
-          <div class="flex justify-between">
-            <ul class="text-white space-y-4 list-disc font-mono">
-              <li>
-                Least amount of spending was done in day
-                {{ insights.leastSpendDay }}
-              </li>
-              <li>
-                This year, cheapest was the month of
-                {{ formatMonth(insights.leastSpendMonth) }}
-              </li>
-              <li>
-                In this month, the least amount of money was spent on
-                -
-                <ng-container
-                  *ngFor="
-                    let category of insights.leastSpendCategory.categories;
-                    let i = index
-                  "
-                >
-                  <span
-                    >{{ category }}
+            <div class="bg-[#E57C23] p-4 rounded-md">
+              <div class="flex justify-between">
+                <ul class="text-white space-y-4 list-disc font-mono">
+                  <li>
+                    Least amount of spending was done in day
+                    {{ insights.leastSpendDay }}
+                  </li>
+                  <li>
+                    This year, cheapest was the month of
+                    {{ formatMonth(insights.leastSpendMonth) }}
+                  </li>
+                  <li>
+                    In this month, the least amount of money was spent on -
                     <ng-container
-                      *ngIf="
-                        i != insights.leastSpendCategory.categories.length - 1
+                      *ngFor="
+                        let category of insights.leastSpendCategory.categories;
+                        let i = index
                       "
                     >
-                      ,
+                      <span
+                        >{{ category }}
+                        <ng-container
+                          *ngIf="
+                            i !=
+                            insights.leastSpendCategory.categories.length - 1
+                          "
+                        >
+                          ,
+                        </ng-container>
+                      </span>
                     </ng-container>
-                  </span>
-                </ng-container>
-                ...and in each of these sources you spent
-                {{ insights.leastSpendCategory.value | currency : "INR" }}
-              </li>
-            </ul>
-            <div class="my-auto ml-16">
-              <i class="fa fa-angle-double-down"></i>
+                    ...and in each of these sources you spent
+                    {{ insights.leastSpendCategory.value | currency : "INR" }}
+                  </li>
+                </ul>
+                <div class="my-auto ml-16">
+                  <i class="fa fa-angle-double-down"></i>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="bg-safe p-4 rounded-md">
-          <div class="flex justify-between">
-            <ul class="text-white space-y-4 list-disc font-mono">
-              <li>
-                Most amount of spending was done in day
-                {{ insights.mostSpendDay }}
-              </li>
-              <li>
-                Most expensive month was the month of
-                {{ formatMonth(insights.mostSpendMonth) }}
-              </li>
-              <li>
-                In this month, the most amount of money was spent on -
-                <ng-container
-                  *ngFor="
-                    let category of insights.mostEarnCategory.categories;
-                    let i = index
-                  "
-                >
-                  <span
-                    >{{ category }}
+            <div class="bg-safe p-4 rounded-md">
+              <div class="flex justify-between">
+                <ul class="text-white space-y-4 list-disc font-mono">
+                  <li>
+                    Most amount of spending was done in day
+                    {{ insights.mostSpendDay }}
+                  </li>
+                  <li>
+                    Most expensive month was the month of
+                    {{ formatMonth(insights.mostSpendMonth) }}
+                  </li>
+                  <li>
+                    In this month, the most amount of money was spent on -
                     <ng-container
-                      *ngIf="
-                        i != insights.mostEarnCategory.categories.length - 1
+                      *ngFor="
+                        let category of insights.mostEarnCategory.categories;
+                        let i = index
                       "
                     >
-                      ,
+                      <span
+                        >{{ category }}
+                        <ng-container
+                          *ngIf="
+                            i != insights.mostEarnCategory.categories.length - 1
+                          "
+                        >
+                          ,
+                        </ng-container>
+                      </span>
                     </ng-container>
-                  </span>
-                </ng-container>
-                ...and in each of these sources you spent
-                {{ insights.mostEarnCategory.value | currency : "INR" }}
-              </li>
-            </ul>
-            <div class="my-auto ml-16">
-              <i class="fa fa-angle-double-up"></i>
+                    ...and in each of these sources you spent
+                    {{ insights.mostEarnCategory.value | currency : "INR" }}
+                  </li>
+                </ul>
+                <div class="my-auto ml-16">
+                  <i class="fa fa-angle-double-up"></i>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
       </div>
     </div>
   </div>
