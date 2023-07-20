@@ -6,16 +6,16 @@ import {
   OnInit,
 } from '@angular/core';
 import { Chart } from 'chart.js';
+import EarnCategories from 'src/app/model/EarnCategories';
 
 import PresetAverages from 'src/app/model/PresetAverages';
 import PresetTransactions from 'src/app/model/PresetTransactions';
-import SpendCategories  from 'src/app/model/SpendCategories';
+import SpendCategories from 'src/app/model/SpendCategories';
 import Transaction from 'src/app/model/Transaction';
 import User from 'src/app/model/User';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -33,12 +33,22 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   categories: any;
   categoriesLabels!: any;
 
+  monthlyCategoriesSpendingsData: any;
+  monthlyCategoriesSpendingsOptions: any;
+  monthlyCategoriesSpendings!: SpendCategories;
+  monthlyCategoriesSpendingsLabels!: string[];
+
+  monthlyCategoriesEarningsData: any;
+  monthlyCategoriesEarningsOptions: any;
+  monthlyCategoriesEarnings!: EarnCategories;
+  monthlyCategoriesEarningsLabels!: string[];
+
   presetTransactions!: PresetTransactions;
   presetAverages!: PresetAverages;
   userDetails!: any;
   userDetailsSet = false;
   transactions!: Transaction[];
-  
+
   constructor(
     private transactionService: TransactionService,
     private authService: AuthService,
@@ -49,16 +59,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.sharedDataService.userDetailsObservable.subscribe((res) => {
       this.userDetails = res;
     });
+    const today = new Date();
+    const date = new Date(today.getTime() + 5.5 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
 
     this.getPresetTransactions();
     this.getPresetAverages();
     this.getFewTransactions();
-    this.getMonthlyCategories();
+    this.getMonthlyCategoriesSpending(this.userDetails[0].id, date);
+    this.getMonthlyCategoriesEarning(this.userDetails[0].id, date);
+
   }
 
   ngAfterViewInit(): void {
-    if(this.categories){
-      this.renderCategoriesChart();
+    if (this.monthlyCategoriesSpendings) {
+      this.renderMonthlyCategoriesSpendingChart();
+    }
+    if (this.monthlyCategoriesEarnings) {
+      this.renderMonthlyCategoriesEarningChart();
     }
   }
 
@@ -85,84 +104,147 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return `${hour}:${minutes} ${suffix}`;
   }
 
-  getMonthlyCategories() {
-    const today = new Date();
-    const date = new Date(today.getTime() + 5.5 * 60 * 60 * 1000)
-      .toISOString()
-      .slice(0, 10);
+  getMonthlyCategoriesSpending(userId: number, date: string) {
     this.transactionService
-      .getMonthlyCategoriesSpending(this.userDetails[0].id, date)
+      .getMonthlyCategoriesSpending(userId, date)
       .subscribe(
         (res: SpendCategories) => {
-          this.categories = res;
-          this.renderCategoriesChart();
+          console.log(res);
+          this.monthlyCategoriesSpendings = res;
+          this.renderMonthlyCategoriesSpendingChart();
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          console.log(error);
         }
       );
   }
 
-  renderCategoriesChart() {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-    
-    // this.dayOfMonthSpendingLabels = Array.from({ length: this.dayOfMonthSpending.length }, (_, index) => `Day ${index + 1}`);
-
-    this.categoriesData = {
-      labels: this.categoriesLabels,
+  renderMonthlyCategoriesSpendingChart() {
+    this.monthlyCategoriesSpendingsData = {
+      labels: [
+        'Food',
+        'Transport',
+        'Entertainment',
+        'Shopping',
+        'Utilities',
+        'Housing',
+        'Other',
+      ],
       datasets: [
         {
-          data: this.categories,
-          backgroundColor: this.generateRandomColors(
-            7
-          ),
-          hoverBackgroundColor: this.generateRandomColors(
-            7
-          ),
+          label: 'Monthly categories spending',
+          data: Object.values(this.monthlyCategoriesSpendings),
+          backgroundColor: this.generateRandomColors(7),
+          hoverBackgroundColor: this.generateRandomColors(7),
         },
       ],
     };
 
-    this.dayOfMonthOptions = {
+    this.monthlyCategoriesSpendingsOptions = {
       maintainAspectRatio: false,
-            aspectRatio: 0.8,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#ffffff'
-                    }
-                }
+      aspectRatio: 0.8,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#008080',
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#008080',
+            font: {
+              weight: 500,
             },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary,
-                        font: {
-                            weight: 500
-                        }
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-
-            }
-        };
+          },
+          grid: {
+            color: '#808080',
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: '#008080',
+          },
+          grid: {
+            color: '#808080',
+            drawBorder: false,
+          },
+        },
+      },
+    };
   }
 
+  getMonthlyCategoriesEarning(userId: number, date: string) {
+    this.transactionService.getMonthlyCategoriesEarning(userId, date).subscribe(
+      (res: EarnCategories) => {
+        console.log(res);
+        this.monthlyCategoriesEarnings = res;
+        this.renderMonthlyCategoriesEarningChart();
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
+  }
+
+  renderMonthlyCategoriesEarningChart() {
+    this.monthlyCategoriesEarningsData = {
+      labels: [
+        'Salary',
+        'Business',
+        'Entertainment',
+        'Shopping',
+        'Utilities',
+        'Housing',
+        'Other',
+      ],
+      datasets: [
+        {
+          label: 'Monthly categories earning',
+          data: Object.values(this.monthlyCategoriesEarnings),
+          backgroundColor: this.generateRandomColors(7),
+          hoverBackgroundColor: this.generateRandomColors(7),
+        },
+      ],
+    };
+
+    this.monthlyCategoriesEarningsOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.8,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#008080',
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#008080',
+            font: {
+              weight: 500,
+            },
+          },
+          grid: {
+            color: '#000000',
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: '#008080',
+          },
+          grid: {
+            color: '#000000',
+            drawBorder: false,
+          },
+        },
+      },
+    };
+  }
   getPresetTransactions() {
     const userId = this.userDetails[0].id;
     const today = new Date();

@@ -1,7 +1,7 @@
 <div
   class="px-4 py-4 bg-[#081824] w-full min-h-[calc(100vh-4rem)]"
   style="
-    background-image: url('../../../assets/DashboardBG.jpg');
+    background-image: url('../../../assets/DashboardBG3.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -63,7 +63,9 @@
         </p>
       </div>
       <div>
-        <span class="text-3xl"><i class="fa-solid fa-arrow-right-arrow-left"></i></span>
+        <span class="text-3xl"
+          ><i class="fa-solid fa-arrow-right-arrow-left"></i
+        ></span>
       </div>
     </div>
 
@@ -77,7 +79,9 @@
         </p>
       </div>
       <div>
-        <span class="text-3xl"><i class="fa-solid fa-arrow-right-arrow-left"></i></span>
+        <span class="text-3xl"
+          ><i class="fa-solid fa-arrow-right-arrow-left"></i
+        ></span>
       </div>
     </div>
 
@@ -91,23 +95,35 @@
         </p>
       </div>
       <div>
-        <span class="text-3xl"><i class="fa-solid fa-arrow-right-arrow-left"></i></span>
+        <span class="text-3xl"
+          ><i class="fa-solid fa-arrow-right-arrow-left"></i
+        ></span>
       </div>
     </div>
   </div>
 
-  <div class="flex flex-wrap justify-center mb-8">
-    <div
-      class="w-full md:w-[47%] backdrop-blur-xl border border-white rounded-lg p-8 mb-4 md:mr-4 flex flex-col items-center justify-center"
-    >
-      <h2 class="text-xl font-bold text-white mb-4">
-        This month's expenses by Category
-      </h2>
-      <p-chart type="bar" [data]="categoriesData" [options]="categoriesOptions"></p-chart>
+  <div class="grid grid-cols-2 gap-4 rounded-lg p-6">
+    <div class="backdrop-blur-xl border border-white rounded-lg p-8 flex flex-col justify-center">
+      <span class="mb-4 text-white font-bold mx-auto text-xl font-mono"
+        >Monthly spendings by category</span
+      >
+      <p-chart
+        type="bar"
+        [data]="monthlyCategoriesSpendingsData"
+        [options]="monthlyCategoriesSpendingsOptions"
+      ></p-chart>
+    </div>
+    <div class="backdrop-blur-xl border border-white rounded-lg p-8 flex flex-col justify-center">
+      <span class="mb-4 text-white font-bold mx-auto text-xl font-mono"
+        >Monthly earnings by category</span
+      >
+      <p-chart
+        type="bar"
+        [data]="monthlyCategoriesEarningsData"
+        [options]="monthlyCategoriesEarningsOptions"
+      ></p-chart>
     </div>
   </div>
-
-  
 
   <div class="flex flex-col mb-5">
     <div class="text-white text-2xl font-bold mb-3">Transaction averages:</div>

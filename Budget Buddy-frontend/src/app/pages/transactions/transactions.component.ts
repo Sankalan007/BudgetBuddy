@@ -174,9 +174,6 @@ export class TransactionsComponent implements OnInit {
   }
 
   getAllTransactions() {
-
-    console.log(this.userDetails[0].id);
-    
     this.transactionService
       .findAllTransactionsByCreatedDesc(this.userDetails[0].id)
       .subscribe(
