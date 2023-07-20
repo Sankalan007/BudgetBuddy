@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +21,10 @@ public class GoalsService {
         return goalsRepository.findById(id);
     }
 
+
+    public List<Goals> findGoalByUserId(Long id){
+        return goalsRepository.findByUserId(id);
+    }
     public Goals findGoalById(Long id){
         Optional<Goals> budgetOptional = goalsRepository.findById(id);
         return budgetOptional.orElse(null);

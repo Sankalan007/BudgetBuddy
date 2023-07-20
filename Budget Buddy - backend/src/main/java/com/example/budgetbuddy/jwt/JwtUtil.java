@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Service
 @Slf4j
 public class JwtUtil {
-    private String secret ="backend";
+    private final String secret ="backend";
     public String extractUsername(String token){
         return this.extractClaims(token,Claims::getSubject);
     }
