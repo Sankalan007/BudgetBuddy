@@ -4,6 +4,7 @@ package com.example.budgetbuddy.controller;
 import com.example.budgetbuddy.model.Goals;
 import com.example.budgetbuddy.repo.GoalsRepository;
 import com.example.budgetbuddy.service.GoalsService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class GoalsController {
         return new ResponseEntity<>(goalsOptional, HttpStatus.OK);
     }
 
+    @Transactional
     @GetMapping("/findByUserId/{id}")
     public ResponseEntity<List<Goals>> getGoalsById(@PathVariable("id") Long id){
         List<Goals> goals = goalsService.findGoalByUserId(id);

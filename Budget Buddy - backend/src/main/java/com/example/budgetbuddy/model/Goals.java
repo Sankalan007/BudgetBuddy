@@ -23,7 +23,7 @@ public class Goals {
     private String title;
     @Lob
     private String description;
-    private String target;
+    private Double target;
     private Double saving;
 
     private String startDate;
