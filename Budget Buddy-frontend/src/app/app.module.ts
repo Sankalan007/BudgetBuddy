@@ -16,7 +16,7 @@ import { NewtransactionComponent } from './pages/newtransaction/newtransaction.c
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
-import { TooltipDirective } from './tooltip/directive/tooltip.directive';
+
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ToastrModule } from 'ngx-toastr';
@@ -38,7 +38,7 @@ import { ChartModule } from 'primeng/chart';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    TooltipDirective,
+    
     
   ],
   imports: [

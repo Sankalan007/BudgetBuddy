@@ -1,6 +1,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ISmoothScrollOption, SmoothScrollService } from '@boatzako/ngx-smooth-scroll';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  ISmoothScrollOption,
+  SmoothScrollService,
+} from '@boatzako/ngx-smooth-scroll';
 import EarnCategories from 'src/app/model/EarnCategories';
 import Insights from 'src/app/model/Insights';
 import SpendCategories from 'src/app/model/SpendCategories';
@@ -16,15 +25,13 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./analytics.component.css'],
 })
 export class AnalyticsComponent implements OnInit, AfterViewInit {
-
   @ViewChild('goToInsights') goToInsights: ElementRef;
   @ViewChild('allInsights') allInsights: ElementRef;
 
-  @ViewChild('content', { static: false}) content!: ElementRef;
-  @ViewChild('page1', { static: false}) page1!: ElementRef;
-  @ViewChild('page2', { static: false}) page2!: ElementRef;
-  @ViewChild('page3', { static: false}) page3!: ElementRef;
-  
+  @ViewChild('content', { static: false }) content!: ElementRef;
+  @ViewChild('page1', { static: false }) page1!: ElementRef;
+  @ViewChild('page2', { static: false }) page2!: ElementRef;
+  @ViewChild('page3', { static: false }) page3!: ElementRef;
 
   monthList: Array<string> = [
     'January',
@@ -42,10 +49,6 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   ];
 
   insights!: Insights;
-
-
-
-  
 
   monthlyCategoriesSpendingsData: any;
   monthlyCategoriesSpendingsOptions: any;
@@ -160,8 +163,6 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  
-
   formatMonth(month: number): string {
     return this.monthList[month - 1];
   }
@@ -170,8 +171,8 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     this.smooth.smoothScrollToTop({ duration: 1000, easing: 'linear' });
   }
 
-  moveToInsights(){
-    let opt: ISmoothScrollOption = { duration: 1000, easing: "linear" };
+  moveToInsights() {
+    let opt: ISmoothScrollOption = { duration: 1000, easing: 'linear' };
     this.smooth.smoothScroll(2000, opt, this.goToInsights.nativeElement);
     this.smooth.smoothScroll(2000, opt, this.allInsights.nativeElement);
   }
@@ -181,24 +182,18 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     const page1 = this.page1.nativeElement;
     const page2 = this.page2.nativeElement;
     const page3 = this.page3.nativeElement;
-  
+
     const wholePage = this.content.nativeElement;
     const divToHide = wholePage.querySelector('.buttons');
-  
+
     if (divToHide) {
       divToHide.style.display = 'none';
     }
-  
-    // Get the full height of the content for page 1
-    const fullHeightPage1 = page1.scrollHeight;
-  
-    // Get the full height of the content for page 2
-    const fullHeightPage2 = page2.scrollHeight;
 
-    // Get the full height of the content for page 3
+    const fullHeightPage1 = page1.scrollHeight;
+    const fullHeightPage2 = page2.scrollHeight;
     const fullHeightPage3 = page3.scrollHeight;
-  
-    // Use Promise.all to wait for both html2canvas calls to finish
+
     Promise.all([
       html2canvas(page1, { height: fullHeightPage1 }),
       html2canvas(page2, { height: fullHeightPage2 }),
@@ -207,37 +202,30 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       const imgData1 = canvas1.toDataURL('image/png');
       const imgData2 = canvas2.toDataURL('image/png');
       const imgData3 = canvas3.toDataURL('image/png');
-  
+
       const imgProps1 = doc.getImageProperties(imgData1);
       const imgProps2 = doc.getImageProperties(imgData2);
       const imgProps3 = doc.getImageProperties(imgData3);
-  
+
       const pdfWidth = doc.internal.pageSize.getWidth();
       const pdfHeight1 = (imgProps1.height * pdfWidth) / imgProps1.width;
       const pdfHeight2 = (imgProps2.height * pdfWidth) / imgProps2.width;
       const pdfHeight3 = (imgProps3.height * pdfWidth) / imgProps3.width;
-  
+
       doc.addImage(imgData1, 'PNG', 0, 0, pdfWidth, pdfHeight1);
-  
+
       doc.addPage();
       doc.addImage(imgData2, 'PNG', 0, 0, pdfWidth, pdfHeight2);
 
       doc.addPage();
       doc.addImage(imgData3, 'PNG', 0, 0, pdfWidth, pdfHeight3);
 
-  
       doc.save('demo.pdf');
-  
-      
     });
     if (divToHide) {
       divToHide.style.display = 'flex';
     }
   }
-  
-  
-
-
 
   generateRandomColors(numColors: number) {
     const colors = [];
@@ -277,9 +265,16 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   }
 
   renderMonthlyCategoriesSpendingChart() {
-    
     this.monthlyCategoriesSpendingsData = {
-      labels: ['Food', 'Transport', 'Entertainment', 'Shopping', 'Utilities', 'Housing', 'Other'],
+      labels: [
+        'Food',
+        'Transport',
+        'Entertainment',
+        'Shopping',
+        'Utilities',
+        'Housing',
+        'Other',
+      ],
       datasets: [
         {
           label: 'Monthly categories spending',
@@ -296,9 +291,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       plugins: {
         legend: {
           labels: {
-
             color: '#008080',
-
           },
         },
       },
@@ -342,12 +335,19 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   }
 
   renderMonthlyCategoriesEarningChart() {
-
     this.monthlyCategoriesEarningsData = {
-      labels: ['Salary', 'Business', 'Entertainment', 'Shopping', 'Utilities', 'Housing', 'Other'],
+      labels: [
+        'Salary',
+        'Business',
+        'Entertainment',
+        'Shopping',
+        'Utilities',
+        'Housing',
+        'Other',
+      ],
       datasets: [
         {
-          label:'Monthly categories earning',
+          label: 'Monthly categories earning',
           data: Object.values(this.monthlyCategoriesEarnings),
           backgroundColor: this.generateRandomColors(7),
           hoverBackgroundColor: this.generateRandomColors(7),
