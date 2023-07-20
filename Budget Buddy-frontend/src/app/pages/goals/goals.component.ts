@@ -4,12 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-goals',
   templateUrl: './goals.component.html',
-  styleUrls: ['./goals.component.css']
+  styleUrls: ['./goals.component.css'],
 })
 export class GoalsComponent implements OnInit {
   goalsForm!: FormGroup;
+  showGoalsForm: boolean = false;
 
-  constructor(private fb: FormBuilder){}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.goalsForm = this.fb.group({
@@ -21,8 +22,11 @@ export class GoalsComponent implements OnInit {
       endDate: ['', Validators.required],
     });
   }
-  onSubmit(goals: any){
+
+  toggleGoalForm(){
+    this.showGoalsForm = !this.showGoalsForm;
+  }
+  onSubmit(goals: any) {
     console.log(goals);
   }
-
 }

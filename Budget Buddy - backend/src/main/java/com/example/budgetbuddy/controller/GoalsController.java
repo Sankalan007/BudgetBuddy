@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -19,14 +20,20 @@ public class GoalsController {
     private final GoalsService goalsService;
     private final GoalsRepository goalsRepository;
 
-    @GetMapping("/all")
+    @GetMapping("/findById/{id}")
     public ResponseEntity<Optional<Goals>> getGoals(@PathVariable("id") Long id){
         Optional<Goals> goalsOptional = goalsService.getGoals(id);
         return new ResponseEntity<>(goalsOptional, HttpStatus.OK);
     }
 
+    @GetMapping("/findByUserId/{id}")
+    public ResponseEntity<List<Goals>> getGoalsById(@PathVariable("id") Long id){
+        List<Goals> goals = goalsService.findGoalByUserId(id);
+        return new ResponseEntity<>(goals, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
-    public ResponseEntity<Goals> setGoals(Goals goals){
+    public ResponseEntity<Goals> setGoals(@RequestBody Goals goals){
         Goals goals1 = goalsService.addGoals(goals);
         return new ResponseEntity<>(goals1, HttpStatus.OK);
     }
