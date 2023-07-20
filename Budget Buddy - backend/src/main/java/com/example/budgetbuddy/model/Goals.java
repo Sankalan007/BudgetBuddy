@@ -1,9 +1,6 @@
 package com.example.budgetbuddy.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,10 +21,13 @@ public class Goals {
 
     private Long userId;
     private String title;
+    @Lob
+    private String description;
     private String target;
     private Double saving;
-    private Double period;
-    private Date startDate;
+
+    private String startDate;
+    private String endDate;
 
 
 }
