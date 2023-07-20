@@ -37,12 +37,12 @@ public class GoalsController {
         if (existingGoals == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        existingGoals.setId(id);
         existingGoals.setSaving(existingGoals.getSaving());
-        existingGoals.setPeriod(existingGoals.getPeriod());
         existingGoals.setTitle(existingGoals.getTitle());
+        existingGoals.setDescription(existingGoals.getDescription());
         existingGoals.setTarget(existingGoals.getTarget());
         existingGoals.setStartDate(existingGoals.getStartDate());
+        existingGoals.setEndDate(existingGoals.getEndDate());
         existingGoals.setUserId(existingGoals.getUserId());
 
         Goals goals1 = goalsService.updateGoals(existingGoals);
