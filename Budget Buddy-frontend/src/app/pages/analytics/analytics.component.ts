@@ -18,6 +18,7 @@ import { SharedDataService } from 'src/app/services/sharedData/shared-data.servi
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import AOS from 'aos';
 
 @Component({
   selector: 'app-analytics',
@@ -109,6 +110,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.smooth.smoothScrollToAnchor();
+    AOS.init();
 
     this.sharedDataService.userDetailsObservable.subscribe((res) => {
       this.userDetails = res;
@@ -254,7 +256,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       .getMonthlyCategoriesSpending(userId, date)
       .subscribe(
         (res: SpendCategories) => {
-          console.log(res);
+          // console.log(res);
           this.monthlyCategoriesSpendings = res;
           this.renderMonthlyCategoriesSpendingChart();
         },
@@ -324,7 +326,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   getMonthlyCategoriesEarning(userId: number, date: string) {
     this.transactionService.getMonthlyCategoriesEarning(userId, date).subscribe(
       (res: EarnCategories) => {
-        console.log(res);
+        // console.log(res);
         this.monthlyCategoriesEarnings = res;
         this.renderMonthlyCategoriesEarningChart();
       },
@@ -512,7 +514,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   getDayOfMonthSpending(userId: number, date: string) {
     this.transactionService.getDayOfMonthSpending(userId, date).subscribe(
       (res: number[]) => {
-        console.log(res);
+        // console.log(res);
         this.dayOfMonthSpending = res;
         this.renderDayOfMonthSpendingChart();
         this.renderMonthlySpendingsAndEarningsChart();
@@ -560,7 +562,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   getMonthOfYearSpending(userId: number, date: string) {
     this.transactionService.getMonthOfYearSpending(userId, date).subscribe(
       (res: number[]) => {
-        console.log(res);
+        // console.log(res);
         this.monthOfYearSpending = res;
         this.renderMonthOfYearSpendingChart();
         this.renderAnnualSpendingsAndEarningsChart();
@@ -609,7 +611,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       .getDayOfLastSevenDaysSpending(userId, date)
       .subscribe(
         (res: number[]) => {
-          console.log(res);
+          // console.log(res);
           this.dayOfLastSevenDaysSpending = res;
           this.renderDayOfLastSevenDaysSpendingChart();
         },
@@ -655,7 +657,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   getDayOfMonthEarning(userId: number, date: string) {
     this.transactionService.getDayOfMonthEarning(userId, date).subscribe(
       (res: number[]) => {
-        console.log(res);
+        // console.log(res);
         this.dayOfMonthEarning = res;
         this.renderDayOfMonthEarningChart();
         this.renderMonthlySpendingsAndEarningsChart();
@@ -703,7 +705,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   getMonthOfYearEarning(userId: number, date: string) {
     this.transactionService.getMonthOfYearEarning(userId, date).subscribe(
       (res: number[]) => {
-        console.log(res);
+        // console.log(res);
         this.monthOfYearEarning = res;
         this.renderMonthOfYearEarningChart();
         this.renderAnnualSpendingsAndEarningsChart();
@@ -752,7 +754,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
       .getDayOfLastSevenDaysEarning(userId, date)
       .subscribe(
         (res: number[]) => {
-          console.log(res);
+          // console.log(res);
           this.dayOfLastSevenDaysEarning = res;
           this.renderDayOfLastSevenDaysEarningChart();
         },

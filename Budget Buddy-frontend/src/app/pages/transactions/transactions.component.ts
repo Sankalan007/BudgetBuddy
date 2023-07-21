@@ -32,6 +32,15 @@ export class TransactionsComponent implements OnInit {
 
   updateTransactionForm!: FormGroup;
 
+  selectedForUpdate!: FormGroup;
+  selectedForUpdateDescription: string;
+  updateForms: FormGroup[] = [];
+
+  today = new Date();
+  todayDate = new Date(this.today.getTime() + 5.5 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
+
   constructor(
     private transactionService: TransactionService,
     private sharedDataService: SharedDataService,
@@ -60,6 +69,17 @@ export class TransactionsComponent implements OnInit {
       description: ['', [Validators.required]],
       amount: ['', [Validators.required, Validators.min(0.000000001)]],
       category: ['', Validators.required],
+    });
+  }
+
+  openUpdateForm(index: number) {
+    this.updateClicked[index] = !this.updateClicked[index];
+    this.selectedForUpdateDescription = this.transactions[index].description;
+    this.updateTransactionForm.setValue({
+      type: this.transactions[index].type,
+      description: this.transactions[index].description,
+      amount: this.transactions[index].amount,
+      category: this.transactions[index].category,
     });
   }
 

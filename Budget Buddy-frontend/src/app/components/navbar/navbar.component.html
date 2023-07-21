@@ -61,7 +61,7 @@
           </ng-container>
           <ng-container *ngIf="!getRole()">
             <span class="pt-1 ml-4 text-md text-info font-roboto font-bold items-center">
-              {{userDetails[0].userName}}
+              {{userDetails[0]?.userName}}
             </span>
           </ng-container>
           <span (click)="logOut()" class="ml-5 cursor-pointer text-danger">Logout <i class="fas fa-power-off"></i></span>

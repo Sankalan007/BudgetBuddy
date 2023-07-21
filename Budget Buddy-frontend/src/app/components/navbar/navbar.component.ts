@@ -17,8 +17,6 @@ export class NavbarComponent implements OnInit{
   ngOnInit(): void {
     this.sharedDataService.userDetailsObservable.subscribe((userDetails) => {
       this.userDetails = userDetails;
-      console.log(userDetails[0].id);
-      
     })
   }
 
