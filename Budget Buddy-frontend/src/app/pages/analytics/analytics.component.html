@@ -226,6 +226,45 @@
               <div class="flex justify-between">
                 <ul class="text-white space-y-4 list-disc font-mono">
                   <li>
+                    Most amount of spending was done in day
+                    {{ insights.mostSpendDay }}
+                  </li>
+                  <li>
+                    Most expensive month was the month of
+                    {{ formatMonth(insights.mostSpendMonth) }}
+                  </li>
+                  <li>
+                    In this month, the most amount of money was spent on -
+                    <ng-container
+                      *ngFor="
+                        let category of insights.mostEarnCategory.categories;
+                        let i = index
+                      "
+                    >
+                      <span
+                        >{{ category }}
+                        <ng-container
+                          *ngIf="
+                            i != insights.mostEarnCategory.categories.length - 1
+                          "
+                        >
+                          ,
+                        </ng-container>
+                      </span>
+                    </ng-container>
+                    ...and in each of these sources you spent
+                    {{ insights.mostEarnCategory.value | currency : "INR" }}
+                  </li>
+                </ul>
+                <div class="my-auto ml-16">
+                  <i class="fa fa-angle-double-up"></i>
+                </div>
+              </div>
+            </div>
+            <div class="bg-safe p-4 rounded-md">
+              <div class="flex justify-between">
+                <ul class="text-white space-y-4 list-disc font-mono">
+                  <li>
                     Least amount of spending was done in day
                     {{ insights.leastSpendDay }}
                   </li>
@@ -262,45 +301,7 @@
                 </div>
               </div>
             </div>
-            <div class="bg-safe p-4 rounded-md">
-              <div class="flex justify-between">
-                <ul class="text-white space-y-4 list-disc font-mono">
-                  <li>
-                    Most amount of spending was done in day
-                    {{ insights.mostSpendDay }}
-                  </li>
-                  <li>
-                    Most expensive month was the month of
-                    {{ formatMonth(insights.mostSpendMonth) }}
-                  </li>
-                  <li>
-                    In this month, the most amount of money was spent on -
-                    <ng-container
-                      *ngFor="
-                        let category of insights.mostEarnCategory.categories;
-                        let i = index
-                      "
-                    >
-                      <span
-                        >{{ category }}
-                        <ng-container
-                          *ngIf="
-                            i != insights.mostEarnCategory.categories.length - 1
-                          "
-                        >
-                          ,
-                        </ng-container>
-                      </span>
-                    </ng-container>
-                    ...and in each of these sources you spent
-                    {{ insights.mostEarnCategory.value | currency : "INR" }}
-                  </li>
-                </ul>
-                <div class="my-auto ml-16">
-                  <i class="fa fa-angle-double-up"></i>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </ng-container>
       </div>
