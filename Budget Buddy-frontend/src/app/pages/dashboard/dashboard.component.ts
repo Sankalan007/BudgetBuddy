@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       .getMonthlyCategoriesSpending(userId, date)
       .subscribe(
         (res: SpendCategories) => {
-          console.log(res);
+          // console.log(res);
           this.monthlyCategoriesSpendings = res;
           this.renderMonthlyCategoriesSpendingChart();
         },
@@ -179,7 +179,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   getMonthlyCategoriesEarning(userId: number, date: string) {
     this.transactionService.getMonthlyCategoriesEarning(userId, date).subscribe(
       (res: EarnCategories) => {
-        console.log(res);
+        // console.log(res);
         this.monthlyCategoriesEarnings = res;
         this.renderMonthlyCategoriesEarningChart();
       },

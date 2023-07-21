@@ -16,7 +16,7 @@
       <div class="flex flex-col">
         <h2 class="text-lg font-bold mb-4">Daily Earn</h2>
         <p class="text-3xl font-bold">
-          {{ presetTransactions.dailyEarn | currency : "INR" }}
+          {{ presetTransactions?.dailyEarn | currency : "INR" }}
         </p>
       </div>
       <div>
@@ -30,7 +30,7 @@
       <div class="flex flex-col">
         <h2 class="text-lg font-bold mb-4">Monthly Earn</h2>
         <p class="text-3xl font-bold">
-          {{ presetTransactions.monthlyEarn | currency : "INR" }}
+          {{ presetTransactions?.monthlyEarn | currency : "INR" }}
         </p>
       </div>
       <div>
@@ -44,7 +44,7 @@
       <div class="flex flex-col">
         <h2 class="text-lg font-bold mb-4">Annual Earn</h2>
         <p class="text-3xl font-bold">
-          {{ presetTransactions.annualEarn | currency : "INR" }}
+          {{ presetTransactions?.annualEarn | currency : "INR" }}
         </p>
       </div>
       <div>
@@ -59,7 +59,7 @@
       <div class="flex flex-col">
         <h2 class="text-lg font-bold mb-4">Daily Spend</h2>
         <p class="text-3xl font-bold">
-          {{ presetTransactions.dailySpend | currency : "INR" }}
+          {{ presetTransactions?.dailySpend | currency : "INR" }}
         </p>
       </div>
       <div>
@@ -75,7 +75,7 @@
       <div class="flex flex-col">
         <h2 class="text-lg font-bold mb-4">Monthly Spend</h2>
         <p class="text-3xl font-bold">
-          {{ presetTransactions.monthlySpend | currency : "INR" }}
+          {{ presetTransactions?.monthlySpend | currency : "INR" }}
         </p>
       </div>
       <div>
@@ -91,7 +91,7 @@
       <div class="flex flex-col">
         <h2 class="text-lg font-bold mb-4">Annual Spend</h2>
         <p class="text-3xl font-bold">
-          {{ presetTransactions.annualSpend | currency : "INR" }}
+          {{ presetTransactions?.annualSpend | currency : "INR" }}
         </p>
       </div>
       <div>
@@ -133,7 +133,7 @@
       >
         <h2 class="text-lg font-bold mb-4">Last 7 days</h2>
         <p class="text-3xl font-bold">
-          {{ presetAverages.sevenDaysAverage | currency : "INR" }}
+          {{ presetAverages?.sevenDaysAverage | currency : "INR" }}
         </p>
       </div>
       <div
@@ -141,7 +141,7 @@
       >
         <h2 class="text-lg font-bold mb-4">This month</h2>
         <p class="text-3xl font-bold">
-          {{ presetAverages.monthlyAverage | currency : "INR" }}
+          {{ presetAverages?.monthlyAverage | currency : "INR" }}
         </p>
       </div>
       <div
@@ -149,7 +149,7 @@
       >
         <h2 class="text-lg font-bold mb-4">This year</h2>
         <p class="text-3xl font-bold">
-          {{ presetAverages.annualAverage | currency : "INR" }}
+          {{ presetAverages?.annualAverage | currency : "INR" }}
         </p>
       </div>
     </div>

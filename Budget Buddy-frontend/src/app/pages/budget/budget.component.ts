@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import SpendCategories from 'src/app/model/SpendCategories';
 import { NewtransactionComponent } from 'src/app/pages/newtransaction/newtransaction.component';
 import { BudgetService } from 'src/app/services/budget/budget.service';
@@ -9,6 +15,7 @@ import { SharedDataService } from 'src/app/services/sharedData/shared-data.servi
 import Budget from 'src/app/model/Buget';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
@@ -38,7 +45,8 @@ export class BudgetComponent implements OnInit {
     private budgetService: BudgetService,
     private sharedDataService: SharedDataService,
     private http: HttpClient,
-    private transactionServices: TransactionService
+    private transactionServices: TransactionService,
+    private toast: ToastrService
   ) {}
   userDetails!: any;
   userId!: number;
@@ -46,7 +54,7 @@ export class BudgetComponent implements OnInit {
     this.sharedDataService.userDetailsObservable.subscribe((res) => {
       this.userDetails = res;
       // console.log(this.userDetails);
-      this.userId = this.userDetails[0].id;
+      this.userId = this.userDetails[0]?.id;
     });
     this.budgetService.getAllBudget(this.userDetails[0].id).subscribe(
       (cat) => {
@@ -79,7 +87,6 @@ export class BudgetComponent implements OnInit {
   updatedHousingBudget!: number;
   updatedOtherBudget!: number;
 
-
   // newBudget: SpendCategories = {
   //   food: this.foodBudget,
   //   transport: this.transportBudget,
@@ -97,41 +104,35 @@ export class BudgetComponent implements OnInit {
         break;
       }
       case 'Transport': {
-
         this.isTransportGreater = false;
 
         this.isTransportUpdateShowing = !this.isTransportUpdateShowing;
         break;
       }
       case 'Entertainment': {
-
         this.isEntertainmentGreater = false;
         this.isEntertainmentUpdateShowing = !this.isEntertainmentUpdateShowing;
         break;
       }
       case 'Shopping': {
-
         this.isShoppingGreater = false;
 
         this.isShoppingUpdateShowing = !this.isShoppingUpdateShowing;
         break;
       }
       case 'Utilities': {
-
         this.isUtilitiesGreater = false;
 
         this.isUtilitiesUpdateShowing = !this.isUtilitiesUpdateShowing;
         break;
       }
       case 'Housing': {
-
         this.isHousingGreater = false;
 
         this.isHousingUpdateShowing = !this.isHousingUpdateShowing;
         break;
       }
       case 'Other': {
-
         this.isOtherGreater = false;
 
         this.isOtherUpdateShowing = !this.isOtherUpdateShowing;
@@ -146,12 +147,11 @@ export class BudgetComponent implements OnInit {
   setBudget(category: string, amount: Number, fieldId: string) {
     if (amount < this.getBudgetAmount(category) || amount == null) {
       this.addRed(fieldId, category);
-
-      // inputElement.classList.remove("border-red-500");
+      // const inputElement = document.getElementById(fieldId) as HTMLInputElement;
+      // inputElement.classList.remove('animate-shake');
 
       return;
     }
-
 
     //  this.doToggle(category);
     let budget = {
@@ -181,14 +181,12 @@ export class BudgetComponent implements OnInit {
   }
 
   getBudgetAmount(category: String) {
-
     switch (category) {
       case 'Food': {
         return this.spendCategory.food;
         break;
       }
       case 'Transport': {
-
         return this.spendCategory.transport;
 
         break;
@@ -214,7 +212,6 @@ export class BudgetComponent implements OnInit {
         break;
       }
       default: {
-
         return '';
 
         break;
@@ -231,13 +228,10 @@ export class BudgetComponent implements OnInit {
   isOtherGreater: boolean = false;
 
   updateBudget(category: string, amount: Number, fieldId: string) {
-    // console.log('Clicked');
-    //this.spendCategory.food = null
+    const inputElement = document.getElementById(fieldId) as HTMLInputElement;
+    inputElement.classList.remove('animate-shake');
     if (amount < this.getBudgetAmount(category) || amount == null) {
       this.addRed(fieldId, category);
-
-      // inputElement.classList.remove("border-red-500");
-
       return;
     }
 
@@ -282,7 +276,7 @@ export class BudgetComponent implements OnInit {
     this.transactionServices
       .getMonthlyCategoriesSpending(this.userId, date)
       .subscribe((res) => {
-        console.log(res);
+        // console.log(res);
         this.spendCategory = res;
       });
   }
@@ -298,11 +292,10 @@ export class BudgetComponent implements OnInit {
           ((this.budgetCategory.food - this.spendCategory.food) /
             this.budgetCategory.food) *
           100
-        ).toFixed(2) ;
+        ).toFixed(2);
         break;
       }
       case 'Transport': {
-
         if (this.budgetCategory.transport == null) {
           return 0;
         }
@@ -427,37 +420,63 @@ export class BudgetComponent implements OnInit {
 
   addRed(id: string, category: string) {
     const inputElement = document.getElementById(id) as HTMLInputElement;
-
-    inputElement.classList.add('shadow-alert');
+    inputElement.classList.add('shadow-alert', 'animate-shake');
 
     switch (category) {
       case 'Food': {
         this.isFoodGreater = true;
+        this.toast.warning(
+          `Set budget of ${category} is lower than the spent value`,
+          'Change your budget'
+        );
         break;
       }
       case 'Transport': {
         this.isTransportGreater = true;
+        this.toast.warning(
+          `Set budget of ${category} is lower than the spent value`,
+          'Change your budget'
+        );
         break;
       }
       case 'Entertainment': {
         this.isEntertainmentGreater = true;
+        this.toast.warning(
+          `Set budget of ${category} is lower than the spent value`,
+          'Change your budget'
+        );
         break;
       }
       case 'Shopping': {
         this.isShoppingGreater = true;
+        this.toast.warning(
+          `Set budget of ${category} is lower than the spent value`,
+          'Change your budget'
+        );
         break;
       }
       case 'Utilities': {
         this.isUtilitiesGreater = true;
+        this.toast.warning(
+          `Set budget of ${category} is lower than the spent value`,
+          'Change your budget'
+        );
         break;
       }
       case 'Housing': {
         this.isHousingGreater = true;
+        this.toast.warning(
+          `Set budget of ${category} is lower than the spent value`,
+          'Change your budget'
+        );
         break;
       }
       case 'Other': {
         this.isOtherGreater = true;
-
+        this.toast.warning(
+          `Set budget of ${category} is lower than the spent value`,
+          'Change your budget'
+        );
         break;
       }
       default: {

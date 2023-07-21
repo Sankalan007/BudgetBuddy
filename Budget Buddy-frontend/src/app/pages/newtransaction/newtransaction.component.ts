@@ -35,7 +35,7 @@ export class NewtransactionComponent implements OnInit {
   ngOnInit() {
     this.sharedDataService.userDetailsObservable.subscribe((res) => {
       this.userDetails = res;
-      this.userId = this.userDetails[0].id;
+      this.userId = this.userDetails[0]?.id;
     });
     const today = new Date();
     this.date = new Date(today.getTime() + 5.5 * 60 * 60 * 1000)
