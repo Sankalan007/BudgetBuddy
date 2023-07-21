@@ -12,6 +12,7 @@ import { SharedDataService } from 'src/app/services/sharedData/shared-data.servi
 })
 export class GoalsComponent implements OnInit {
   goalsForm!: FormGroup;
+  updateGoalsForm!: FormGroup;
   showGoalsForm: boolean = false;
   goals: Goals[];
   totalGoals: number;
@@ -21,6 +22,9 @@ export class GoalsComponent implements OnInit {
   desLength: number;
 
   showingDes: boolean[];
+
+  isFieldDisabled: boolean = false;
+  showUpdateGoalsForm: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -36,18 +40,26 @@ export class GoalsComponent implements OnInit {
       title: ['', Validators.required],
       description: [''],
       target: ['', [Validators.required, Validators.min(0.01)]],
-      savings: ['', Validators.required],
+      saving: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+    });
+
+    this.updateGoalsForm = this.fb.group({
+      title: ['', Validators.required],
+      description: [''],
+      target: ['', [Validators.required, Validators.min(0.01)]],
+      saving: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
     });
     this.getGoals(this.userDetails[0].id);
-    
-    
+    console.log(this.goals);
   }
 
   toggleDescription(i: number) {
     this.showingDes[i] = !this.showingDes[i];
-    console.log( this.showingDes[i]);
+    console.log(this.showingDes[i]);
   }
 
   getGoals(userId: number) {
@@ -58,10 +70,8 @@ export class GoalsComponent implements OnInit {
         console.log(res.length);
         this.showingDes = Array.from({ length: res.length }, () => false);
         console.log(this.showingDes);
-        
 
         this.totalGoals = this.goals.length;
-        
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -72,8 +82,43 @@ export class GoalsComponent implements OnInit {
   toggleGoalForm() {
     this.showGoalsForm = !this.showGoalsForm;
   }
-  onSubmit(goals: any) {
-    console.log(goals);
+
+  toggleUpdateGoalForm() {
+    this.showUpdateGoalsForm = !this.showUpdateGoalsForm;
+  }
+
+  onSubmit(goal: any) {
+    this.toggleGoalForm();
+    console.log(goal);
+    goal.userId = this.userDetails[0].id;
+    if (this.goalsForm.valid) {
+      this.goalsService.addGoals(goal).subscribe(
+        (res: Goals) => {
+          console.log(goal);
+          this.goalsService.getGoalsByUserId(this.userDetails[0].id).subscribe(
+            (getRes: Goals[]) => {
+              console.log(getRes);
+              this.goals = getRes;
+              console.log(getRes.length);
+              this.showingDes = Array.from(
+                { length: getRes.length },
+                () => false
+              );
+              console.log(this.showingDes);
+
+              this.totalGoals = this.goals.length;
+            },
+            (error: HttpErrorResponse) => {
+              console.log(error);
+            }
+          );
+          console.log(this.goals);
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      );
+    }
   }
 
   updateProgressBar(target: number, saving: number): any {
@@ -91,5 +136,57 @@ export class GoalsComponent implements OnInit {
     } else {
       return '#FF0000';
     }
+  }
+
+  onUpdateGoal(goal: Goals) {
+
+    this.toggleUpdateGoalForm();
+    const updatedGoal = {
+      id: this.myGoal.id,
+      title: this.myGoal.title,
+      description: goal.description,
+      target: this.myGoal.target,
+      saving: goal.saving,
+      startDate: this.myGoal.startDate,
+      endDate: goal.endDate,
+    };
+    console.log(updatedGoal);
+    
+    this.goalsService.updateGoals(this.myGoal.id, updatedGoal).subscribe(
+      (res) => {
+        console.log(res);
+
+        this.getGoals(this.userDetails[0]?.id);
+
+        this.totalGoals = this.goals.length;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
+  }
+
+  myGoal: Goals;
+  indexToUpdate: number;
+
+  updateGoal(goal: Goals, index: number) {
+    this.toggleUpdateGoalForm();
+    this.indexToUpdate = index;
+    this.updateGoalsForm.setValue({
+      title: this.goals[index].title,
+      description: '',
+      target: 0,
+      saving: 0,
+      startDate: '',
+      endDate: '',
+    });
+
+    this.myGoal = goal;
+  }
+
+  disableEnableInput(bool: boolean) {
+    if (bool === true)
+      this.updateGoalsForm.get('customer_limit_input').enable();
+    else this.updateGoalsForm.get('customer_limit_input').disable();
   }
 }

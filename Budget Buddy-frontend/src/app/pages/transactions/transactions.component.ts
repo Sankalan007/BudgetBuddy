@@ -42,6 +42,7 @@ export class TransactionsComponent implements OnInit {
   ngOnInit(): void {
     this.sharedDataService.userDetailsObservable.subscribe((userDetails) => {
       this.userDetails = userDetails;
+      this.getAllTransactions();
     });
     
     this.sharedDataService.transactionsObservable.subscribe(

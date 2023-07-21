@@ -20,4 +20,8 @@ export class GoalsService {
     return this.http.post<Goals>(`${this.baseUrl}/add`, goals);
   }
 
+  updateGoals(id:number,goals: Goals): Observable<Goals>{
+    return this.http.put<Goals>(`${this.baseUrl}/update/${id}`, goals);
+  }
+
 }
