@@ -18,7 +18,7 @@
     <div
       (click)="deleteAllConfirmation()"
       class="bg-danger rounded-lg flex justify-center items-center cursor-pointer hover:bg-[#bb0c0c]"
-      *ngIf="!showGoalsForm && !showUpdateGoalsForm"
+      *ngIf="!showGoalsForm && !showUpdateGoalsForm && goals.length > 0"
     >
       <div class="mx-auto px-4 py-2 space-x-2">
         <span class="text-2xl rounded-full"
@@ -225,12 +225,16 @@
 
 <ng-container *ngIf="!showUpdateGoalsForm && !showGoalsForm">
   <div class="grid grid-row-{{ totalGoals }} p-6">
-    <ng-container *ngIf="goals.length <= 0">
+    <ng-container *ngIf="goals?.length <= 0">
       <div class="mx-auto text-3xl">
         No goals in your life! 💀
       </div>
     </ng-container>
+
+    <ng-container *ngIf="goals?.length > 0">
+
     <ng-container *ngIf="goals.length > 0">
+
       <ng-container *ngFor="let goal of goals; let i = index">
         <div
           class="bg-[#227C70] flex flex-col p-[20px] justify-start rounded-xl items-center mt-10"
