@@ -73,6 +73,7 @@ export class NewtransactionComponent implements OnInit {
               console.log(transaction);
               this.transactionService.addNewTransaction(transaction).subscribe(
                 (res) => {
+                  this.toastr.success('your transaction has been successfully added', 'Transaction added');
                   this.transactionService
                     .findAllTransactions(this.userDetails[0].id)
                     .subscribe(
@@ -97,7 +98,7 @@ export class NewtransactionComponent implements OnInit {
                 
               } else {
                 console.log('limit reached');
-                this.toastr.error('You are going over your spending limit', `Please update your ${transaction.category} budget`);
+                this.toastr.warning('You are going over your spending limit', `Please update your ${transaction.category} budget`);
               }
             }
           });

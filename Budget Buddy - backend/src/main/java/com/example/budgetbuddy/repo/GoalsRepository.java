@@ -8,4 +8,5 @@ import java.util.List;
 public interface GoalsRepository extends JpaRepository<Goals, Long> {
 
     List<Goals> findByUserId(Long id);
+    void deleteByUserId(Long id);
 }

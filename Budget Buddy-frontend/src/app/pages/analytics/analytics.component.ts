@@ -19,6 +19,7 @@ import { TransactionService } from 'src/app/services/transaction/transaction.ser
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import AOS from 'aos';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-analytics',
@@ -105,7 +106,8 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     private transactionService: TransactionService,
     private authService: AuthService,
     private sharedDataService: SharedDataService,
-    private smooth: SmoothScrollService
+    private smooth: SmoothScrollService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -180,6 +182,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   }
 
   generatePDF() {
+    this.toastr.success('Your item is being downlaoded...', 'Download successful!');
     const doc = new jsPDF('p');
     const page1 = this.page1.nativeElement;
     const page2 = this.page2.nativeElement;
