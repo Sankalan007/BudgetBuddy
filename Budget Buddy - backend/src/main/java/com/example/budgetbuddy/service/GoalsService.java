@@ -43,4 +43,8 @@ public class GoalsService {
         goalsRepository.deleteById(id);
     }
 
+    public void deleteAllGoals(){
+        goalsRepository.deleteAll();
+    }
+
 }
