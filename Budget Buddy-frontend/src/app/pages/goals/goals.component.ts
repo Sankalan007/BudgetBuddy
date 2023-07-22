@@ -108,7 +108,7 @@ export class GoalsComponent implements OnInit {
   }
 
   toggleGoalForm() {
-
+    
     if(!this.showUpdateGoalsForm){
       this.showGoalsForm = !this.showGoalsForm;
     }
@@ -154,6 +154,14 @@ export class GoalsComponent implements OnInit {
         }
       );
     }
+    this.goalsForm = this.fb.group({
+      title: ['', Validators.required],
+      description: [''],
+      target: ['', [Validators.required, Validators.min(0.01)]],
+      saving: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+    });
   }
 
   updateProgressBar(target: number, saving: number): any {
@@ -201,6 +209,14 @@ export class GoalsComponent implements OnInit {
         console.log(error);
       }
     );
+    this.updateGoalsForm = this.fb.group({
+      title: ['', Validators.required],
+      description: [''],
+      target: ['', [Validators.required, Validators.min(0.01)]],
+      saving: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+    });
   }
 
   myGoal: Goals;
