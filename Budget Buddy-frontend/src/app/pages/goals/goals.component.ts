@@ -1,9 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import Goals from 'src/app/model/Goals';
 import { GoalsService } from 'src/app/services/goals/goals.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-goals',
@@ -29,7 +31,8 @@ export class GoalsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private goalsService: GoalsService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +96,7 @@ export class GoalsComponent implements OnInit {
 
   deleteAllGoals(){
     console.log("Bhai chal rha hai");
-    this.goalsService.deleteAllGoals().subscribe(
+    this.goalsService.deleteAllGoals(this.userDetails[0].id).subscribe(
       (res) =>{
         console.log(res);
         this.getGoals(this.userDetails[0].id)
@@ -125,6 +128,7 @@ export class GoalsComponent implements OnInit {
     if (this.goalsForm.valid) {
       this.goalsService.addGoals(goal).subscribe(
         (res: Goals) => {
+          this.toastr.success('Your goal has been added', 'Goal addition successful');
           console.log(goal);
           this.goalsService.getGoalsByUserId(this.userDetails[0].id).subscribe(
             (getRes: Goals[]) => {
@@ -186,6 +190,7 @@ export class GoalsComponent implements OnInit {
     
     this.goalsService.updateGoals(this.myGoal.id, updatedGoal).subscribe(
       (res) => {
+        this.toastr.success('Your goal has been update', 'Update successful');
         console.log(res);
 
         this.getGoals(this.userDetails[0]?.id);
@@ -200,6 +205,48 @@ export class GoalsComponent implements OnInit {
 
   myGoal: Goals;
   indexToUpdate: number;
+
+  deleteConfirmation(goal: Goals){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteGoals(goal);
+        Swal.fire(
+          'Deleted!',
+          'Your goal has been deleted.',
+          'success'
+        )
+      }
+    })
+  }
+
+  deleteAllConfirmation(){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteAllGoals();
+        Swal.fire(
+          'Deleted!',
+          'Your goal has been deleted.',
+          'success'
+        )
+      }
+    })
+  }
 
   updateGoal(goal: Goals, index: number) {
     this.toggleUpdateGoalForm();

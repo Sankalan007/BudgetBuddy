@@ -1,12 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import Transaction from 'src/app/model/Transaction';
 import User from 'src/app/model/User';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-transactions',
@@ -45,7 +47,8 @@ export class TransactionsComponent implements OnInit {
     private transactionService: TransactionService,
     private sharedDataService: SharedDataService,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +74,27 @@ export class TransactionsComponent implements OnInit {
       amount: ['', [Validators.required, Validators.min(0.000000001)]],
       category: ['', Validators.required],
     });
+  }
+
+  deleteConfirmation(id: number){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteTransaction(id);
+        Swal.fire(
+          'Deleted!',
+          'Your transaction has been deleted.',
+          'success'
+        )
+      }
+    })
   }
 
   openUpdateForm(index: number) {
@@ -221,6 +245,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   deleteTransaction(transactionId: number) {
+    // this.deleteConfirmation();
     this.transactionService.deleteTransaction(transactionId).subscribe(
       (res: void) => {
         this.getAllTransactions();
@@ -246,7 +271,9 @@ export class TransactionsComponent implements OnInit {
       .subscribe(
         (res: Transaction) => {
           this.getAllTransactions();
+          this.toastr.success('your transaction has been successfully updated', 'Update successful');
           console.log('update successful');
+
         },
         (error: HttpErrorResponse) => {
           alert(error.message);

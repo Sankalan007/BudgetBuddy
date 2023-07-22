@@ -43,8 +43,8 @@ public class GoalsService {
         goalsRepository.deleteById(id);
     }
 
-    public void deleteAllGoals(){
-        goalsRepository.deleteAll();
+    public void deleteAllGoals(Long id){
+        goalsRepository.deleteByUserId(id);
     }
 
 }

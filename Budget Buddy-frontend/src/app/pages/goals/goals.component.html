@@ -16,7 +16,7 @@
       >
     </div>
     <div
-      (click)="deleteAllGoals()"
+      (click)="deleteAllConfirmation()"
       class="bg-danger rounded-lg flex justify-center items-center cursor-pointer hover:bg-[#bb0c0c]"
       *ngIf="!showGoalsForm && !showUpdateGoalsForm"
     >
@@ -24,7 +24,9 @@
         <span class="text-2xl rounded-full"
           ><i class="fa fa-trash-alt"></i
         ></span>
+
         <span class="text-xl rounded-lg">Delete all</span>
+
       </div>
     </div>
   </div>
@@ -229,11 +231,36 @@
         <div class="text-3xl mx-auto my-auto" >
             No goals added yet!
         </div>
+
     </ng-container>
     <ng-container *ngIf="goals.length > 0">
         <ng-container *ngFor="let goal of goals; let i = index">
             <div
               class="bg-[#227C70] flex flex-col p-[20px] justify-start rounded-xl items-center mt-10"
+
+
+        <div
+          type="button"
+          class="text-white font-bold rounded mt-3 flex justify-end w-full"
+          
+        >
+          <span class="flex w-full items-center cursor-pointer ml-1" (click)="toggleDescription(i)">
+            <ng-container *ngIf="!showingDes[i]"
+              >Show More <span class="mb-2 ml-2"> ⌄</span></ng-container
+            >
+            <ng-container *ngIf="showingDes[i]"
+              >Show Less <span class="mt-2 ml-3"> ⌃</span></ng-container
+            >
+          </span>
+          <button class="flex space-x-3">
+            <p (click)="updateGoal(goal, i)" 
+              class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+            >
+              Update
+            </p>
+            <p (click)="deleteConfirmation(goal)"
+              class="cursor-pointer text-white bg-danger hover:bg-[#bb0c0c] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
+
             >
               <div class="items-start">
                 <h1
