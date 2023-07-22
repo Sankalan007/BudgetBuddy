@@ -57,22 +57,22 @@ export class GoalsComponent implements OnInit {
       endDate: ['', Validators.required],
     });
     this.getGoals(this.userDetails[0].id);
-    console.log(this.goals);
+    // console.log(this.goals);
   }
 
   toggleDescription(i: number) {
     this.showingDes[i] = !this.showingDes[i];
-    console.log(this.showingDes[i]);
+    // console.log(this.showingDes[i]);
   }
 
   getGoals(userId: number) {
     this.goalsService.getGoalsByUserId(userId).subscribe(
       (res: Goals[]) => {
-        console.log(res);
+        // console.log(res);
         this.goals = res;
-        console.log(res.length);
+        // console.log(res.length);
         this.showingDes = Array.from({ length: res.length }, () => false);
-        console.log(this.showingDes);
+        // console.log(this.showingDes);
 
         this.totalGoals = this.goals.length;
       },
@@ -82,11 +82,11 @@ export class GoalsComponent implements OnInit {
     );
   }
 
-  deleteGoals(goal:Goals){
+  deleteGoals(goal: Goals) {
     this.goalsService.deleteGoals(goal.id).subscribe(
-      (res) =>{
-        console.log(res);
-        this.getGoals(this.userDetails[0].id)
+      (res) => {
+        // console.log(res);
+        this.getGoals(this.userDetails[0].id);
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -94,12 +94,12 @@ export class GoalsComponent implements OnInit {
     );
   }
 
-  deleteAllGoals(){
-    console.log("Bhai chal rha hai");
+  deleteAllGoals() {
+    // console.log("Bhai chal rha hai");
     this.goalsService.deleteAllGoals(this.userDetails[0].id).subscribe(
-      (res) =>{
-        console.log(res);
-        this.getGoals(this.userDetails[0].id)
+      (res) => {
+        // console.log(res);
+        this.getGoals(this.userDetails[0].id);
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -108,52 +108,63 @@ export class GoalsComponent implements OnInit {
   }
 
   toggleGoalForm() {
-    
-    if(!this.showUpdateGoalsForm){
+    if (!this.showUpdateGoalsForm) {
       this.showGoalsForm = !this.showGoalsForm;
     }
-    
   }
 
   toggleUpdateGoalForm() {
-    if(!this.showGoalsForm){
+    if (!this.showGoalsForm) {
       this.showUpdateGoalsForm = !this.showUpdateGoalsForm;
     }
   }
 
   onSubmit(goal: any) {
     this.toggleGoalForm();
-    console.log(goal);
-    goal.userId = this.userDetails[0].id;
-    if (this.goalsForm.valid) {
-      this.goalsService.addGoals(goal).subscribe(
-        (res: Goals) => {
-          this.toastr.success('Your goal has been added', 'Goal addition successful');
-          console.log(goal);
-          this.goalsService.getGoalsByUserId(this.userDetails[0].id).subscribe(
-            (getRes: Goals[]) => {
-              console.log(getRes);
-              this.goals = getRes;
-              console.log(getRes.length);
-              this.showingDes = Array.from(
-                { length: getRes.length },
-                () => false
-              );
-              console.log(this.showingDes);
+    // console.log(goal);
+    if (goal.target > goal.saving) {
+      goal.userId = this.userDetails[0].id;
+      if (this.goalsForm.valid) {
+        this.goalsService.addGoals(goal).subscribe(
+          (res: Goals) => {
+            this.toastr.success(
+              'Your goal has been added',
+              'Goal addition successful'
+            );
+            // console.log(goal);
+            this.goalsService
+              .getGoalsByUserId(this.userDetails[0].id)
+              .subscribe(
+                (getRes: Goals[]) => {
+                  // console.log(getRes);
+                  this.goals = getRes;
+                  // console.log(getRes.length);
+                  this.showingDes = Array.from(
+                    { length: getRes.length },
+                    () => false
+                  );
+                  // console.log(this.showingDes);
 
-              this.totalGoals = this.goals.length;
-            },
-            (error: HttpErrorResponse) => {
-              console.log(error);
-            }
-          );
-          console.log(this.goals);
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error);
-        }
+                  this.totalGoals = this.goals.length;
+                },
+                (error: HttpErrorResponse) => {
+                  console.log(error);
+                }
+              );
+            // console.log(this.goals);
+          },
+          (error: HttpErrorResponse) => {
+            console.log(error);
+          }
+        );
+      }
+    } else {
+      this.toastr.error(
+        'Your saving is not lower than your target',
+        'Check your inputs'
       );
     }
+
     this.goalsForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
@@ -182,8 +193,8 @@ export class GoalsComponent implements OnInit {
   }
 
   onUpdateGoal(goal: Goals) {
-
     this.toggleUpdateGoalForm();
+
     const updatedGoal = {
       id: this.myGoal.id,
       userId: this.userDetails[0]?.id,
@@ -195,34 +206,41 @@ export class GoalsComponent implements OnInit {
       endDate: goal.endDate,
     };
     console.log(updatedGoal);
-    
-    this.goalsService.updateGoals(this.myGoal.id, updatedGoal).subscribe(
-      (res) => {
-        this.toastr.success('Your goal has been update', 'Update successful');
-        console.log(res);
 
-        this.getGoals(this.userDetails[0]?.id);
+    if (updatedGoal.target > updatedGoal.saving) {
+      this.goalsService.updateGoals(this.myGoal.id, updatedGoal).subscribe(
+        (res) => {
+          this.toastr.success('Your goal has been update', 'Update successful');
+          // console.log(res);
 
-        this.totalGoals = this.goals.length;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error);
-      }
-    );
-    this.updateGoalsForm = this.fb.group({
-      title: ['', Validators.required],
-      description: [''],
-      target: ['', [Validators.required, Validators.min(0.01)]],
-      saving: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-    });
+          this.getGoals(this.userDetails[0]?.id);
+
+          this.totalGoals = this.goals.length;
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      );
+      this.updateGoalsForm = this.fb.group({
+        title: ['', Validators.required],
+        description: [''],
+        target: ['', [Validators.required, Validators.min(0.01)]],
+        saving: ['', Validators.required],
+        startDate: ['', Validators.required],
+        endDate: ['', Validators.required],
+      });
+    } else {
+      this.toastr.error(
+        'Your saving is not lower than your target',
+        'Check your inputs'
+      );
+    }
   }
 
   myGoal: Goals;
   indexToUpdate: number;
 
-  deleteConfirmation(goal: Goals){
+  deleteConfirmation(goal: Goals) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -230,20 +248,16 @@ export class GoalsComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteGoals(goal);
-        Swal.fire(
-          'Deleted!',
-          'Your goal has been deleted.',
-          'success'
-        )
+        Swal.fire('Deleted!', 'Your goal has been deleted.', 'success');
       }
-    })
+    });
   }
 
-  deleteAllConfirmation(){
+  deleteAllConfirmation() {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -251,22 +265,18 @@ export class GoalsComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteAllGoals();
-        Swal.fire(
-          'Deleted!',
-          'Your goal has been deleted.',
-          'success'
-        )
+        Swal.fire('Deleted!', 'Your goal has been deleted.', 'success');
       }
-    })
+    });
   }
 
   updateGoal(goal: Goals, index: number) {
     this.toggleUpdateGoalForm();
-    
+
     this.indexToUpdate = index;
     this.updateGoalsForm.setValue({
       title: this.goals[index].title,

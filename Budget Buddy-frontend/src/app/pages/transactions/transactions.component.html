@@ -134,12 +134,12 @@
     Apply
   </button>
 
-  <ng-container *ngIf="transactions.length <= 0">
+  <ng-container *ngIf="transactions?.length <= 0">
     <div class="text-3xl mx-auto mt-4 w-full flex justify-center items-center">
       <span> No transactions to show! </span>
     </div>
   </ng-container>
-  <ng-container *ngIf="transactions.length > 0">
+  <ng-container *ngIf="transactions?.length > 0">
     <table
       class="table-auto w-full bg-primary shadow-md rounded-lg overflow-hidden"
     >
