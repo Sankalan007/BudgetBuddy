@@ -79,12 +79,43 @@ export class GoalsComponent implements OnInit {
     );
   }
 
+  deleteGoals(goal:Goals){
+    this.goalsService.deleteGoals(goal.id).subscribe(
+      (res) =>{
+        console.log(res);
+        this.getGoals(this.userDetails[0].id)
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
+  }
+
+  deleteAllGoals(){
+    console.log("Bhai chal rha hai");
+    this.goalsService.deleteAllGoals().subscribe(
+      (res) =>{
+        console.log(res);
+        this.getGoals(this.userDetails[0].id)
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    );
+  }
+
   toggleGoalForm() {
-    this.showGoalsForm = !this.showGoalsForm;
+
+    if(!this.showUpdateGoalsForm){
+      this.showGoalsForm = !this.showGoalsForm;
+    }
+    
   }
 
   toggleUpdateGoalForm() {
-    this.showUpdateGoalsForm = !this.showUpdateGoalsForm;
+    if(!this.showGoalsForm){
+      this.showUpdateGoalsForm = !this.showUpdateGoalsForm;
+    }
   }
 
   onSubmit(goal: any) {
@@ -143,6 +174,7 @@ export class GoalsComponent implements OnInit {
     this.toggleUpdateGoalForm();
     const updatedGoal = {
       id: this.myGoal.id,
+      userId: this.userDetails[0]?.id,
       title: this.myGoal.title,
       description: goal.description,
       target: this.myGoal.target,
@@ -171,14 +203,15 @@ export class GoalsComponent implements OnInit {
 
   updateGoal(goal: Goals, index: number) {
     this.toggleUpdateGoalForm();
+    
     this.indexToUpdate = index;
     this.updateGoalsForm.setValue({
       title: this.goals[index].title,
-      description: '',
-      target: 0,
-      saving: 0,
-      startDate: '',
-      endDate: '',
+      description: this.goals[index].description,
+      target: this.goals[index].target,
+      saving: this.goals[index].saving,
+      startDate: this.goals[index].startDate,
+      endDate: this.goals[index].endDate,
     });
 
     this.myGoal = goal;

@@ -46,13 +46,13 @@ public class GoalsController {
         if (existingGoals == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        existingGoals.setSaving(existingGoals.getSaving());
-        existingGoals.setTitle(existingGoals.getTitle());
-        existingGoals.setDescription(existingGoals.getDescription());
-        existingGoals.setTarget(existingGoals.getTarget());
-        existingGoals.setStartDate(existingGoals.getStartDate());
-        existingGoals.setEndDate(existingGoals.getEndDate());
-        existingGoals.setUserId(existingGoals.getUserId());
+        existingGoals.setSaving(goals.getSaving());
+        existingGoals.setTitle(goals.getTitle());
+        existingGoals.setDescription(goals.getDescription());
+        existingGoals.setTarget(goals.getTarget());
+        existingGoals.setStartDate(goals.getStartDate());
+        existingGoals.setEndDate(goals.getEndDate());
+        existingGoals.setUserId(goals.getUserId());
 
         Goals goals1 = goalsService.updateGoals(existingGoals);
         return new ResponseEntity<>(goals1, HttpStatus.OK);
@@ -61,6 +61,13 @@ public class GoalsController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteGoals(@PathVariable("id") Long id){
         goalsRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteAll")
+    @CrossOrigin()
+    public ResponseEntity<?> deleteGoals(){
+        goalsService.deleteAllGoals();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
