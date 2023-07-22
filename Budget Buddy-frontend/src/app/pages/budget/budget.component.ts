@@ -16,6 +16,7 @@ import Budget from 'src/app/model/Buget';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
@@ -162,6 +163,7 @@ export class BudgetComponent implements OnInit {
     // console.log(budget);
     this.budgetService.addNewBudget(budget).subscribe(
       (res) => {
+        this.toast.success('Your budget has been succesfully added', 'Sucess');
         // console.log(res);
         this.budgetService.getAllBudget(this.userId).subscribe(
           (cat) => {
@@ -244,6 +246,7 @@ export class BudgetComponent implements OnInit {
     };
     this.budgetService.addNewBudget(budget).subscribe(
       (res) => {
+        this.toast.success('Your budget has been succesfully added', 'Sucess');
         // console.log(res);
         this.budgetService.getAllBudget(this.userId).subscribe(
           (cat) => {
@@ -381,6 +384,26 @@ export class BudgetComponent implements OnInit {
     } else {
       return '#FF0000';
     }
+  }
+  deleteConfirmation(category: String){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteBudget(category);
+        Swal.fire(
+          'Deleted!',
+          'Your budget has been deleted.',
+          'success'
+        )
+      }
+    })
   }
   deleteBudget(category: String) {
     switch (category) {

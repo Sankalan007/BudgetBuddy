@@ -16,7 +16,7 @@
       >
     </div>
     <div
-      (click)="deleteAllGoals()"
+      (click)="deleteAllConfirmation()"
       class="bg-danger rounded-lg flex justify-center items-center cursor-pointer hover:bg-[#bb0c0c]"
       *ngIf="!showGoalsForm && !showUpdateGoalsForm"
     >
@@ -24,7 +24,7 @@
         <span class="text-2xl rounded-full"
           ><i class="fa fa-trash-alt"></i
         ></span>
-        <span  class="text-xl rounded-lg    ">Delete all</span>
+        <span  class="text-xl rounded-lg">Delete all</span>
       </div>
     </div>
   </div>
@@ -283,7 +283,7 @@
             >
               Update
             </p>
-            <p (click)="deleteGoals(goal)"
+            <p (click)="deleteConfirmation(goal)"
               class="cursor-pointer text-white bg-danger hover:bg-[#bb0c0c] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
             >
               Delete

@@ -64,10 +64,10 @@ public class GoalsController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteAll")
-    @CrossOrigin()
-    public ResponseEntity<?> deleteGoals(){
-        goalsService.deleteAllGoals();
+    @Transactional
+    @DeleteMapping("/deleteAll/{id}")
+    public ResponseEntity<?> deleteAllGoals(@PathVariable("id") Long id){
+        goalsService.deleteAllGoals(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
