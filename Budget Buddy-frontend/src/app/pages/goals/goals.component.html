@@ -18,13 +18,13 @@
     <div
       (click)="deleteAllConfirmation()"
       class="bg-danger rounded-lg flex justify-center items-center cursor-pointer hover:bg-[#bb0c0c]"
-      *ngIf="!showGoalsForm && !showUpdateGoalsForm && goals.length > 0"
+      *ngIf="!showGoalsForm && !showUpdateGoalsForm && goals?.length > 0"
     >
       <div class="mx-auto px-4 py-2 space-x-2">
         <span class="text-2xl rounded-full"
           ><i class="fa fa-trash-alt"></i
         ></span>
-        <span  class="text-xl rounded-lg">Delete all</span>
+        <span class="text-xl rounded-lg">Delete all</span>
       </div>
     </div>
   </div>
@@ -226,15 +226,10 @@
 <ng-container *ngIf="!showUpdateGoalsForm && !showGoalsForm">
   <div class="grid grid-row-{{ totalGoals }} p-6">
     <ng-container *ngIf="goals?.length <= 0">
-      <div class="mx-auto text-3xl">
-        No goals in your life! 💀
-      </div>
+      <div class="mx-auto text-3xl">No goals in your life! 💀</div>
     </ng-container>
 
     <ng-container *ngIf="goals?.length > 0">
-
-    <ng-container *ngIf="goals.length > 0">
-
       <ng-container *ngFor="let goal of goals; let i = index">
         <div
           class="bg-[#227C70] flex flex-col p-[20px] justify-start rounded-xl items-center mt-10"
@@ -244,13 +239,13 @@
               class="text-3xl font-bold justify-start flex flex-col items-start mx-auto"
             >
               <span class="font-mono">{{ goal.title }}</span>
-  
+
               <span class="mt-3 text-sm font-merriweather">
                 Target : {{ goal.target }}
               </span>
             </h1>
           </div>
-  
+
           <span
             class="text-[10px] ml-2 mt-[5px] text-sm text-white flex justify-start w-full"
           >
@@ -263,7 +258,7 @@
               Saved: {{ goal.saving }}
             </ng-container>
           </span>
-  
+
           <div
             class="h-[10px] mt-[1px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"
           >
@@ -273,13 +268,15 @@
               [style.backgroundColor]="getColor(goal.target, goal.saving)"
             ></div>
           </div>
-  
+
           <div
             type="button"
             class="text-white font-bold rounded mt-3 flex justify-end w-full"
-            
           >
-            <span class="flex w-full items-center cursor-pointer ml-1" (click)="toggleDescription(i)">
+            <span
+              class="flex w-full items-center cursor-pointer ml-1"
+              (click)="toggleDescription(i)"
+            >
               <ng-container *ngIf="!showingDes[i]"
                 >Show More <span class="mb-2 ml-2"> ⌄</span></ng-container
               >
@@ -288,12 +285,14 @@
               >
             </span>
             <button class="flex space-x-3">
-              <p (click)="updateGoal(goal, i)" 
+              <p
+                (click)="updateGoal(goal, i)"
                 class="cursor-pointer text-white bg-info hover:bg-[#1366a1] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
               >
                 Update
               </p>
-              <p (click)="deleteConfirmation(goal)"
+              <p
+                (click)="deleteConfirmation(goal)"
                 class="cursor-pointer text-white bg-danger hover:bg-[#bb0c0c] rounded-md p-1 px-2 text-[15px] border border-white shadow-button"
               >
                 Delete
@@ -315,5 +314,5 @@
         </div>
       </ng-container>
     </ng-container>
-  
-</ng-container>
+  </div></ng-container
+>
