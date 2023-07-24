@@ -458,7 +458,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   renderAnnualSpendingsAndEarningsChart() {
     this.annualSpendingsAndEarningsLabels = Array.from(
       { length: this.monthOfYearSpending.length },
-      (_, index) => this.formatMonth(index)
+      (_, index) => this.formatMonth(index + 1)
     );
 
     this.annualSpendingsAndEarningsData = {
@@ -565,7 +565,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
   getMonthOfYearSpending(userId: number, date: string) {
     this.transactionService.getMonthOfYearSpending(userId, date).subscribe(
       (res: number[]) => {
-        // console.log(res);
+        console.log(res);
         this.monthOfYearSpending = res;
         this.renderMonthOfYearSpendingChart();
         this.renderAnnualSpendingsAndEarningsChart();
