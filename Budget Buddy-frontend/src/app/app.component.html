@@ -5,8 +5,10 @@
   <ng-container *ngIf="isAuthenticated()">
     <div class="flex w-full max-w-[95vw]" [class.dark]="!lightTheme">
       <app-sidebar (sidebarToggled)="toggleSidebar($event)" (lightThemeToggled)="toggleLightTheme($event)"></app-sidebar>
-      <div [style.width]="sidebarOpen ? 'calc(100vw - 250px)' : 'calc(100vw - 75px)'" class="top-0s">
-        <app-navbar [sidebarOpen]="sidebarOpen" [lightTheme]="lightTheme"></app-navbar>
+      <div [style.width]="sidebarOpen ? 'calc(100vw - 250px)' : 'calc(100vw - 75px)'" class="top-0">
+        <div class="z-50">
+          <app-navbar [sidebarOpen]="sidebarOpen" [lightTheme]="lightTheme"></app-navbar>
+        </div>
         <div [ngClass]="sidebarOpen ? 'pl-[250px]' : 'pl-[75px]'" class="transition-all duration-500 w-[100vw] absolute top-[4rem] min-h-[calc(100vh-4rem)] bg-primary-bg dark:bg-dark-secondary text-primary">
           <router-outlet></router-outlet>
         </div>
@@ -16,7 +18,9 @@
   <ng-container *ngIf="!isAuthenticated()">
     <div class="flex w-full max-w-[95vw]" [class.dark]="!lightTheme">
       <div class="top-0">
-        <app-navbar [sidebarOpen]="sidebarOpen" [lightTheme]="lightTheme"></app-navbar>
+        <div class="z-50">
+          <app-navbar [sidebarOpen]="sidebarOpen" [lightTheme]="lightTheme"></app-navbar>
+        </div>
         <div class="transition-all duration-500 w-[100vw] absolute top-[4rem] min-h-[calc(100vh-4rem)] bg-secondary dark:bg-dark-secondary text-primary">
           <router-outlet></router-outlet>
         </div>

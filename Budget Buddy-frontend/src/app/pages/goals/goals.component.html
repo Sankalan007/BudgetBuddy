@@ -32,9 +32,9 @@
 <ng-container *ngIf="showGoalsForm">
   <div
     class="flex justify-start pl-8 pb-8 pr-12 cursor-pointer"
-    (click)="toggleGoalForm()"
+    
   >
-    <i class="fa-solid fa-arrow-left text-3xl text-white"></i>
+    <i class="fa-solid fa-arrow-left text-3xl text-white" (click)="toggleGoalForm()"></i>
   </div>
   <form [formGroup]="goalsForm" (ngSubmit)="onSubmit(goalsForm.value)">
     <div class="space-x-1">
@@ -127,10 +127,10 @@
 
 <ng-container *ngIf="showUpdateGoalsForm">
   <div
-    class="flex justify-start pl-8 pb-8 pr-12 cursor-pointer"
-    (click)="toggleUpdateGoalForm()"
+    class="flex justify-start pl-8 pb-8 pr-12 "
+    
   >
-    <i class="fa-solid fa-arrow-left text-3xl text-white"></i>
+    <i class="fa-solid fa-arrow-left text-3xl text-white cursor-pointer" (click)="toggleUpdateGoalForm()"></i>
   </div>
   <form
     [formGroup]="updateGoalsForm"
