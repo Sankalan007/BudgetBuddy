@@ -146,14 +146,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       plugins: {
         legend: {
           labels: {
-            color: '#008080',
+            color: '#ffffff',
           },
         },
       },
       scales: {
         x: {
           ticks: {
-            color: '#008080',
+            color: '#ffffff',
             font: {
               weight: 500,
             },
@@ -165,7 +165,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         },
         y: {
           ticks: {
-            color: '#008080',
+            color: '#ffffff',
           },
           grid: {
             color: '#808080',
@@ -216,29 +216,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       plugins: {
         legend: {
           labels: {
-            color: '#008080',
+            color: '#ffffff',
           },
         },
       },
       scales: {
         x: {
           ticks: {
-            color: '#008080',
+            color: '#ffffff',
             font: {
               weight: 500,
             },
           },
           grid: {
-            color: '#000000',
+            color: '#808080',
             drawBorder: false,
           },
         },
         y: {
           ticks: {
-            color: '#008080',
+            color: '#ffffff',
           },
           grid: {
-            color: '#000000',
+            color: '#808080',
             drawBorder: false,
           },
         },
