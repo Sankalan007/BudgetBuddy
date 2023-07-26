@@ -1,6 +1,14 @@
 <!-- transaction warning -->
 
-<div class="m-6">
+<div
+  class="m-6"
+  style="
+    background-image: url('../../../assets/BudgetBG.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  "
+>
   <div class="grid grid-cols-2 gap-4 grid-row-7">
     <div
       class="bg-[#227C70] h-[250px] flex flex-col p-[20px] justify-center rounded-xl my-auto items-center"
@@ -45,7 +53,6 @@
           class="flex space-x-4 w-full mx-auto justify-center"
           *ngIf="budgetCategory.food == null"
         >
-          
           <input
             id="addFieldFood"
             [(ngModel)]="foodBudget"
@@ -77,7 +84,6 @@
           </p>
 
           <div class="flex space-x-4 w-full" *ngIf="isFoodUpdateShowing">
-            
             <input
               id="updateFoodBudgetBox"
               [(ngModel)]="updatedFoodBudget"
@@ -148,7 +154,6 @@
 
       <div class="mt-10 mx-auto">
         <div class="flex space-x-4" *ngIf="budgetCategory.transport == null">
-          
           <input
             id="addFieldTransport"
             [(ngModel)]="transportBudget"
@@ -180,8 +185,6 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isTransportUpdateShowing">
-            
-
             <input
               id="updateTransportBudgetBox"
               [(ngModel)]="updatedTransportBudget"
@@ -260,7 +263,6 @@
           class="flex space-x-4"
           *ngIf="budgetCategory.entertainment == null"
         >
-          
           <input
             id="addFieldEntertainment"
             [(ngModel)]="entertainmentBudget"
@@ -299,7 +301,6 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isEntertainmentUpdateShowing">
-            
             <input
               id="updateEntertainmentBudgetBox"
               [(ngModel)]="updatedEntertainmentBudget"
@@ -377,7 +378,6 @@
 
       <div class="mt-10 mx-auto">
         <div class="flex space-x-4" *ngIf="budgetCategory.shopping == null">
-          
           <input
             id="addFieldShopping"
             [(ngModel)]="shoppingBudget"
@@ -407,7 +407,6 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isShoppingUpdateShowing">
-            
             <input
               id="updateShoppingBudgetBox"
               [(ngModel)]="updatedShoppingBudget"
@@ -482,7 +481,6 @@
 
       <div class="mt-10 mx-auto">
         <div class="flex space-x-4" *ngIf="budgetCategory.utilities == null">
-          
           <input
             id="addFieldUtilities"
             [(ngModel)]="utilitiesBudget"
@@ -514,7 +512,6 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isUtilitiesUpdateShowing">
-            
             <input
               id="updateUtilitiesBudgetBox"
               [(ngModel)]="updatedUtilitiesBudget"
@@ -590,7 +587,6 @@
 
       <div class="mt-10 mx-auto">
         <div class="flex space-x-4" *ngIf="budgetCategory.housing == null">
-          
           <input
             id="addFieldHousing"
             [(ngModel)]="housingBudget"
@@ -620,7 +616,6 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isHousingUpdateShowing">
-            
             <input
               id="updateHousingBudgetBox"
               [(ngModel)]="updatedHousingBudget"
@@ -699,7 +694,6 @@
 
       <div class="mt-10 mx-auto">
         <div class="flex space-x-4" *ngIf="budgetCategory.other == null">
-          
           <input
             id="addFieldOther"
             [(ngModel)]="otherBudget"
@@ -729,7 +723,6 @@
           </p>
 
           <div class="flex space-x-4" *ngIf="isOtherUpdateShowing">
-            
             <input
               id="updateOtherBudgetBox"
               [(ngModel)]="updatedOtherBudget"
