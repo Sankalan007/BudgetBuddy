@@ -178,7 +178,8 @@ export class GoalsComponent implements OnInit {
   updateProgressBar(target: number, saving: number, endDate: string): any {
     // console.log(saving);
     const currentDate = new Date();
-    const TimeLimit = new Date(endDate);
+    const TimeLimit = new Date(new Date(endDate).getTime() + 18.5 * 60 * 60 * 1000);
+    // const TimeLimit = new Date(endDate);
     if (currentDate > TimeLimit) {
       return 100.0001;
     }
