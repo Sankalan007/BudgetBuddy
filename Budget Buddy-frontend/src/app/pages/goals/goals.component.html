@@ -237,22 +237,26 @@
         <div class="mx-auto text-3xl">No goals in your life! 💀</div>
       </ng-container>
 
-      <ng-container *ngIf="goals?.length > 0">
-        <ng-container *ngFor="let goal of goals; let i = index">
-          <div
-            class="bg-[#227C70] flex flex-col p-[20px] justify-start rounded-xl items-center mt-10"
-          >
-            <div class="items-start">
-              <h1
-                class="text-3xl font-bold justify-start flex flex-col items-start mx-auto"
-              >
-                <span class="font-mono">{{ goal.title }}</span>
+
+    <ng-container *ngIf="goals?.length > 0">
+      <ng-container *ngFor="let goal of goals; let i = index">
+        <div
+          class="bg-[#227C70] flex flex-col p-[20px] justify-start rounded-xl items-center mt-10"
+          [style.background-color]="getBoxColor()"
+        >
+          <div class="items-start">
+            <h1
+              class="text-3xl font-bold justify-start flex flex-col items-start mx-auto"
+            >
+              <span class="font-mono">{{ goal.title }}</span>
+
 
                 <span class="mt-3 text-sm font-merriweather">
                   Target : {{ goal.target }}
                 </span>
               </h1>
             </div>
+
 
             <span
               class="text-[10px] ml-2 mt-[5px] text-sm text-white flex justify-start w-full"
@@ -266,6 +270,7 @@
                 Saved: {{ goal.saving }}
               </ng-container>
             </span>
+
 
             <div
               class="h-[10px] mt-[1px] w-full bg-black dark:bg-black justify-start align-start rounded-xl"

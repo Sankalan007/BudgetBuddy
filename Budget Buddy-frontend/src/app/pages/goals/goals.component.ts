@@ -200,7 +200,7 @@ export class GoalsComponent implements OnInit {
       userId: this.userDetails[0]?.id,
       title: this.myGoal.title,
       description: goal.description,
-      target: this.myGoal.target,
+      target: goal.target,
       saving: goal.saving,
       startDate: this.myGoal.startDate,
       endDate: goal.endDate,
@@ -210,7 +210,7 @@ export class GoalsComponent implements OnInit {
     if (updatedGoal.target > updatedGoal.saving) {
       this.goalsService.updateGoals(this.myGoal.id, updatedGoal).subscribe(
         (res) => {
-          this.toastr.success('Your goal has been update', 'Update successful');
+          this.toastr.success('Your goal has been updated', 'Update successful');
           // console.log(res);
 
           this.getGoals(this.userDetails[0]?.id);
@@ -294,5 +294,21 @@ export class GoalsComponent implements OnInit {
     if (bool === true)
       this.updateGoalsForm.get('customer_limit_input').enable();
     else this.updateGoalsForm.get('customer_limit_input').disable();
+  }
+  colorSwitch:boolean=true;
+  getBoxColor(){
+    
+    console.log(this.colorSwitch);
+    if(this.colorSwitch){
+      this.colorSwitch = false;;
+      return "#2E8A99"
+      
+    }
+    else{
+      this.colorSwitch = true;678983
+      //return "#577D86"
+      return "#678983"
+      
+    }
   }
 }
