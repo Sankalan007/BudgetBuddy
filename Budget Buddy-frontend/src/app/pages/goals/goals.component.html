@@ -235,9 +235,9 @@
           class="bg-[#227C70] flex flex-col p-[20px] justify-start rounded-xl items-center mt-10"
           [style.background-color]="getBoxColor()"
         >
-          <div class="items-start">
+          <div >
             <h1
-              class="text-3xl font-bold justify-start flex flex-col items-start mx-auto"
+              class="text-3xl font-bold justify-center flex flex-col items-center mx-auto"
             >
               <span class="font-mono">{{ goal.title }}</span>
 
@@ -252,9 +252,12 @@
           >
            
             <ng-container
-              *ngIf="updateProgressBar(goal.target, goal.saving) >= 0"
+              *ngIf="updateProgressBar(goal.target, goal.saving,goal.endDate) >= 0 && updateProgressBar(goal.target, goal.saving,goal.endDate) <=100"
             >
               Saved: {{ goal.saving }}
+            </ng-container>
+            <ng-container *ngIf="updateProgressBar(goal.target, goal.saving,goal.endDate) > 100">
+              Goal's Time Period has Expired!
             </ng-container>
           </span>
 
@@ -263,8 +266,8 @@
           >
             <div
               class="h-[10px] flex justify-center text-center items-center text-xs font-medium text-primary-100 rounded-xl"
-              [style.width.%]="updateProgressBar(goal.target, goal.saving)"
-              [style.backgroundColor]="getColor(goal.target, goal.saving)"
+              [style.width.%]="updateProgressBar(goal.target, goal.saving,goal.endDate)"
+              [style.backgroundColor]="getColor(goal.target, goal.saving,goal.endDate)"
             ></div>
           </div>
 

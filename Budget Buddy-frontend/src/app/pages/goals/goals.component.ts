@@ -175,19 +175,26 @@ export class GoalsComponent implements OnInit {
     });
   }
 
-  updateProgressBar(target: number, saving: number): any {
+  updateProgressBar(target: number, saving: number, endDate:string): any {
     // console.log(saving);
-
+    const currentDate = new Date();
+    const TimeLimit = new Date(endDate);
+    if(currentDate>TimeLimit){
+      return 100.0001;
+    }
     return (100 - ((target - saving) / target) * 100).toFixed(2);
   }
 
-  getColor(target: number, savings: number) {
-    let progress: number = this.updateProgressBar(target, savings);
-    if (progress > 66) {
+  getColor(target: number, savings: number,endDate:string) {
+    let progress: number = this.updateProgressBar(target, savings,endDate);
+    if (progress > 66 && progress <100) {
       return '#FFFF';
     } else if (progress > 33 && progress < 66) {
       return '#D1D435';
-    } else {
+    } else if (progress ==100 ){
+      return "#7ded17"
+    }
+    else {
       return '#FF0000';
     }
   }
@@ -207,7 +214,7 @@ export class GoalsComponent implements OnInit {
     };
     console.log(updatedGoal);
 
-    if (updatedGoal.target > updatedGoal.saving) {
+    if (updatedGoal.target >= updatedGoal.saving) {
       this.goalsService.updateGoals(this.myGoal.id, updatedGoal).subscribe(
         (res) => {
           this.toastr.success('Your goal has been updated', 'Update successful');

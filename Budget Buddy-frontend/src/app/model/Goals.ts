@@ -5,6 +5,6 @@ export default interface Goals{
     target: number;
     saving: number;
     startDate: String;
-    endDate: String;
+    endDate: string;
     
 }
