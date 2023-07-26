@@ -233,6 +233,7 @@
       <ng-container *ngFor="let goal of goals; let i = index">
         <div
           class="bg-[#227C70] flex flex-col p-[20px] justify-start rounded-xl items-center mt-10"
+          [style.background-color]="getBoxColor()"
         >
           <div class="items-start">
             <h1
@@ -249,9 +250,7 @@
           <span
             class="text-[10px] ml-2 mt-[5px] text-sm text-white flex justify-start w-full"
           >
-            <!-- <ng-container *ngIf="updateProgressBar(goal.target,goal.savings) < 0;">
-                  *set budget is lower than the spent value
-                </ng-container> -->
+           
             <ng-container
               *ngIf="updateProgressBar(goal.target, goal.saving) >= 0"
             >
