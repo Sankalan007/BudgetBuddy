@@ -175,26 +175,25 @@ export class GoalsComponent implements OnInit {
     });
   }
 
-  updateProgressBar(target: number, saving: number, endDate:string): any {
+  updateProgressBar(target: number, saving: number, endDate: string): any {
     // console.log(saving);
     const currentDate = new Date();
     const TimeLimit = new Date(endDate);
-    if(currentDate>TimeLimit){
+    if (currentDate > TimeLimit) {
       return 100.0001;
     }
     return (100 - ((target - saving) / target) * 100).toFixed(2);
   }
 
-  getColor(target: number, savings: number,endDate:string) {
-    let progress: number = this.updateProgressBar(target, savings,endDate);
-    if (progress > 66 && progress <100) {
+  getColor(target: number, savings: number, endDate: string) {
+    let progress: number = this.updateProgressBar(target, savings, endDate);
+    if (progress > 66 && progress < 100) {
       return '#FFFF';
     } else if (progress > 33 && progress < 66) {
       return '#D1D435';
-    } else if (progress ==100 ){
-      return "#7ded17"
-    }
-    else {
+    } else if (progress == 100) {
+      return '#7ded17';
+    } else {
       return '#FF0000';
     }
   }
@@ -217,7 +216,10 @@ export class GoalsComponent implements OnInit {
     if (updatedGoal.target >= updatedGoal.saving) {
       this.goalsService.updateGoals(this.myGoal.id, updatedGoal).subscribe(
         (res) => {
-          this.toastr.success('Your goal has been updated', 'Update successful');
+          this.toastr.success(
+            'Your goal has been updated',
+            'Update successful'
+          );
           // console.log(res);
 
           this.getGoals(this.userDetails[0]?.id);
@@ -302,20 +304,16 @@ export class GoalsComponent implements OnInit {
       this.updateGoalsForm.get('customer_limit_input').enable();
     else this.updateGoalsForm.get('customer_limit_input').disable();
   }
-  colorSwitch:boolean=true;
-  getBoxColor(){
-    
+  colorSwitch: boolean = true;
+  getBoxColor(i: number) {
     console.log(this.colorSwitch);
-    if(this.colorSwitch){
-      this.colorSwitch = false;;
-      return "#2E8A99"
-      
-    }
-    else{
-      this.colorSwitch = true;678983
+    if (i % 2 == 0) {
+      // this.colorSwitch = false;
+      return '#2E8A99';
+    } else {
+      // this.colorSwitch = true;
       //return "#577D86"
-      return "#678983"
-      
+      return '#678983';
     }
   }
 }
