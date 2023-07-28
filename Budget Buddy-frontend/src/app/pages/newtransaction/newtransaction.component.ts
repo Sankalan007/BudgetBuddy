@@ -70,7 +70,7 @@ export class NewtransactionComponent implements OnInit {
             transaction.userId = this.userDetails[0].id;
               if (transaction.description === '')
                 transaction.description = 'default message';
-              console.log(transaction);
+              // console.log(transaction);
               this.transactionService.addNewTransaction(transaction).subscribe(
                 (res) => {
                   this.toastr.success('your transaction has been successfully added', 'Transaction added');
@@ -92,8 +92,8 @@ export class NewtransactionComponent implements OnInit {
               this.router.navigate(['/transactions']);
             if(transaction.type === 'spend'){
               if (
-                resBudget[transaction.category] >=
-                resTransaction[transaction.category] + transaction.amount
+                resBudget[transaction.category.toLowerCase()] >=
+                resTransaction[transaction.category.toLowerCase()] + transaction.amount
               ) {
                 
               } else {
