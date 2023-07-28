@@ -24,4 +24,14 @@ class TransactionRepoTest {
         Double actualResult = transactionRepo.foodAmount(userId, startDate, endDate);
         assertThat(actualResult).isEqualTo(expectedResult);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1, 2023-07-28, 2023-07-28, 0.0",
+            "2, 2023-07-28, 2023-07-28, 0.0"
+    })
+    void transportAmount(Long userId, String startDate, String endDate, Double expectedResult) {
+        Double actualResult = transactionRepo.foodAmount(userId, startDate, endDate);
+        assertThat(actualResult).isEqualTo(expectedResult);
+    }
 }
