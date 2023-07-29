@@ -12,22 +12,47 @@ export class GoalsService {
   private baseUrl = 'http://localhost:8080/api/v1/goals';
 
   getGoalsByUserId(userId: number): Observable<Goals[]> {
-    return this.http.get<Goals[]>(`${this.baseUrl}/findByUserId/${userId}`);
+    const token = localStorage.getItem('token');
+    return this.http.get<Goals[]>(`${this.baseUrl}/findByUserId/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   addGoals(goals: Goals): Observable<Goals> {
-    return this.http.post<Goals>(`${this.baseUrl}/add`, goals);
+    const token = localStorage.getItem('token');
+    return this.http.post<Goals>(`${this.baseUrl}/add`, goals, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   updateGoals(id: number, goals: Goals): Observable<Goals> {
-    return this.http.put<Goals>(`${this.baseUrl}/update/${id}`, goals);
+    const token = localStorage.getItem('token');
+    return this.http.put<Goals>(`${this.baseUrl}/update/${id}`, goals, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   deleteGoals(id: number): Observable<Goals> {
-    return this.http.delete<Goals>(`${this.baseUrl}/delete/${id}`);
+    const token = localStorage.getItem('token');
+    return this.http.delete<Goals>(`${this.baseUrl}/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   deleteAllGoals(id: number): Observable<Goals> {
-    return this.http.delete<Goals>(`${this.baseUrl}/deleteAll/${id}`);
+    const token = localStorage.getItem('token');
+    return this.http.delete<Goals>(`${this.baseUrl}/deleteAll/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }

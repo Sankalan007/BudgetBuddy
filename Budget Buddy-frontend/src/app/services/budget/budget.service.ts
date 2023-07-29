@@ -22,14 +22,29 @@ export class BudgetService {
   // spendCategory:SpendCategories[] = [];
 
   addNewBudget(budget: Budget): Observable<String> {
-    return this.http.post<String>(`${this.baseUrl}/add`, budget);
+    const token = localStorage.getItem('token');
+    return this.http.post<String>(`${this.baseUrl}/add`, budget, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   getAllBudget(userId: number): Observable<SpendCategories> {
-    return this.http.get<SpendCategories>(`${this.baseUrl}/all/${userId}`);
+    const token = localStorage.getItem('token');
+    return this.http.get<SpendCategories>(`${this.baseUrl}/all/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   updateThisBudget(id: number, budget: Budget): Observable<Budget> {
-    return this.http.put<Budget>(`${this.baseUrl}/update/${id}`, budget);
+    const token = localStorage.getItem('token');
+    return this.http.put<Budget>(`${this.baseUrl}/update/${id}`, budget, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }
