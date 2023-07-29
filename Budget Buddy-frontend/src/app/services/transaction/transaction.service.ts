@@ -17,44 +17,79 @@ export class TransactionService {
   constructor(private http: HttpClient) {}
 
   findAllTransactions(userId: number): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.baseUrl}/all/${userId}`);
+    const token = localStorage.getItem('token');
+    return this.http.get<Transaction[]>(`${this.baseUrl}/all/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
   findAllTransactionsByCreatedDesc(userId: number): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/all/created-desc/${userId}`
+      `${this.baseUrl}/all/created-desc/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
   addNewTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.post<Transaction>(`${this.baseUrl}/add`, transaction);
+    const token = localStorage.getItem('token');
+    return this.http.post<Transaction>(`${this.baseUrl}/add`, transaction, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   updateTransaction(
     transaction: Transaction,
     transactionId: number
   ): Observable<Transaction> {
+    const token = localStorage.getItem('token');
     return this.http.put<Transaction>(
       `${this.baseUrl}/update/${transactionId}`,
-      transaction
+      transaction, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
   deleteTransaction(transactionId: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/delete/${transactionId}`);
+    const token = localStorage.getItem('token');
+    return this.http.delete<void>(`${this.baseUrl}/delete/${transactionId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   getPresetTransactions(
     userId: number,
     date: string
   ): Observable<PresetTransactions> {
+    const token = localStorage.getItem('token');
     return this.http.get<PresetTransactions>(
-      `${this.baseUrl}/preset-transactions/${userId}/${date}`
+      `${this.baseUrl}/preset-transactions/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
   getPresetAverages(userId: number, date: string): Observable<PresetAverages> {
+    const token = localStorage.getItem('token');
     return this.http.get<PresetAverages>(
-      `${this.baseUrl}/preset-averages/${userId}/${date}`
+      `${this.baseUrl}/preset-averages/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -63,8 +98,13 @@ export class TransactionService {
     from: String,
     to: String
   ): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/filter/transactions-between/${from}/${to}/${userId}`
+      `${this.baseUrl}/filter/transactions-between/${from}/${to}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -73,8 +113,13 @@ export class TransactionService {
     from: String,
     to: String
   ): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/filter/transactions-between-desc/${from}/${to}/${userId}`
+      `${this.baseUrl}/filter/transactions-between-desc/${from}/${to}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -82,8 +127,13 @@ export class TransactionService {
     userId: number,
     date: string
   ): Observable<SpendCategories> {
+    const token = localStorage.getItem('token');
     return this.http.get<SpendCategories>(
-      `${this.baseUrl}/category/month/${userId}/${date}`
+      `${this.baseUrl}/category/month/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -91,14 +141,24 @@ export class TransactionService {
     userId: number,
     date: string
   ): Observable<EarnCategories> {
+    const token = localStorage.getItem('token');
     return this.http.get<EarnCategories>(
-      `${this.baseUrl}/earnCategory/month/${userId}/${date}`
+      `${this.baseUrl}/earnCategory/month/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
   getDailyTransaction(userId: number, date: String): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/filter/current-day/${date}/${userId}`
+      `${this.baseUrl}/filter/current-day/${date}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -106,8 +166,13 @@ export class TransactionService {
     userId: number,
     date: String
   ): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/filter/current-month/${date}/${userId}`
+      `${this.baseUrl}/filter/current-month/${date}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -115,8 +180,13 @@ export class TransactionService {
     userId: number,
     date: String
   ): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/filter/current-year/${date}/${userId}`
+      `${this.baseUrl}/filter/current-year/${date}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -124,8 +194,13 @@ export class TransactionService {
     userId: number,
     date: String
   ): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/filter/current-day-desc/${date}/${userId}`
+      `${this.baseUrl}/filter/current-day-desc/${date}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -133,8 +208,13 @@ export class TransactionService {
     userId: number,
     date: String
   ): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/filter/current-month-desc/${date}/${userId}`
+      `${this.baseUrl}/filter/current-month-desc/${date}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
@@ -142,50 +222,90 @@ export class TransactionService {
     userId: number,
     date: String
   ): Observable<Transaction[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/filter/current-year-desc/${date}/${userId}`
+      `${this.baseUrl}/filter/current-year-desc/${date}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 
   getDayOfMonthSpending(userId: number, date: String): Observable<number[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<number[]>(
-      `${this.baseUrl}/dayOfMonthSpending/${userId}/${date}`
+      `${this.baseUrl}/dayOfMonthSpending/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
   getMonthOfYearSpending(userId: number, date: String): Observable<number[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<number[]>(
-      `${this.baseUrl}/monthOfYearSpending/${userId}/${date}`
+      `${this.baseUrl}/monthOfYearSpending/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
   getDayOfLastSevenDaysSpending(
     userId: number,
     date: String
   ): Observable<number[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<number[]>(
-      `${this.baseUrl}/dayOfLastSevenDays/${userId}/${date}`
+      `${this.baseUrl}/dayOfLastSevenDays/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
   getDayOfMonthEarning(userId: number, date: String): Observable<number[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<number[]>(
-      `${this.baseUrl}/dayOfMonthEarning/${userId}/${date}`
+      `${this.baseUrl}/dayOfMonthEarning/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
   getMonthOfYearEarning(userId: number, date: String): Observable<number[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<number[]>(
-      `${this.baseUrl}/monthOfYearEarning/${userId}/${date}`
+      `${this.baseUrl}/monthOfYearEarning/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
   getDayOfLastSevenDaysEarning(
     userId: number,
     date: String
   ): Observable<number[]> {
+    const token = localStorage.getItem('token');
     return this.http.get<number[]>(
-      `${this.baseUrl}/dayOfLastSevenDaysEarn/${userId}/${date}`
+      `${this.baseUrl}/dayOfLastSevenDaysEarn/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
   getInsights(userId: number, date: String): Observable<Insights> {
+    const token = localStorage.getItem('token');
     return this.http.get<Insights>(
-      `${this.baseUrl}/insights/${userId}/${date}`
+      `${this.baseUrl}/insights/${userId}/${date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
   }
 }
