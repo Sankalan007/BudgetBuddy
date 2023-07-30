@@ -35,13 +35,13 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
                 Other = (Double) data.get(i)[1];
         }
         return SpendCategory.builder()
-                .Food(Food)
-                .Transport(Transport)
-                .Entertainment(Entertainment)
-                .Shopping(Shopping)
-                .Utilities(Utilities)
-                .Housing(Housing)
-                .Other(Other)
+                .food(Food)
+                .transport(Transport)
+                .entertainment(Entertainment)
+                .shopping(Shopping)
+                .utilities(Utilities)
+                .housing(Housing)
+                .other(Other)
                 .build();
     }
 }

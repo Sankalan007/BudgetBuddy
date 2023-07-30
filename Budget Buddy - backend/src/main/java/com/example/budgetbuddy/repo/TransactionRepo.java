@@ -172,13 +172,13 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
 
         return SpendCategory.builder()
-                .Food(foodAmount(userId, monthStartDate.toString(), date.toString()))
-                .Transport(transportAmount(userId, monthStartDate.toString(), date.toString()))
-                .Entertainment(entertainmentAmount(userId, monthStartDate.toString(), date.toString()))
-                .Shopping(shoppingAmount(userId, monthStartDate.toString(), date.toString()))
-                .Utilities(utilitiesAmount(userId, monthStartDate.toString(), date.toString()))
-                .Housing(housingAmount(userId, monthStartDate.toString(), date.toString()))
-                .Other(otherAmount(userId, monthStartDate.toString(), date.toString()))
+                .food(foodAmount(userId, monthStartDate.toString(), date.toString()))
+                .transport(transportAmount(userId, monthStartDate.toString(), date.toString()))
+                .entertainment(entertainmentAmount(userId, monthStartDate.toString(), date.toString()))
+                .shopping(shoppingAmount(userId, monthStartDate.toString(), date.toString()))
+                .utilities(utilitiesAmount(userId, monthStartDate.toString(), date.toString()))
+                .housing(housingAmount(userId, monthStartDate.toString(), date.toString()))
+                .other(otherAmount(userId, monthStartDate.toString(), date.toString()))
                 .build();
     }
 
@@ -301,13 +301,13 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
 
         return EarnCategory.builder()
-                .Salary(salaryAmount(userId, monthStartDate.toString(), date.toString()))
-                .Business(businessAmount(userId, monthStartDate.toString(), date.toString()))
-                .Rental(rentalAmount(userId, monthStartDate.toString(), date.toString()))
-                .Investment(investmentAmount(userId, monthStartDate.toString(), date.toString()))
-                .Gifts(giftsAmount(userId, monthStartDate.toString(), date.toString()))
-                .Freelance(freelanceAmount(userId, monthStartDate.toString(), date.toString()))
-                .OtherIncomes(otherIncomesAmount(userId, monthStartDate.toString(), date.toString()))
+                .salary(salaryAmount(userId, monthStartDate.toString(), date.toString()))
+                .business(businessAmount(userId, monthStartDate.toString(), date.toString()))
+                .rental(rentalAmount(userId, monthStartDate.toString(), date.toString()))
+                .investment(investmentAmount(userId, monthStartDate.toString(), date.toString()))
+                .gifts(giftsAmount(userId, monthStartDate.toString(), date.toString()))
+                .freelance(freelanceAmount(userId, monthStartDate.toString(), date.toString()))
+                .otherIncomes(otherIncomesAmount(userId, monthStartDate.toString(), date.toString()))
                 .build();
     }
 

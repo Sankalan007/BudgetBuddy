@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EarnCategory {
-    private Double Salary;
-    private Double Business;
-    private Double Rental;
-    private Double Investment;
-    private Double Gifts;
-    private Double Freelance;
-    private Double OtherIncomes;
+    private Double salary;
+    private Double business;
+    private Double rental;
+    private Double investment;
+    private Double gifts;
+    private Double freelance;
+    private Double otherIncomes;
 }

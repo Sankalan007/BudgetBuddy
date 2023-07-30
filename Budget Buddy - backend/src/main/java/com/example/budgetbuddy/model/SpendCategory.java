@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpendCategory {
-    private Double Food;
-    private Double Transport;
-    private Double Entertainment;
-    private Double Shopping;
-    private Double Utilities;
-    private Double Housing;
-    private Double Other;
+    private Double food;
+    private Double transport;
+    private Double entertainment;
+    private Double shopping;
+    private Double utilities;
+    private Double housing;
+    private Double other;
 }
