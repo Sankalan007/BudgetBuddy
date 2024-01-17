@@ -22,26 +22,26 @@ public class GoalsController {
     private final GoalsRepository goalsRepository;
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<Optional<Goals>> getGoals(@PathVariable("id") Long id){
+    public ResponseEntity<Optional<Goals>> getGoals(@PathVariable("id") Long id) {
         Optional<Goals> goalsOptional = goalsService.getGoals(id);
         return new ResponseEntity<>(goalsOptional, HttpStatus.OK);
     }
 
     @Transactional
     @GetMapping("/findByUserId/{id}")
-    public ResponseEntity<List<Goals>> getGoalsById(@PathVariable("id") Long id){
+    public ResponseEntity<List<Goals>> getGoalsById(@PathVariable("id") Long id) {
         List<Goals> goals = goalsService.findGoalByUserId(id);
         return new ResponseEntity<>(goals, HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Goals> setGoals(@RequestBody Goals goals){
+    public ResponseEntity<Goals> setGoals(@RequestBody Goals goals) {
         Goals goals1 = goalsService.addGoals(goals);
         return new ResponseEntity<>(goals1, HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Goals> updateGoals(@PathVariable("id") Long id, @RequestBody Goals goals){
+    public ResponseEntity<Goals> updateGoals(@PathVariable("id") Long id, @RequestBody Goals goals) {
         Goals existingGoals = goalsService.findGoalById(id);
         if (existingGoals == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -59,14 +59,14 @@ public class GoalsController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteGoals(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteGoals(@PathVariable("id") Long id) {
         goalsRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Transactional
     @DeleteMapping("/deleteAll/{id}")
-    public ResponseEntity<?> deleteAllGoals(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteAllGoals(@PathVariable("id") Long id) {
         goalsService.deleteAllGoals(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -54,40 +54,41 @@ public class UserServiceImpl implements UserService {
     JwtUtil jwtUtil;
     @Autowired
     JwtFilter jwtFilter;
+
     @Override
     public ResponseEntity<String> signup(Map<String, String> requestMap) {
-        try{
-            if(this.validateSignupMap(requestMap)){
-                User user= userRepo.findByEmailId(requestMap.get("email"));
-                if(Objects.isNull(user)){
+        try {
+            if (this.validateSignupMap(requestMap)) {
+                User user = userRepo.findByEmailId(requestMap.get("email"));
+                if (Objects.isNull(user)) {
                     userRepo.save(this.getUserFromMap(requestMap));
                     return BudgetUtils.getResponseEntity("Successfully Registered", HttpStatus.OK);
-                }else{
-                    return BudgetUtils.getResponseEntity("Email exists",HttpStatus.BAD_REQUEST);
+                } else {
+                    return BudgetUtils.getResponseEntity("Email exists", HttpStatus.BAD_REQUEST);
                 }
-            }else {
-                return  BudgetUtils.getResponseEntity("Invalid Data",HttpStatus.BAD_REQUEST);
+            } else {
+                return BudgetUtils.getResponseEntity("Invalid Data", HttpStatus.BAD_REQUEST);
             }
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
-        return  BudgetUtils.getResponseEntity("Something Went Wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        return BudgetUtils.getResponseEntity("Something Went Wrong", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
 
     private boolean validateSignupMap(Map<String, String> requestMap) {
-        if(requestMap.containsKey("firstName")
+        if (requestMap.containsKey("firstName")
                 && requestMap.containsKey("lastName")
                 && requestMap.containsKey("userName")
                 && requestMap.containsKey("email")
-                && requestMap.containsKey("password")){
+                && requestMap.containsKey("password")) {
             return true;
         }
-        return  false;
+        return false;
     }
+
     private User getUserFromMap(Map<String, String> requestMap) {
-        User user= new User();
+        User user = new User();
         user.setFirstName(requestMap.get("firstName"));
         user.setLastName(requestMap.get("lastName"));
         user.setUserName(requestMap.get("userName"));
@@ -99,43 +100,40 @@ public class UserServiceImpl implements UserService {
         return user;
 
     }
-    @Override
-    public ResponseEntity<String> login (Map<String,String>requestMap){
-        log.info("Inside login");
-        try{
-            Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
-                    (requestMap.get("email"),requestMap.get("password")));
-            if(authentication.isAuthenticated()){
-                if(customerUserDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")){
-//                    return  new ResponseEntity<String>("{\"token\":\""+
-//                            jwtUtil.generateToken(customerUserDetailsService.getUserDetail().getEmail(),
-//                                    customerUserDetailsService.getUserDetail().getRole())+"\"}",HttpStatus.OK);
-                    return  new ResponseEntity<String>("{\"token\":\""+
-                            jwtUtil.generateToken(customerUserDetailsService.getUserDetail().getEmail(),
-                                    customerUserDetailsService.getUserDetail().getRole())+"\",\"role\":\""+customerUserDetailsService.getUserDetail().getRole()+"\"}",HttpStatus.OK);
 
-                }
-                else{
-                    return new ResponseEntity<String>("{\"message\":\""+"Wait for admin approval"+"\"}",HttpStatus.BAD_REQUEST );
+    @Override
+    public ResponseEntity<String> login(Map<String, String> requestMap) {
+        log.info("Inside login");
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+                    (requestMap.get("email"), requestMap.get("password")));
+            if (authentication.isAuthenticated()) {
+                if (customerUserDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
+                    return new ResponseEntity<String>("{\"token\":\"" +
+                            jwtUtil.generateToken(customerUserDetailsService.getUserDetail().getEmail(),
+                                    customerUserDetailsService.getUserDetail().getRole()) + "\",\"role\":\"" + customerUserDetailsService.getUserDetail().getRole() + "\"}", HttpStatus.OK);
+
+                } else {
+                    return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval" + "\"}", HttpStatus.BAD_REQUEST);
                 }
             }
-        }catch (Exception exception){
-            log.error("{}",exception);
+        } catch (Exception exception) {
+            log.error("{}", exception);
         }
-        return new ResponseEntity<String>("{\"message\":\""+"Bad credentials"+"\"}",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("{\"message\":\"" + "Bad credentials" + "\"}", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public ResponseEntity<List<UserWrapper>> getAllUser() {
-        try{
-            if(jwtFilter.isAdmin()){
-                return new ResponseEntity<>(userRepo.getAll(),HttpStatus.OK);
-            }else
-                return new ResponseEntity<>(userRepo.getByUsername(jwtFilter.getCurrentUser()),HttpStatus.OK);
-        }catch(Exception ex){
+        try {
+            if (jwtFilter.isAdmin()) {
+                return new ResponseEntity<>(userRepo.getAll(), HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(userRepo.getByUsername(jwtFilter.getCurrentUser()), HttpStatus.OK);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
 

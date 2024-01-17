@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
             this.sharedDataService.setUserDetails(user);
             this.userDetails = user;
             this.router.navigate(['/dashboard']);
-            this.toastr.success('Yay! You are logged in.', 'Login Succesful');
+            this.toastr.success('Yay! You are logged in.', 'Login Successful');
           },
           (error) => {
             this.toastr.error('Something went wrong!');
