@@ -15,5 +15,4 @@ public class UserWrapper {
     private String email;
     private String userName;
     private String status;
-
 }

@@ -1,10 +1,12 @@
 package com.example.budgetbuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @NamedQuery(name="User.findByEmailId",query="select u from User u where u.email=:email")
@@ -16,7 +18,8 @@ import java.io.Serializable;
 @DynamicUpdate
 @Table(name="_user")
 public class User implements Serializable {
-    private static  final long serialVersionUID=1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Integer id;

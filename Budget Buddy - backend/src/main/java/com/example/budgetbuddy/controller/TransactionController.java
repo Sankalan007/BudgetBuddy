@@ -155,7 +155,7 @@ public class TransactionController {
         return new ResponseEntity<>(newTransaction, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable("id") Long id, @RequestBody Transaction transaction){
         Transaction existingTransaction = transactionService.findTransactionById(id);
         if (existingTransaction == null) {

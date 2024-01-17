@@ -31,7 +31,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     List<Transaction> findAllByUserIdAndTransactionDateBetweenDesc(Long userId, String startDate, String endDate);
 
     // find all transactions of a user from the current day
-    default List<Transaction> findAllByUserIdFromCurrentDay(Long userId, String Date){
+    default List<Transaction> findAllByUserIdFromCurrentDay(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate startDate = date.minusDays(0);
@@ -39,7 +39,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     }
 
     // find all transactions of a user from the current month
-    default List<Transaction> findAllByUserIdFromCurrentMonth(Long userId, String Date){
+    default List<Transaction> findAllByUserIdFromCurrentMonth(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -47,14 +47,14 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     }
 
     // find all transactions of a user from the current year
-    default List<Transaction> findAllByUserIdFromCurrentYear(Long userId, String Date){
+    default List<Transaction> findAllByUserIdFromCurrentYear(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate yearStartDate = LocalDate.of(date.getYear(), 1, 1);
         return findAllByUserIdAndTransactionDateBetween(userId, yearStartDate.toString(), date.toString());
     }
 
-    default List<Transaction> findAllByUserIdFromCurrentDayDesc(Long userId, String Date){
+    default List<Transaction> findAllByUserIdFromCurrentDayDesc(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate startDate = date.minusDays(0);
@@ -62,7 +62,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     }
 
     // find all transactions of a user from the current month
-    default List<Transaction> findAllByUserIdFromCurrentMonthDesc(Long userId, String Date){
+    default List<Transaction> findAllByUserIdFromCurrentMonthDesc(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -70,7 +70,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     }
 
     // find all transactions of a user from the current year
-    default List<Transaction> findAllByUserIdFromCurrentYearDesc(Long userId, String Date){
+    default List<Transaction> findAllByUserIdFromCurrentYearDesc(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate yearStartDate = LocalDate.of(date.getYear(), 1, 1);
@@ -115,7 +115,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     @Query("SELECT COALESCE(SUM(t.amount), 0) from Transaction t WHERE t.userId = ?1 AND t.type = 'spend' AND t.transactionDate BETWEEN ?2 AND ?3")
     Double spendBetweenDates(Long userId, String startDate, String endDate);
 
-    default PresetAverages getPresetAverages(Long userId, String Date){
+    default PresetAverages getPresetAverages(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate currentDate = LocalDate.now();
@@ -166,7 +166,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Other Spendings' AND transactionDate BETWEEN ?2 AND ?3")
     Double otherAmount(Long userId, String from, String to);
 
-    default SpendCategory findMonthlySpendCategorySumByUserId(Long userId, String Date){
+    default SpendCategory findMonthlySpendCategorySumByUserId(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -182,12 +182,12 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
                 .build();
     }
 
-    default List<Double> getDayOfMonthSpending(Long userId, String Date){
+    default List<Double> getDayOfMonthSpending(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<Double> dayOfMonthSpending = new ArrayList<>();
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
-        for(int i = 1; i <= date.getDayOfMonth(); ++i){
+        for (int i = 1; i <= date.getDayOfMonth(); ++i) {
             LocalDate specificDate = LocalDate.of(date.getYear(), date.getMonth(), i);
             Double spendOnDay = spendBetweenDates(userId, specificDate.toString(), specificDate.toString());
             dayOfMonthSpending.add(spendOnDay);
@@ -195,12 +195,12 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         return dayOfMonthSpending;
     }
 
-    default List<Double> getMonthOfYearSpending(Long userId, String Date){
+    default List<Double> getMonthOfYearSpending(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<Double> monthOfYearSpending = new ArrayList<>();
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate yearStartDate = LocalDate.of(date.getYear(), 1, 1);
-        for(int i = 1; i <= date.getMonthValue(); ++i){
+        for (int i = 1; i <= date.getMonthValue(); ++i) {
             LocalDate specificMonthStartDate = LocalDate.of(date.getYear(), i, 1);
             LocalDate specificMonthEndDate = LocalDate.of(date.getYear(), i, specificMonthStartDate.lengthOfMonth());
             Double spendOnMonth = spendBetweenDates(userId, specificMonthStartDate.toString(), specificMonthEndDate.toString());
@@ -209,7 +209,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         return monthOfYearSpending;
     }
 
-    default List<Double> getDayOfLastSevenDaysSpending(Long userId, String Date){
+    default List<Double> getDayOfLastSevenDaysSpending(Long userId, String Date) {
         List<Double> dayOfLastSevenDays = new ArrayList<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd"));
@@ -218,7 +218,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
 
         int toIncrement = 7;
 
-        while(toIncrement > 0){
+        while (toIncrement > 0) {
             LocalDate specificDate = last7DaysStartDate;
             Double spendOnDay = spendBetweenDates(userId, specificDate.toString(), specificDate.toString());
             dayOfLastSevenDays.add(spendOnDay);
@@ -229,12 +229,12 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         return dayOfLastSevenDays;
     }
 
-    default List<Double> getDayOfMonthEarning(Long userId, String Date){
+    default List<Double> getDayOfMonthEarning(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<Double> dayOfMonthEarning = new ArrayList<>();
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
-        for(int i = 1; i <= date.getDayOfMonth(); ++i){
+        for (int i = 1; i <= date.getDayOfMonth(); ++i) {
             LocalDate specificDate = LocalDate.of(date.getYear(), date.getMonth(), i);
             Double earnOnDay = earnBetweenDates(userId, specificDate.toString(), specificDate.toString());
             dayOfMonthEarning.add(earnOnDay);
@@ -242,12 +242,12 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         return dayOfMonthEarning;
     }
 
-    default List<Double> getMonthOfYearEarning(Long userId, String Date){
+    default List<Double> getMonthOfYearEarning(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<Double> monthOfYearEarning = new ArrayList<>();
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate yearStartDate = LocalDate.of(date.getYear(), 1, 1);
-        for(int i = 1; i <= date.getMonthValue(); ++i){
+        for (int i = 1; i <= date.getMonthValue(); ++i) {
             LocalDate specificMonthStartDate = LocalDate.of(date.getYear(), i, 1);
             LocalDate specificMonthEndDate = LocalDate.of(date.getYear(), i, specificMonthStartDate.lengthOfMonth());
             Double earnOnMonth = earnBetweenDates(userId, specificMonthStartDate.toString(), specificMonthEndDate.toString());
@@ -256,7 +256,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         return monthOfYearEarning;
     }
 
-    default List<Double> getDayOfLastSevenDaysEarning(Long userId, String Date){
+    default List<Double> getDayOfLastSevenDaysEarning(Long userId, String Date) {
         List<Double> dayOfLastSevenDays = new ArrayList<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(("yyyy-MM-dd"));
@@ -265,7 +265,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
 
         int toIncrement = 7;
 
-        while(toIncrement > 0){
+        while (toIncrement > 0) {
             LocalDate specificDate = last7DaysStartDate;
             Double earnOnDay = earnBetweenDates(userId, specificDate.toString(), specificDate.toString());
             dayOfLastSevenDays.add(earnOnDay);
@@ -277,25 +277,28 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
     }
 
 
-
-
-
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Salary' AND transactionDate BETWEEN ?2 AND ?3")
     Double salaryAmount(Long userId, String from, String to);
+
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Business' AND transactionDate BETWEEN ?2 AND ?3")
     Double businessAmount(Long userId, String from, String to);
+
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Rental' AND transactionDate BETWEEN ?2 AND ?3")
     Double rentalAmount(Long userId, String from, String to);
+
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Investment' AND transactionDate BETWEEN ?2 AND ?3")
     Double investmentAmount(Long userId, String from, String to);
+
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Gifts/Inheritence' AND transactionDate BETWEEN ?2 AND ?3")
     Double giftsAmount(Long userId, String from, String to);
+
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Freelance' AND transactionDate BETWEEN ?2 AND ?3")
     Double freelanceAmount(Long userId, String from, String to);
+
     @Query("SELECT COALESCE(SUM(amount), 0) FROM Transaction WHERE userId = ?1 AND category = 'Other Incomes' AND transactionDate BETWEEN ?2 AND ?3")
     Double otherIncomesAmount(Long userId, String from, String to);
 
-    default EarnCategory findMonthlyEarnCategorySumByUserId(Long userId, String Date){
+    default EarnCategory findMonthlyEarnCategorySumByUserId(Long userId, String Date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(Date, formatter);
         LocalDate monthStartDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -325,6 +328,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         }
         return minIndex;
     }
+
     default Integer most(List<Double> items) {
         int maxi = Integer.MIN_VALUE;
         int maxIndex = -1;
@@ -339,7 +343,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
         return maxIndex;
     }
 
-    default Insights getTransactionsInsights(Long userId, String Date){
+    default Insights getTransactionsInsights(Long userId, String Date) {
         List<Double> dayOfMonthEarning = getDayOfMonthEarning(userId, Date);
         Integer leastEarnDay = least(dayOfMonthEarning);
 
@@ -530,7 +534,6 @@ public interface TransactionRepo extends JpaRepository<Transaction, Long> {
                 .mostSpendCategory(mostSpendCategory)
                 .build();
     }
-
 
 
 }

@@ -40,4 +40,5 @@ export class AppComponent implements OnInit{
     this.smooth.smoothScrollToTop({ duration: 1000, easing: 'linear' });
   }
   
+  
 }

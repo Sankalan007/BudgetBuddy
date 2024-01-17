@@ -20,3 +20,4 @@ public interface UserController {
     @GetMapping("/userDetails")
     public ResponseEntity<List<UserWrapper>> getAllUsers();
 }
+

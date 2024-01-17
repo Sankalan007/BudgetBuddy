@@ -1,15 +1,32 @@
-<div class="glowing w-16 h-16 text-2xl flex justify-center items-center bg-black text-white border border-white cursor-pointer z-50 fixed bottom-8 right-8 rounded-full p-4" (click)="goTop()">
+<div
+  class="glowing w-16 h-16 text-2xl flex justify-center items-center bg-black text-white border border-white cursor-pointer z-50 fixed bottom-8 right-8 rounded-full p-4"
+  (click)="goTop()"
+>
   <i class="fa-solid fa-arrow-up"></i>
 </div>
 <ng-container *ngIf="!isAuthRoute()">
   <ng-container *ngIf="isAuthenticated()">
     <div class="flex w-full max-w-[95vw]" [class.dark]="!lightTheme">
-      <app-sidebar (sidebarToggled)="toggleSidebar($event)" (lightThemeToggled)="toggleLightTheme($event)"></app-sidebar>
-      <div [style.width]="sidebarOpen ? 'calc(100vw - 250px)' : 'calc(100vw - 75px)'" class="top-0">
+      <app-sidebar
+        (sidebarToggled)="toggleSidebar($event)"
+        (lightThemeToggled)="toggleLightTheme($event)"
+      ></app-sidebar>
+      <div
+        [style.width]="
+          sidebarOpen ? 'calc(100vw - 250px)' : 'calc(100vw - 75px)'
+        "
+        class="top-0"
+      >
         <div class="z-50">
-          <app-navbar [sidebarOpen]="sidebarOpen" [lightTheme]="lightTheme"></app-navbar>
+          <app-navbar
+            [sidebarOpen]="sidebarOpen"
+            [lightTheme]="lightTheme"
+          ></app-navbar>
         </div>
-        <div [ngClass]="sidebarOpen ? 'pl-[250px]' : 'pl-[75px]'" class="transition-all duration-500 w-[100vw] absolute top-[4rem] min-h-[calc(100vh-4rem)] bg-primary-bg dark:bg-dark-secondary text-primary">
+        <div
+          [ngClass]="sidebarOpen ? 'pl-[250px]' : 'pl-[75px]'"
+          class="transition-all duration-500 w-[100vw] absolute top-[4rem] min-h-[calc(100vh-4rem)] bg-primary-bg dark:bg-dark-secondary text-primary"
+        >
           <router-outlet></router-outlet>
         </div>
       </div>
@@ -19,9 +36,14 @@
     <div class="flex w-full max-w-[95vw]" [class.dark]="!lightTheme">
       <div class="top-0">
         <div class="z-50">
-          <app-navbar [sidebarOpen]="sidebarOpen" [lightTheme]="lightTheme"></app-navbar>
+          <app-navbar
+            [sidebarOpen]="sidebarOpen"
+            [lightTheme]="lightTheme"
+          ></app-navbar>
         </div>
-        <div class="transition-all duration-500 w-[100vw] absolute top-[4rem] min-h-[calc(100vh-4rem)] bg-secondary dark:bg-dark-secondary text-primary">
+        <div
+          class="transition-all duration-500 w-[100vw] absolute top-[4rem] min-h-[calc(100vh-4rem)] bg-secondary dark:bg-dark-secondary text-primary"
+        >
           <router-outlet></router-outlet>
         </div>
       </div>
